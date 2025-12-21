@@ -13,12 +13,37 @@ model Home {
   id        Int               @id @default(autoincrement())
   name      String
   bills     ElectricityBill[]
+  supplies  SupplyPoint[]
 }
 
 model Provider {
   id        Int               @id @default(autoincrement())
   name      String
   bills     ElectricityBill[]
+  taxId     String?
+  market    String?
+  address   String?
+}
+
+model SupplyPoint {
+  id               Int               @id @default(autoincrement())
+  homeId           Int
+  cups             String
+  distributor      String?
+  accessContract   String?
+  gridToll         String?
+  addressLine      String?
+  postalCode       String?
+  city             String?
+  region           String?
+  country          String?
+  contractedPowerP1 Decimal?
+  contractedPowerP2 Decimal?
+  meters           String?
+  home             Home              @relation(fields: [homeId], references: [id])
+  bills            ElectricityBill[]
+
+  @@unique([cups])
 }
 
 model ElectricityBill {
@@ -30,8 +55,17 @@ model ElectricityBill {
   pdfUrl         String?
   homeId         Int
   providerId     Int
+  supplyPointId  Int?
+  invoiceNumber  String?
+  referenceNumber String?
+  periodStart    DateTime?
+  periodEnd      DateTime?
+  periodDays     Int?
+  tariff         String?
+  contractNumber String?
   home           Home             @relation(fields: [homeId], references: [id])
   provider       Provider         @relation(fields: [providerId], references: [id])
+  supplyPoint    SupplyPoint?     @relation(fields: [supplyPointId], references: [id])
   costLines      BillCostLine[]
 }
 
