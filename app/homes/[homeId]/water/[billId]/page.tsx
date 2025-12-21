@@ -6,7 +6,7 @@ import CostBreakdown from "@/components/billing/CostBreakdown";
 import { formatDate } from "@/components/billing/billingFormatters";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { getWaterBillById } from "@/infrastructure/waterRepository";
+import { getWaterBillUseCase } from "@/usecases/waterBills";
 
 export const runtime = "nodejs";
 
@@ -23,7 +23,7 @@ export default async function WaterBillPage({ params }: WaterBillPageProps) {
     notFound();
   }
 
-  const bill = await getWaterBillById(homeId, billId);
+  const bill = await getWaterBillUseCase(homeId, billId);
 
   if (!bill) {
     notFound();

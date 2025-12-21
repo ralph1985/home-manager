@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import BillsList from "@/components/billing/BillsList";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { listEnergyBillsByHome } from "@/infrastructure/energyRepository";
-import { getHomeById } from "@/infrastructure/homeRepository";
+import { listEnergyBillsUseCase } from "@/usecases/energyBills";
+import { getHomeUseCase } from "@/usecases/homes";
 
 export const runtime = "nodejs";
 
@@ -20,13 +20,13 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
     notFound();
   }
 
-  const home = await getHomeById(homeId);
+  const home = await getHomeUseCase(homeId);
 
   if (!home) {
     notFound();
   }
 
-  const bills = await listEnergyBillsByHome(homeId);
+  const bills = await listEnergyBillsUseCase(homeId);
 
   return (
     <PageShell>

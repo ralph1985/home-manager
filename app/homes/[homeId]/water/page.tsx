@@ -3,8 +3,8 @@ import { notFound } from "next/navigation";
 import BillsList from "@/components/billing/BillsList";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { getHomeById } from "@/infrastructure/homeRepository";
-import { listWaterBillsByHome } from "@/infrastructure/waterRepository";
+import { getHomeUseCase } from "@/usecases/homes";
+import { listWaterBillsUseCase } from "@/usecases/waterBills";
 
 export const runtime = "nodejs";
 
@@ -20,13 +20,13 @@ export default async function WaterPage({ params }: WaterPageProps) {
     notFound();
   }
 
-  const home = await getHomeById(homeId);
+  const home = await getHomeUseCase(homeId);
 
   if (!home) {
     notFound();
   }
 
-  const bills = await listWaterBillsByHome(homeId);
+  const bills = await listWaterBillsUseCase(homeId);
 
   return (
     <PageShell>

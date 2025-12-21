@@ -2,10 +2,10 @@ import HomeCard from "@/components/HomeCard";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { listHomes } from "@/infrastructure/homeRepository";
+import { listHomesUseCase } from "@/usecases/homes";
 
 export default async function Home() {
-  const homes = await listHomes();
+  const homes = await listHomesUseCase();
 
   return (
     <PageShell>

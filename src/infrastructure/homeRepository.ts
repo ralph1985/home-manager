@@ -2,7 +2,7 @@ import { prisma } from "@/infrastructure/prisma";
 
 export async function listHomes() {
   return prisma.home.findMany({
-    orderBy: { name: "asc" },
+    orderBy: { id: "asc" },
   });
 }
 

@@ -6,7 +6,7 @@ import CostBreakdown from "@/components/billing/CostBreakdown";
 import { formatDate } from "@/components/billing/billingFormatters";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { getEnergyBillById } from "@/infrastructure/energyRepository";
+import { getEnergyBillUseCase } from "@/usecases/energyBills";
 
 export const runtime = "nodejs";
 
@@ -23,7 +23,7 @@ export default async function EnergyBillPage({ params }: EnergyBillPageProps) {
     notFound();
   }
 
-  const bill = await getEnergyBillById(homeId, billId);
+  const bill = await getEnergyBillUseCase(homeId, billId);
 
   if (!bill) {
     notFound();

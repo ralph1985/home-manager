@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { getHomeById } from "@/infrastructure/homeRepository";
+import { getHomeUseCase } from "@/usecases/homes";
 
 export const runtime = "nodejs";
 
@@ -41,7 +41,7 @@ export default async function HomeDetailPage({ params }: { params: Promise<{ hom
     notFound();
   }
 
-  const home = await getHomeById(homeId);
+  const home = await getHomeUseCase(homeId);
 
   if (!home) {
     notFound();
