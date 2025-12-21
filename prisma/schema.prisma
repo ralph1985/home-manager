@@ -14,6 +14,8 @@ model Home {
   name      String
   bills     ElectricityBill[]
   supplies  SupplyPoint[]
+  waterBills WaterBill[]
+  waterSupplies WaterSupplyPoint[]
 }
 
 model Provider {
@@ -82,6 +84,71 @@ model BillCostLine {
   amount      Decimal
   bill        ElectricityBill @relation(fields: [billId], references: [id])
   category    CostCategory    @relation(fields: [categoryId], references: [id])
+
+  @@unique([billId, categoryId])
+}
+
+model WaterProvider {
+  id      Int         @id @default(autoincrement())
+  name    String
+  taxId   String?
+  address String?
+  bills   WaterBill[]
+}
+
+model WaterSupplyPoint {
+  id            Int         @id @default(autoincrement())
+  homeId        Int
+  contractNumber String?
+  meterNumber   String?
+  meterDiameterMm Int?
+  supplyType    String?
+  usage         String?
+  addressLine   String?
+  postalCode    String?
+  city          String?
+  region        String?
+  country       String?
+  home          Home        @relation(fields: [homeId], references: [id])
+  bills         WaterBill[]
+}
+
+model WaterBill {
+  id              Int                 @id @default(autoincrement())
+  homeId          Int
+  providerId      Int
+  supplyPointId   Int?
+  invoiceNumber   String?
+  status          String?
+  issueDate       DateTime
+  dueDate         DateTime?
+  paymentDate     DateTime?
+  periodStart     DateTime?
+  periodEnd       DateTime?
+  periodType      String?
+  totalAmount     Decimal
+  consumptionM3   Decimal?
+  averageDailyCost Decimal?
+  pdfUrl          String?
+  home            Home                @relation(fields: [homeId], references: [id])
+  provider        WaterProvider       @relation(fields: [providerId], references: [id])
+  supplyPoint     WaterSupplyPoint?   @relation(fields: [supplyPointId], references: [id])
+  costLines       WaterBillCostLine[]
+}
+
+model WaterCostCategory {
+  id    Int                @id @default(autoincrement())
+  name  String
+  lines WaterBillCostLine[]
+}
+
+model WaterBillCostLine {
+  id         Int              @id @default(autoincrement())
+  billId     Int
+  categoryId Int
+  amount     Decimal
+  bill       WaterBill        @relation(fields: [billId], references: [id])
+  category   WaterCostCategory @relation(fields: [categoryId], references: [id])
 
   @@unique([billId, categoryId])
 }
