@@ -25,11 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${manrope.variable} ${fraunces.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={`${manrope.variable} ${fraunces.variable} antialiased`}>{children}</body>
     </html>
   );
 }

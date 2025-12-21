@@ -20,7 +20,9 @@
     "lint": "eslint",
     "studio": "prisma studio",
     "typecheck": "tsc --noEmit",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "7.2.0",
@@ -40,7 +42,9 @@
     "@commitlint/config-conventional": "19.8.1",
     "eslint": "9.39.2",
     "eslint-config-next": "16.1.0",
+    "eslint-config-prettier": "9.1.0",
     "husky": "9.1.7",
+    "prettier": "3.6.2",
     "sass": "1.93.2",
     "tailwindcss": "4.1.18",
     "typescript": "5.9.3"

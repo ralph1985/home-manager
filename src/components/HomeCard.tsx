@@ -20,9 +20,7 @@ export default function HomeCard({ home }: HomeCardProps) {
             Vivienda
           </span>
         </div>
-        <h3 className="mt-6 text-2xl font-semibold text-slate-900">
-          {home.name}
-        </h3>
+        <h3 className="mt-6 text-2xl font-semibold text-slate-900">{home.name}</h3>
         <p className="mt-2 text-sm text-slate-600">{homeSummary}</p>
       </div>
       <div className="mt-6 flex flex-wrap items-center gap-3">

@@ -25,25 +25,21 @@ export default async function Home() {
               Selecciona tu vivienda para gestionar tu hogar
             </h1>
             <p className="mt-4 text-lg text-slate-600">
-              Visualiza facturas, consumo y tareas en un solo lugar. Cada
-              vivienda tiene su propio espacio de control.
+              Visualiza facturas, consumo y tareas en un solo lugar. Cada vivienda tiene su propio
+              espacio de control.
             </p>
           </div>
           <div className="hm-panel hm-shadow-soft flex items-center gap-4 px-5 py-4 text-sm text-slate-600">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
               viviendas activas
             </span>
-            <span className="text-3xl font-semibold text-slate-900">
-              {homes.length}
-            </span>
+            <span className="text-3xl font-semibold text-slate-900">{homes.length}</span>
           </div>
         </header>
 
         <section className="mt-12">
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <h2 className="text-2xl font-semibold text-slate-900">
-              Selector de casas
-            </h2>
+            <h2 className="text-2xl font-semibold text-slate-900">Selector de casas</h2>
           </div>
 
           <ul className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -63,8 +59,7 @@ export default async function Home() {
                 Conecta facturas de luz y revisa los costes por vivienda
               </h3>
               <p className="mt-2 text-sm text-slate-600">
-                Define proveedores y categorias de coste para tener un desglose
-                detallado por mes.
+                Define proveedores y categorias de coste para tener un desglose detallado por mes.
               </p>
             </div>
             <Button size="lg" variant="primary">

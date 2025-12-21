@@ -8,8 +8,7 @@ const variantClassName = {
   secondary:
     "border border-slate-900/10 bg-white px-4 py-2 text-slate-700 hover:border-slate-900/20 hover:bg-slate-50",
   ghost: "bg-transparent px-4 py-2 text-slate-700 hover:bg-slate-900/5",
-  danger:
-    "hm-shadow-soft bg-rose-600 px-4 py-2 text-white hover:bg-rose-700",
+  danger: "hm-shadow-soft bg-rose-600 px-4 py-2 text-white hover:bg-rose-700",
 } as const;
 
 type ButtonVariant = keyof typeof variantClassName;
@@ -36,22 +35,12 @@ export default function Button({
   isLoading = false,
   ...props
 }: ButtonProps) {
-  const classes = [
-    baseClassName,
-    variantClassName[variant],
-    sizeClassName[size],
-    className,
-  ]
+  const classes = [baseClassName, variantClassName[variant], sizeClassName[size], className]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <button
-      type={type}
-      className={classes}
-      disabled={isLoading || props.disabled}
-      {...props}
-    >
+    <button type={type} className={classes} disabled={isLoading || props.disabled} {...props}>
       {isLoading ? (
         <span className="inline-flex items-center gap-2">
           <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
