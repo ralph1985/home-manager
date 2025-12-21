@@ -3,7 +3,8 @@ import { notFound } from "next/navigation";
 import BillsList from "@/components/billing/BillsList";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { prisma } from "@/infrastructure/prisma";
+import { listEnergyBillsByHome } from "@/infrastructure/energyRepository";
+import { getHomeById } from "@/infrastructure/homeRepository";
 
 export const runtime = "nodejs";
 
@@ -19,19 +20,13 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
     notFound();
   }
 
-  const home = await prisma.home.findUnique({
-    where: { id: homeId },
-  });
+  const home = await getHomeById(homeId);
 
   if (!home) {
     notFound();
   }
 
-  const bills = await prisma.electricityBill.findMany({
-    where: { homeId },
-    include: { provider: true },
-    orderBy: { issueDate: "desc" },
-  });
+  const bills = await listEnergyBillsByHome(homeId);
 
   return (
     <PageShell>

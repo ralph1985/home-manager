@@ -2,12 +2,10 @@ import HomeCard from "@/components/HomeCard";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { prisma } from "@/infrastructure/prisma";
+import { listHomes } from "@/infrastructure/homeRepository";
 
 export default async function Home() {
-  const homes = await prisma.home.findMany({
-    orderBy: { name: "asc" },
-  });
+  const homes = await listHomes();
 
   return (
     <PageShell>

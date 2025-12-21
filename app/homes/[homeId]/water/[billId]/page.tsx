@@ -6,7 +6,7 @@ import CostBreakdown from "@/components/billing/CostBreakdown";
 import { formatDate } from "@/components/billing/billingFormatters";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { prisma } from "@/infrastructure/prisma";
+import { getWaterBillById } from "@/infrastructure/waterRepository";
 
 export const runtime = "nodejs";
 
@@ -23,16 +23,7 @@ export default async function WaterBillPage({ params }: WaterBillPageProps) {
     notFound();
   }
 
-  const bill = await prisma.waterBill.findFirst({
-    where: { id: billId, homeId },
-    include: {
-      provider: true,
-      supplyPoint: true,
-      costLines: {
-        include: { category: true },
-      },
-    },
-  });
+  const bill = await getWaterBillById(homeId, billId);
 
   if (!bill) {
     notFound();
