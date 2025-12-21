@@ -7,11 +7,11 @@ import { prisma } from "@/infrastructure/prisma";
 
 export const runtime = "nodejs";
 
-type EnergyPageProps = {
+type WaterPageProps = {
   params: Promise<{ homeId: string }>;
 };
 
-export default async function EnergyPage({ params }: EnergyPageProps) {
+export default async function WaterPage({ params }: WaterPageProps) {
   const { homeId: rawHomeId } = await params;
   const homeId = Number.parseInt(rawHomeId, 10);
 
@@ -27,7 +27,7 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
     notFound();
   }
 
-  const bills = await prisma.electricityBill.findMany({
+  const bills = await prisma.waterBill.findMany({
     where: { homeId },
     include: { provider: true },
     orderBy: { issueDate: "desc" },
@@ -36,9 +36,9 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
   return (
     <PageShell>
       <SectionHeader
-        eyebrow="Luz"
+        eyebrow="Agua"
         title={`Facturas de ${home.name}`}
-        description="Revisa los importes y periodos de facturacion de electricidad."
+        description="Revisa los importes y periodos de facturacion de agua."
         actionLabel="Volver al panel"
         actionHref={`/homes/${home.id}`}
       />
@@ -53,9 +53,9 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
           periodStart: bill.periodStart ?? undefined,
           periodEnd: bill.periodEnd ?? undefined,
           totalAmount: bill.totalAmount,
-          consumptionLabel: `${bill.consumptionKwh} kWh`,
+          consumptionLabel: bill.consumptionM3 ? `${bill.consumptionM3} m³` : undefined,
         }))}
-        detailHref={(billId) => `/homes/${home.id}/energy/${billId}`}
+        detailHref={(billId) => `/homes/${home.id}/water/${billId}`}
       />
     </PageShell>
   );

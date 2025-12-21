@@ -10,11 +10,11 @@ import { prisma } from "@/infrastructure/prisma";
 
 export const runtime = "nodejs";
 
-type EnergyBillPageProps = {
+type WaterBillPageProps = {
   params: Promise<{ homeId: string; billId: string }>;
 };
 
-export default async function EnergyBillPage({ params }: EnergyBillPageProps) {
+export default async function WaterBillPage({ params }: WaterBillPageProps) {
   const { homeId: rawHomeId, billId: rawBillId } = await params;
   const homeId = Number.parseInt(rawHomeId, 10);
   const billId = Number.parseInt(rawBillId, 10);
@@ -23,7 +23,7 @@ export default async function EnergyBillPage({ params }: EnergyBillPageProps) {
     notFound();
   }
 
-  const bill = await prisma.electricityBill.findFirst({
+  const bill = await prisma.waterBill.findFirst({
     where: { id: billId, homeId },
     include: {
       provider: true,
@@ -46,11 +46,11 @@ export default async function EnergyBillPage({ params }: EnergyBillPageProps) {
   return (
     <PageShell>
       <SectionHeader
-        eyebrow="Factura de luz"
+        eyebrow="Factura de agua"
         title={bill.invoiceNumber ?? "Factura"}
         description={periodLabel}
         actionLabel="Volver al listado"
-        actionHref={`/homes/${homeId}/energy`}
+        actionHref={`/homes/${homeId}/water`}
       />
 
       <section className="mt-12 grid gap-6 md:grid-cols-2">
@@ -58,26 +58,19 @@ export default async function EnergyBillPage({ params }: EnergyBillPageProps) {
           title="Resumen"
           providerName={bill.provider?.name}
           totalAmount={bill.totalAmount}
-          consumptionLabel={`${bill.consumptionKwh} kWh`}
+          consumptionLabel={bill.consumptionM3 ? `${bill.consumptionM3} m³` : undefined}
           issueDate={bill.issueDate}
           paymentDate={bill.paymentDate}
           pdfUrl={bill.pdfUrl}
+          extraRows={bill.status ? [{ label: "Estado", value: bill.status }] : undefined}
         />
         <ContractPanel
           title="Contrato"
           rows={[
-            { label: "Tarifa", value: bill.tariff ?? "-" },
-            { label: "Contrato", value: bill.contractNumber ?? "-" },
-            ...(bill.supplyPoint
-              ? [
-                  { label: "CUPS", value: bill.supplyPoint.cups },
-                  {
-                    label: "Distribuidora",
-                    value: bill.supplyPoint.distributor ?? "-",
-                  },
-                  { label: "Peaje", value: bill.supplyPoint.gridToll ?? "-" },
-                ]
-              : []),
+            { label: "Contrato", value: bill.supplyPoint?.contractNumber ?? "-" },
+            { label: "Contador", value: bill.supplyPoint?.meterNumber ?? "-" },
+            { label: "Uso", value: bill.supplyPoint?.usage ?? "-" },
+            { label: "Tipo suministro", value: bill.supplyPoint?.supplyType ?? "-" },
           ]}
         />
       </section>
