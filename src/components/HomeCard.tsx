@@ -32,7 +32,7 @@ export default function HomeCard({ home }: HomeCardProps) {
         </Link>
         <Link
           className="hm-pill border border-slate-900/10 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-900/20 hover:bg-slate-50"
-          href={`/homes/${home.id}`}
+          href={`/homes/${home.id}/energy`}
         >
           Ver facturas
         </Link>

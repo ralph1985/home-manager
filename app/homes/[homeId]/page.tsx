@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import Button from "@/components/Button";
 import { prisma } from "@/infrastructure/prisma";
 
 export const runtime = "nodejs";
@@ -11,21 +10,22 @@ const tiles = [
     title: "Luz",
     description: "Facturas y consumo electrico.",
     action: "Abrir",
+    href: "/energy",
   },
   {
     title: "Agua",
     description: "Recibos y seguimiento del consumo.",
-    action: "Abrir",
+    action: "Proximamente",
   },
   {
     title: "Gas",
     description: "Facturacion y consumo de gas.",
-    action: "Abrir",
+    action: "Proximamente",
   },
   {
     title: "Seguros",
     description: "Polizas y vencimientos.",
-    action: "Abrir",
+    action: "Proximamente",
   },
 ];
 
@@ -93,7 +93,18 @@ export default async function HomeDetailPage({ params }: { params: Promise<{ hom
                 <h3 className="text-xl font-semibold text-slate-900">{tile.title}</h3>
                 <p className="mt-2 text-sm text-slate-600">{tile.description}</p>
                 <div className="mt-6">
-                  <Button variant="primary">{tile.action}</Button>
+                  {tile.href ? (
+                    <Link
+                      className="hm-pill hm-shadow-soft bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+                      href={`/homes/${home.id}${tile.href}`}
+                    >
+                      {tile.action}
+                    </Link>
+                  ) : (
+                    <span className="hm-pill border border-slate-900/10 bg-white px-4 py-2 text-sm font-semibold text-slate-400">
+                      {tile.action}
+                    </span>
+                  )}
                 </div>
               </div>
             ))}
