@@ -1,0 +1,21 @@
+/* Custom component classes use the hm- prefix. */
+
+.hm-panel {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(18px);
+}
+
+.hm-pill {
+  border-radius: var(--radius-pill);
+}
+
+.hm-shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+
+.hm-shadow-card {
+  box-shadow: var(--shadow-card);
+}

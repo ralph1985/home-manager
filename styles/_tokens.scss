@@ -1,0 +1,32 @@
+:root {
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+
+  --radius-sm: 0.75rem;
+  --radius-md: 1.25rem;
+  --radius-lg: 1.75rem;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 10px 30px -20px rgba(15, 23, 42, 0.35);
+  --shadow-card: 0 16px 40px -28px rgba(15, 23, 42, 0.4);
+
+  --color-sand-50: #f6f1ea;
+  --color-sand-200: #f1c7a6;
+  --color-sage-200: #b9d7d3;
+  --color-sun-200: #f8e6cc;
+  --color-ink-900: #0f172a;
+  --color-ink-700: #334155;
+  --color-ink-600: #475569;
+  --color-paper: #ffffff;
+
+  --background: var(--color-paper);
+  --foreground: var(--color-ink-900);
+  --font-body: var(--font-manrope);
+  --font-display: var(--font-fraunces);
+}
