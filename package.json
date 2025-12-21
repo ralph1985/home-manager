@@ -1,0 +1,19 @@
+{
+  "name": "home-manager",
+  "version": "1.0.0",
+  "description": "Gestión del hogar: tareas, gastos y mantenimiento.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ralph1985/home-manager.git"
+  },
+  "author": "Rafael García Prieto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ralph1985/home-manager/issues"
+  },
+  "homepage": "https://github.com/ralph1985/home-manager#readme"
+}
