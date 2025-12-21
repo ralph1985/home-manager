@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Home {
+  id        Int               @id @default(autoincrement())
+  name      String
+  bills     ElectricityBill[]
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}
+
+model Provider {
+  id        Int               @id @default(autoincrement())
+  name      String
+  bills     ElectricityBill[]
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}
+
+model ElectricityBill {
+  id             Int              @id @default(autoincrement())
+  totalAmount    Decimal
+  issueDate      DateTime
+  paymentDate    DateTime?
+  consumptionKwh Decimal
+  pdfUrl         String?
+  homeId         Int
+  providerId     Int
+  home           Home             @relation(fields: [homeId], references: [id])
+  provider       Provider         @relation(fields: [providerId], references: [id])
+  costLines      BillCostLine[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+}
+
+model CostCategory {
+  id        Int             @id @default(autoincrement())
+  name      String
+  lines     BillCostLine[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+}
+
+model BillCostLine {
+  id          Int             @id @default(autoincrement())
+  billId      Int
+  categoryId  Int
+  amount      Decimal
+  bill        ElectricityBill @relation(fields: [billId], references: [id])
+  category    CostCategory    @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@unique([billId, categoryId])
+}
