@@ -21,3 +21,13 @@ Para ver y editar datos en una interfaz web local:
 ```bash
 npm run studio
 ```
+
+## Copia de seguridad
+
+Script seguro con SQLite (compatible con la DB en uso):
+
+```bash
+npm run backup:db
+```
+
+Las copias se guardan en `data/backups/`.

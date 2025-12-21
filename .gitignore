@@ -25,6 +25,7 @@
 *.pem
 /data/*.db
 /data/*.sqlite
+/data/backups/
 
 # debug
 npm-debug.log*
