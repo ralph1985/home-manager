@@ -18,7 +18,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "studio": "prisma studio"
+    "studio": "prisma studio",
+    "typecheck": "tsc --noEmit",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "7.2.0",
@@ -36,6 +38,7 @@
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.2",
     "eslint-config-next": "16.1.0",
+    "husky": "9.1.7",
     "sass": "1.93.2",
     "tailwindcss": "4.1.18",
     "typescript": "5.9.3"
