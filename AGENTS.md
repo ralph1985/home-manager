@@ -24,6 +24,8 @@ Comandos actuales:
 - `npm run start` — servir el build de producción.
 - `npm run lint` — ejecutar ESLint.
 - `npm run studio` — abrir Prisma Studio (DB local).
+- `npm run typecheck` — TypeScript sin emitir.
+- `npm run format` — formatea con Prettier.
 
 Consejo Clean Architecture: evita que los casos de uso dependan de estos comandos; los comandos deben “envolver” a las capas internas.
 
@@ -52,6 +54,7 @@ No hay historial de commits. Establece convenciones pronto:
 - Asuntos breves e imperativos (e.g., "Add initial project skeleton").
 - Cuerpo corto si el cambio es relevante.
 - En PRs: descripción clara, issues enlazados y pasos de validación.
+- Hooks: Husky con `pre-commit` (lint, typecheck, format) y `commit-msg` (Conventional Commits).
 
 Desde Clean Architecture: en la descripción, explica el impacto por capas (dominio, casos de uso, interfaces, infraestructura).
 
@@ -71,8 +74,10 @@ Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
 - Evita acoplar el dominio a SQLite; expón puertos (interfaces) desde `src/usecases/`.
 - Documenta el fichero de base de datos (e.g., `data/home-manager.sqlite`) y cómo crear migraciones cuando se definan.
 - Prisma 7 con SQLite requiere adapter (`@prisma/adapter-better-sqlite3`).
+- Modelos separados por servicio: electricidad (`ElectricityBill`) y agua (`WaterBill`) con desglose por líneas (`*BillCostLine`).
 
 ## Styling & UI
 
 - Tailwind se carga en `app/tailwind.css`.
 - SCSS global en `app/globals.scss` y parciales en `styles/` (`_tokens.scss`, `_base.scss`, `_components.scss`).
+- Componentes reutilizables en `src/components` (layout y billing).
