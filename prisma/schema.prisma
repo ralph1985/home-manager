@@ -19,8 +19,6 @@ model Provider {
   id        Int               @id @default(autoincrement())
   name      String
   bills     ElectricityBill[]
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
 }
 
 model ElectricityBill {
@@ -35,16 +33,12 @@ model ElectricityBill {
   home           Home             @relation(fields: [homeId], references: [id])
   provider       Provider         @relation(fields: [providerId], references: [id])
   costLines      BillCostLine[]
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
 }
 
 model CostCategory {
   id        Int             @id @default(autoincrement())
   name      String
   lines     BillCostLine[]
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
 }
 
 model BillCostLine {
@@ -54,8 +48,6 @@ model BillCostLine {
   amount      Decimal
   bill        ElectricityBill @relation(fields: [billId], references: [id])
   category    CostCategory    @relation(fields: [categoryId], references: [id])
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
 
   @@unique([billId, categoryId])
 }
