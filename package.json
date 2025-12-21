@@ -36,6 +36,8 @@
     "@types/node": "20.19.27",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
+    "@commitlint/cli": "19.8.1",
+    "@commitlint/config-conventional": "19.8.1",
     "eslint": "9.39.2",
     "eslint-config-next": "16.1.0",
     "husky": "9.1.7",
