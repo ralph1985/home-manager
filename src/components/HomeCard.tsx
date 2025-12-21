@@ -1,6 +1,6 @@
 import type { Home } from "@prisma/client";
 
-import Button from "@/components/Button";
+import Link from "next/link";
 
 const homeSummary = "Acceso directo a facturas, consumo y mantenimientos.";
 
@@ -24,12 +24,18 @@ export default function HomeCard({ home }: HomeCardProps) {
         <p className="mt-2 text-sm text-slate-600">{homeSummary}</p>
       </div>
       <div className="mt-6 flex flex-wrap items-center gap-3">
-        <Button size="md" variant="primary">
+        <Link
+          className="hm-pill hm-shadow-soft bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+          href={`/homes/${home.id}`}
+        >
           Abrir panel
-        </Button>
-        <Button size="md" variant="secondary">
+        </Link>
+        <Link
+          className="hm-pill border border-slate-900/10 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-900/20 hover:bg-slate-50"
+          href={`/homes/${home.id}`}
+        >
           Ver facturas
-        </Button>
+        </Link>
       </div>
     </li>
   );
