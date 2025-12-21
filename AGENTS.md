@@ -3,6 +3,7 @@
 ## Project Structure & Module Organization
 Proyecto Next.js (App Router) con enfoque de *Arquitectura Limpia*. Mantén las dependencias “hacia dentro” y separa capas:
 - `app/` rutas UI y API (`app/api/...`).
+- `src/` código compartido (alias `@/*` apunta a `src/`).
 - `src/domain/` entidades y reglas de negocio puras (sin frameworks).
 - `src/usecases/` casos de uso orquestando el dominio.
 - `src/interfaces/` adaptadores: controllers, presenters, mappers.
@@ -18,6 +19,7 @@ Comandos actuales:
 - `npm run build` — build de producción.
 - `npm run start` — servir el build de producción.
 - `npm run lint` — ejecutar ESLint.
+- `npm run studio` — abrir Prisma Studio (DB local).
 
 Consejo Clean Architecture: evita que los casos de uso dependan de estos comandos; los comandos deben “envolver” a las capas internas.
 
@@ -54,3 +56,8 @@ Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
 - Mantén los repositorios en `src/infrastructure/` y las interfaces en `src/interfaces/`.
 - Evita acoplar el dominio a SQLite; expón puertos (interfaces) desde `src/usecases/`.
 - Documenta el fichero de base de datos (e.g., `data/home-manager.sqlite`) y cómo crear migraciones cuando se definan.
+ - Prisma 7 con SQLite requiere adapter (`@prisma/adapter-better-sqlite3`).
+
+## Styling & UI
+- Tailwind se carga en `app/tailwind.css`.
+- SCSS global en `app/globals.scss` y parciales en `styles/` (`_tokens.scss`, `_base.scss`, `_components.scss`).
