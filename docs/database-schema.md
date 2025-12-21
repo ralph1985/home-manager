@@ -11,3 +11,10 @@ El esquema vive en `prisma/schema.prisma` y se versiona junto a las migraciones.
 
 ## Base local
 `data/dev.db` (no se versiona).
+
+## Prisma Studio
+Para ver y editar datos en una interfaz web local:
+
+```bash
+npm run studio
+```
