@@ -1,0 +1,56 @@
+# Repository Guidelines
+
+## Project Structure & Module Organization
+Proyecto Next.js (App Router) con enfoque de *Arquitectura Limpia*. Mantén las dependencias “hacia dentro” y separa capas:
+- `app/` rutas UI y API (`app/api/...`).
+- `src/domain/` entidades y reglas de negocio puras (sin frameworks).
+- `src/usecases/` casos de uso orquestando el dominio.
+- `src/interfaces/` adaptadores: controllers, presenters, mappers.
+- `src/infrastructure/` detalles: DB, HTTP, UI, frameworks.
+- `public/` assets estáticos servidos por Next.
+- `docs/` decisiones, ADRs y guías extendidas.
+
+Si eliges otra estructura, documenta el porqué y mantén rutas estables.
+
+## Build, Test, and Development Commands
+Comandos actuales:
+- `npm run dev` — servidor de desarrollo de Next.
+- `npm run build` — build de producción.
+- `npm run start` — servir el build de producción.
+- `npm run lint` — ejecutar ESLint.
+
+Consejo Clean Architecture: evita que los casos de uso dependan de estos comandos; los comandos deben “envolver” a las capas internas.
+
+## Coding Style & Naming Conventions
+Stack: TypeScript, Next.js, Tailwind. ESLint está habilitado via `npm run lint`.
+- Indentación: 2 espacios (convención en TS/Next).
+- Archivos: `kebab-case` en rutas `app/`, `camelCase` o `PascalCase` en `src/` según el lenguaje.
+- Tipos/clases en `PascalCase`, funciones en `camelCase`.
+
+Idea clave del libro: el código de dominio debe ser legible y aislado; evita anotaciones de framework en `src/domain/`.
+
+## Testing Guidelines
+No hay framework de pruebas aún. Cuando lo definas:
+- Nombra archivos de tests de forma uniforme (e.g., `.spec`).
+- Refleja la estructura de `src/` en `tests/`.
+- Prioriza pruebas de casos de uso; son el “contrato” del sistema.
+
+## Commit & Pull Request Guidelines
+No hay historial de commits. Establece convenciones pronto:
+- Asuntos breves e imperativos (e.g., "Add initial project skeleton").
+- Cuerpo corto si el cambio es relevante.
+- En PRs: descripción clara, issues enlazados y pasos de validación.
+
+Desde Clean Architecture: en la descripción, explica el impacto por capas (dominio, casos de uso, interfaces, infraestructura).
+
+## Working Style (Agent Instructions)
+Avanza paso a paso y explica siempre qué se ha hecho y por qué, para facilitar el aprendizaje. Antes de cambios grandes, confirma el alcance y espera validación.
+
+## Security & Configuration Tips
+Si manejas secretos, usa variables de entorno o archivos locales fuera de git (e.g., `.env`, `.secrets/`). Documenta las variables requeridas en `docs/` cuando aparezcan.
+
+## Data & Persistence
+Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
+- Mantén los repositorios en `src/infrastructure/` y las interfaces en `src/interfaces/`.
+- Evita acoplar el dominio a SQLite; expón puertos (interfaces) desde `src/usecases/`.
+- Documenta el fichero de base de datos (e.g., `data/home-manager.sqlite`) y cómo crear migraciones cuando se definan.
