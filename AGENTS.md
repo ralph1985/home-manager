@@ -15,6 +15,12 @@ Proyecto Next.js (App Router) con enfoque de _Arquitectura Limpia_. Mantén las 
 
 Si eliges otra estructura, documenta el porqué y mantén rutas estables.
 
+## Rendering Strategy (SSR por defecto)
+
+La app usa Server Components/SSR por defecto en App Router. Se eligió esta vía porque es una app de gestión de hogar para un único usuario (1 cliente), lo que simplifica el acceso a datos y el despliegue local. En este contexto, el coste de render en servidor es asumible y mejora la simplicidad.
+
+Si la app creciera a miles/millones de usuarios, habría que reducir carga en servidor con rutas estáticas/ISR, caché de datos, CDN y separación de componentes client cuando proceda.
+
 ## Build, Test, and Development Commands
 
 Comandos actuales:
