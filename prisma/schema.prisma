@@ -152,3 +152,47 @@ model WaterBillCostLine {
 
   @@unique([billId, categoryId])
 }
+
+model Vehicle {
+  id           Int                 @id @default(autoincrement())
+  name         String?
+  brand        String
+  model        String
+  year         Int?
+  licensePlate String?
+  vin          String?
+  notes        String?
+  maintenances VehicleMaintenance[]
+
+  @@unique([licensePlate])
+  @@unique([vin])
+}
+
+model VehicleMaintenance {
+  id          Int      @id @default(autoincrement())
+  vehicleId   Int
+  workshopId  Int?
+  title       String
+  description String?
+  serviceDate DateTime
+  odometerKm  Int?
+  cost        Decimal?
+  createdAt   DateTime @default(now())
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+  workshop    Workshop? @relation(fields: [workshopId], references: [id])
+}
+
+model Workshop {
+  id            Int                 @id @default(autoincrement())
+  name          String
+  taxId         String?
+  addressLine   String?
+  postalCode    String?
+  city          String?
+  region        String?
+  country       String?
+  phone         String?
+  email         String?
+  notes         String?
+  maintenances  VehicleMaintenance[]
+}
