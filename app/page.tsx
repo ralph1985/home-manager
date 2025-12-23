@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import HomeCard from "@/components/HomeCard";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
@@ -26,6 +28,27 @@ export default async function Home() {
             <HomeCard key={home.id} home={home} />
           ))}
         </ul>
+      </section>
+
+      <section className="mt-12">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h2 className="text-2xl font-semibold text-slate-900">Vehiculos</h2>
+        </div>
+
+        <div className="hm-panel mt-6 flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between">
+          <div>
+            <h3 className="text-xl font-semibold text-slate-900">Control de mantenimiento</h3>
+            <p className="mt-2 text-sm text-slate-600">
+              Consulta tus coches, talleres y gastos en un solo lugar.
+            </p>
+          </div>
+          <Link
+            className="hm-pill hm-shadow-soft bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+            href="/vehicles"
+          >
+            Ver vehiculos
+          </Link>
+        </div>
       </section>
 
       <section className="hm-panel mt-12 p-6 md:p-8">
