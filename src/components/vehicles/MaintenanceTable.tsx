@@ -4,6 +4,11 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { formatCurrency, type NumericValue } from "@/components/billing/billingFormatters";
+import TableShell from "@/components/TableShell";
+import FilterSelect from "@/components/tables/FilterSelect";
+import PillTag from "@/components/tables/PillTag";
+import SortButton from "@/components/tables/SortButton";
+import { compareValues, formatMonthYear, parseDate } from "@/components/tables/tableUtils";
 import { parseMaintenanceDescription } from "@/components/vehicles/maintenanceDescription";
 
 type MaintenanceRow = {
@@ -25,22 +30,6 @@ type MaintenanceTableProps = {
 };
 
 const kmFormatter = new Intl.NumberFormat("es-ES");
-const monthYearFormatter = new Intl.DateTimeFormat("es-ES", {
-  month: "short",
-  year: "numeric",
-});
-
-const workshopColorTokens = [
-  { bg: "bg-amber-100", text: "text-amber-800" },
-  { bg: "bg-emerald-100", text: "text-emerald-800" },
-  { bg: "bg-sky-100", text: "text-sky-800" },
-  { bg: "bg-rose-100", text: "text-rose-800" },
-  { bg: "bg-lime-100", text: "text-lime-800" },
-  { bg: "bg-indigo-100", text: "text-indigo-800" },
-  { bg: "bg-orange-100", text: "text-orange-800" },
-  { bg: "bg-teal-100", text: "text-teal-800" },
-];
-
 const sortLabels: Record<SortKey, string> = {
   date: "Fecha",
   title: "Mantenimiento",
@@ -48,32 +37,6 @@ const sortLabels: Record<SortKey, string> = {
   cost: "Coste",
   odometer: "KM",
 };
-
-function parseDate(value: Date | string) {
-  return value instanceof Date ? value : new Date(value);
-}
-
-function formatMonthYear(value: Date | string) {
-  return monthYearFormatter.format(parseDate(value));
-}
-
-function hashWorkshop(value: string) {
-  let hash = 0;
-  for (let i = 0; i < value.length; i += 1) {
-    hash = (hash * 31 + value.charCodeAt(i)) % 2147483647;
-  }
-  return hash;
-}
-
-function compareValues(a: string | number | null, b: string | number | null) {
-  if (a == null && b == null) return 0;
-  if (a == null) return 1;
-  if (b == null) return -1;
-  if (typeof a === "number" && typeof b === "number") {
-    return a - b;
-  }
-  return a.toString().localeCompare(b.toString(), "es-ES");
-}
 
 export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTableProps) {
   const [workshopFilter, setWorkshopFilter] = useState("all");
@@ -155,107 +118,83 @@ export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTabl
     setSortDirection("asc");
   };
 
-  const sortIndicator = (key: SortKey) => {
-    if (sortKey !== key) {
-      return "↕";
-    }
-    return sortDirection === "asc" ? "↑" : "↓";
-  };
-
-  if (rows.length === 0) {
-    return <div className="hm-panel mt-6 p-6 text-slate-600">{emptyMessage}</div>;
-  }
-
   return (
-    <div className="mt-6">
-      <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4">
-        <div className="flex items-center gap-2 text-sm text-slate-500">
-          <span className="font-semibold uppercase tracking-[0.2em]">Taller</span>
-          <select
-            className="rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700"
+    <TableShell
+      emptyMessage={emptyMessage}
+      totalCount={rows.length}
+      filteredCount={filteredRows.length}
+      filters={
+        <>
+          <FilterSelect
+            label="Taller"
             value={workshopFilter}
-            onChange={(event) => setWorkshopFilter(event.target.value)}
-          >
-            <option value="all">Todos</option>
-            {workshopOptions.map((workshop) => (
-              <option key={workshop} value={workshop}>
-                {workshop}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex items-center gap-2 text-sm text-slate-500">
-          <span className="font-semibold uppercase tracking-[0.2em]">Ano</span>
-          <select
-            className="rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700"
+            onChange={setWorkshopFilter}
+            options={[
+              { value: "all", label: "Todos" },
+              ...workshopOptions.map((workshop) => ({ value: workshop, label: workshop })),
+            ]}
+          />
+          <FilterSelect
+            label="Ano"
             value={yearFilter}
-            onChange={(event) => setYearFilter(event.target.value)}
-          >
-            <option value="all">Todos</option>
-            {yearOptions.map((year) => (
-              <option key={year} value={year.toString()}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="text-sm text-slate-400">
-          {filteredRows.length} resultado{filteredRows.length === 1 ? "" : "s"}
-        </div>
-      </div>
-
-      {sortedRows.length === 0 ? (
-        <div className="hm-panel mt-6 p-6 text-slate-600">Sin resultados.</div>
-      ) : (
+            onChange={setYearFilter}
+            options={[
+              { value: "all", label: "Todos" },
+              ...yearOptions.map((year) => ({ value: year.toString(), label: year.toString() })),
+            ]}
+          />
+        </>
+      }
+    >
+      {sortedRows.length === 0 ? null : (
         <div className="mt-6 overflow-x-auto rounded-3xl border border-slate-200 bg-white">
           <table className="min-w-[720px] w-full text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs uppercase tracking-[0.2em] text-slate-400">
               <tr>
                 <th className="px-4 py-3 font-semibold">
-                  <button
-                    className="flex items-center gap-2"
-                    type="button"
+                  <SortButton
+                    label={sortLabels.date}
+                    isActive={sortKey === "date"}
+                    direction={sortDirection}
                     onClick={() => toggleSort("date")}
-                  >
-                    {sortLabels.date} <span>{sortIndicator("date")}</span>
-                  </button>
+                  />
                 </th>
                 <th className="px-4 py-3 font-semibold">
-                  <button
-                    className="flex items-center gap-2"
-                    type="button"
+                  <SortButton
+                    label={sortLabels.title}
+                    isActive={sortKey === "title"}
+                    direction={sortDirection}
                     onClick={() => toggleSort("title")}
-                  >
-                    {sortLabels.title} <span>{sortIndicator("title")}</span>
-                  </button>
+                  />
                 </th>
                 <th className="px-4 py-3 font-semibold">
-                  <button
-                    className="flex items-center gap-2"
-                    type="button"
+                  <SortButton
+                    label={sortLabels.workshop}
+                    isActive={sortKey === "workshop"}
+                    direction={sortDirection}
                     onClick={() => toggleSort("workshop")}
-                  >
-                    {sortLabels.workshop} <span>{sortIndicator("workshop")}</span>
-                  </button>
+                  />
                 </th>
                 <th className="px-4 py-3 font-semibold">Resumen</th>
                 <th className="px-4 py-3 text-right font-semibold">
-                  <button
-                    className="ml-auto flex items-center gap-2"
-                    type="button"
-                    onClick={() => toggleSort("cost")}
-                  >
-                    {sortLabels.cost} <span>{sortIndicator("cost")}</span>
-                  </button>
+                  <div className="ml-auto flex">
+                    <SortButton
+                      label={sortLabels.cost}
+                      isActive={sortKey === "cost"}
+                      direction={sortDirection}
+                      onClick={() => toggleSort("cost")}
+                    />
+                  </div>
                 </th>
                 <th className="px-4 py-3 text-right font-semibold">
-                  <button
-                    className="ml-auto flex items-center gap-2"
-                    type="button"
-                    onClick={() => toggleSort("odometer")}
-                  >
-                    {sortLabels.odometer} <span>{sortIndicator("odometer")}</span>
-                  </button>
+                  <div className="ml-auto flex">
+                    <SortButton
+                      label={sortLabels.odometer}
+                      isActive={sortKey === "odometer"}
+                      direction={sortDirection}
+                      onClick={() => toggleSort("odometer")}
+                    />
+                  </div>
                 </th>
                 <th className="px-4 py-3 text-right font-semibold">Detalle</th>
               </tr>
@@ -282,21 +221,11 @@ export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTabl
                     </td>
                     <td className="px-4 py-3 font-semibold text-slate-900">{maintenance.title}</td>
                     <td className="px-4 py-3 text-slate-600">
-                      {maintenance.workshopName
-                        ? (() => {
-                            const index =
-                              hashWorkshop(maintenance.workshopName) % workshopColorTokens.length;
-                            const color = workshopColorTokens[index];
-                            return (
-                              <span
-                                className={`inline-flex items-center gap-2 rounded-full ${color.bg} px-3 py-1 text-xs font-semibold ${color.text}`}
-                              >
-                                <span className="h-2 w-2 rounded-full bg-current" />
-                                {maintenance.workshopName}
-                              </span>
-                            );
-                          })()
-                        : "-"}
+                      {maintenance.workshopName ? (
+                        <PillTag label={maintenance.workshopName} />
+                      ) : (
+                        "-"
+                      )}
                     </td>
                     <td className="px-4 py-3 text-xs text-slate-500">{summaryLabel}</td>
                     <td className="px-4 py-3 text-right text-lg font-semibold text-slate-900">
@@ -322,6 +251,6 @@ export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTabl
           </table>
         </div>
       )}
-    </div>
+    </TableShell>
   );
 }

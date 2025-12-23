@@ -8,6 +8,11 @@ import {
   formatDate,
   type NumericValue,
 } from "@/components/billing/billingFormatters";
+import TableShell from "@/components/TableShell";
+import FilterSelect from "@/components/tables/FilterSelect";
+import PillTag from "@/components/tables/PillTag";
+import SortButton from "@/components/tables/SortButton";
+import { compareValues, formatMonthYear, parseDate } from "@/components/tables/tableUtils";
 
 type BillRow = {
   id: number;
@@ -28,22 +33,6 @@ type BillsTableProps = {
   emptyMessage: string;
 };
 
-const monthYearFormatter = new Intl.DateTimeFormat("es-ES", {
-  month: "short",
-  year: "numeric",
-});
-
-const providerColorTokens = [
-  { bg: "bg-amber-100", text: "text-amber-800" },
-  { bg: "bg-emerald-100", text: "text-emerald-800" },
-  { bg: "bg-sky-100", text: "text-sky-800" },
-  { bg: "bg-rose-100", text: "text-rose-800" },
-  { bg: "bg-lime-100", text: "text-lime-800" },
-  { bg: "bg-indigo-100", text: "text-indigo-800" },
-  { bg: "bg-orange-100", text: "text-orange-800" },
-  { bg: "bg-teal-100", text: "text-teal-800" },
-];
-
 const sortLabels: Record<SortKey, string> = {
   date: "Fecha",
   invoice: "Factura",
@@ -51,32 +40,6 @@ const sortLabels: Record<SortKey, string> = {
   total: "Total",
   consumption: "Consumo",
 };
-
-function parseDate(value: Date | string | number) {
-  return value instanceof Date ? value : new Date(value);
-}
-
-function formatMonthYear(value: Date | string | number) {
-  return monthYearFormatter.format(parseDate(value));
-}
-
-function hashProvider(value: string) {
-  let hash = 0;
-  for (let i = 0; i < value.length; i += 1) {
-    hash = (hash * 31 + value.charCodeAt(i)) % 2147483647;
-  }
-  return hash;
-}
-
-function compareValues(a: string | number | null, b: string | number | null) {
-  if (a == null && b == null) return 0;
-  if (a == null) return 1;
-  if (b == null) return -1;
-  if (typeof a === "number" && typeof b === "number") {
-    return a - b;
-  }
-  return a.toString().localeCompare(b.toString(), "es-ES");
-}
 
 function parseConsumption(label?: string | null) {
   if (!label) return null;
@@ -166,107 +129,83 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
     setSortDirection("asc");
   };
 
-  const sortIndicator = (key: SortKey) => {
-    if (sortKey !== key) {
-      return "↕";
-    }
-    return sortDirection === "asc" ? "↑" : "↓";
-  };
-
-  if (rows.length === 0) {
-    return <div className="hm-panel mt-6 p-6 text-slate-600">{emptyMessage}</div>;
-  }
-
   return (
-    <div className="mt-6">
-      <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4">
-        <div className="flex items-center gap-2 text-sm text-slate-500">
-          <span className="font-semibold uppercase tracking-[0.2em]">Proveedor</span>
-          <select
-            className="rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700"
+    <TableShell
+      emptyMessage={emptyMessage}
+      totalCount={rows.length}
+      filteredCount={filteredRows.length}
+      filters={
+        <>
+          <FilterSelect
+            label="Proveedor"
             value={providerFilter}
-            onChange={(event) => setProviderFilter(event.target.value)}
-          >
-            <option value="all">Todos</option>
-            {providerOptions.map((provider) => (
-              <option key={provider} value={provider}>
-                {provider}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex items-center gap-2 text-sm text-slate-500">
-          <span className="font-semibold uppercase tracking-[0.2em]">Ano</span>
-          <select
-            className="rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700"
+            onChange={setProviderFilter}
+            options={[
+              { value: "all", label: "Todos" },
+              ...providerOptions.map((provider) => ({ value: provider, label: provider })),
+            ]}
+          />
+          <FilterSelect
+            label="Ano"
             value={yearFilter}
-            onChange={(event) => setYearFilter(event.target.value)}
-          >
-            <option value="all">Todos</option>
-            {yearOptions.map((year) => (
-              <option key={year} value={year.toString()}>
-                {year}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="text-sm text-slate-400">
-          {filteredRows.length} resultado{filteredRows.length === 1 ? "" : "s"}
-        </div>
-      </div>
-
-      {sortedRows.length === 0 ? (
-        <div className="hm-panel mt-6 p-6 text-slate-600">Sin resultados.</div>
-      ) : (
+            onChange={setYearFilter}
+            options={[
+              { value: "all", label: "Todos" },
+              ...yearOptions.map((year) => ({ value: year.toString(), label: year.toString() })),
+            ]}
+          />
+        </>
+      }
+    >
+      {sortedRows.length === 0 ? null : (
         <div className="mt-6 overflow-x-auto rounded-3xl border border-slate-200 bg-white">
           <table className="min-w-[820px] w-full text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs uppercase tracking-[0.2em] text-slate-400">
               <tr>
                 <th className="px-4 py-3 font-semibold">
-                  <button
-                    className="flex items-center gap-2"
-                    type="button"
+                  <SortButton
+                    label={sortLabels.date}
+                    isActive={sortKey === "date"}
+                    direction={sortDirection}
                     onClick={() => toggleSort("date")}
-                  >
-                    {sortLabels.date} <span>{sortIndicator("date")}</span>
-                  </button>
+                  />
                 </th>
                 <th className="px-4 py-3 font-semibold">
-                  <button
-                    className="flex items-center gap-2"
-                    type="button"
+                  <SortButton
+                    label={sortLabels.invoice}
+                    isActive={sortKey === "invoice"}
+                    direction={sortDirection}
                     onClick={() => toggleSort("invoice")}
-                  >
-                    {sortLabels.invoice} <span>{sortIndicator("invoice")}</span>
-                  </button>
+                  />
                 </th>
                 <th className="px-4 py-3 font-semibold">
-                  <button
-                    className="flex items-center gap-2"
-                    type="button"
+                  <SortButton
+                    label={sortLabels.provider}
+                    isActive={sortKey === "provider"}
+                    direction={sortDirection}
                     onClick={() => toggleSort("provider")}
-                  >
-                    {sortLabels.provider} <span>{sortIndicator("provider")}</span>
-                  </button>
+                  />
                 </th>
                 <th className="px-4 py-3 font-semibold">Periodo</th>
                 <th className="px-4 py-3 text-right font-semibold">
-                  <button
-                    className="ml-auto flex items-center gap-2"
-                    type="button"
-                    onClick={() => toggleSort("total")}
-                  >
-                    {sortLabels.total} <span>{sortIndicator("total")}</span>
-                  </button>
+                  <div className="ml-auto flex">
+                    <SortButton
+                      label={sortLabels.total}
+                      isActive={sortKey === "total"}
+                      direction={sortDirection}
+                      onClick={() => toggleSort("total")}
+                    />
+                  </div>
                 </th>
                 <th className="px-4 py-3 text-right font-semibold">
-                  <button
-                    className="ml-auto flex items-center gap-2"
-                    type="button"
-                    onClick={() => toggleSort("consumption")}
-                  >
-                    {sortLabels.consumption} <span>{sortIndicator("consumption")}</span>
-                  </button>
+                  <div className="ml-auto flex">
+                    <SortButton
+                      label={sortLabels.consumption}
+                      isActive={sortKey === "consumption"}
+                      direction={sortDirection}
+                      onClick={() => toggleSort("consumption")}
+                    />
+                  </div>
                 </th>
                 <th className="px-4 py-3 text-right font-semibold">Detalle</th>
               </tr>
@@ -287,21 +226,7 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                       {bill.invoiceNumber ?? "Factura"}
                     </td>
                     <td className="px-4 py-3 text-slate-600">
-                      {bill.providerName
-                        ? (() => {
-                            const index =
-                              hashProvider(bill.providerName) % providerColorTokens.length;
-                            const color = providerColorTokens[index];
-                            return (
-                              <span
-                                className={`inline-flex items-center gap-2 rounded-full ${color.bg} px-3 py-1 text-xs font-semibold ${color.text}`}
-                              >
-                                <span className="h-2 w-2 rounded-full bg-current" />
-                                {bill.providerName}
-                              </span>
-                            );
-                          })()
-                        : "-"}
+                      {bill.providerName ? <PillTag label={bill.providerName} /> : "-"}
                     </td>
                     <td className="px-4 py-3 text-xs text-slate-500">{periodLabel}</td>
                     <td className="px-4 py-3 text-right text-lg font-semibold text-slate-900">
@@ -325,6 +250,6 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
           </table>
         </div>
       )}
-    </div>
+    </TableShell>
   );
 }
