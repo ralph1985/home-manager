@@ -68,6 +68,8 @@ Desde Clean Architecture: en la descripción, explica el impacto por capas (domi
 
 Avanza paso a paso y explica siempre qué se ha hecho y por qué, para facilitar el aprendizaje. Antes de cambios grandes, confirma el alcance y espera validación.
 Revisa de vez en cuando `docs/todo.md` y recuérdame las tareas pendientes cuando corresponda.
+Como quiero aprender TypeScript, acompaña cada cambio con una explicación breve (1-2 frases) del porqué, señala tipos clave (interfaces, unions, nullables) cuando aparezcan, y sugiere un mini-ejercicio opcional al introducir un concepto nuevo.
+Como quiero aprender Clean Architecture, explica siempre las decisiones indicando la capa afectada (dominio, casos de uso, interfaces, infraestructura) y el motivo.
 
 ## Security & Configuration Tips
 
