@@ -119,6 +119,10 @@ model WaterBill {
   providerId      Int
   supplyPointId   Int?
   invoiceNumber   String?
+  billType        String              @default("factura_regular")
+  cancelsBillId   Int?
+  cancelsInvoiceNumber String?
+  cancellationReason String?
   status          String?
   issueDate       DateTime
   dueDate         DateTime?
@@ -127,12 +131,20 @@ model WaterBill {
   periodEnd       DateTime?
   periodType      String?
   totalAmount     Decimal
+  totalToPay      Decimal?
+  creditAmount    Decimal?
   consumptionM3   Decimal?
+  averageMonthlyConsumptionM3 Decimal?
+  readingType     String?
   averageDailyCost Decimal?
   pdfUrl          String?
+  meterNumber     String?
+  meterDiameterMm Int?
   home            Home                @relation(fields: [homeId], references: [id])
   provider        WaterProvider       @relation(fields: [providerId], references: [id])
   supplyPoint     WaterSupplyPoint?   @relation(fields: [supplyPointId], references: [id])
+  cancelsBill     WaterBill?          @relation("WaterBillCancellation", fields: [cancelsBillId], references: [id])
+  canceledBy      WaterBill[]         @relation("WaterBillCancellation")
   costLines       WaterBillCostLine[]
 }
 
