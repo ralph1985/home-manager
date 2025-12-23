@@ -83,6 +83,7 @@ Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
 - Prisma 7 con SQLite requiere adapter (`@prisma/adapter-better-sqlite3`).
 - Modelos separados por servicio: electricidad (`ElectricityBill`) y agua (`WaterBill`) con desglose por líneas (`*BillCostLine`).
 - Copia de seguridad: ejecutar `npm run backup:db` de forma periódica (genera archivos en `data/backups/`).
+- Antes de cualquier cambio en la base de datos, ejecutar `npm run backup:db`.
 
 ## Styling & UI
 
