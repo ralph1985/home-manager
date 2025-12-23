@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { formatCurrency, formatDate, type NumericValue } from "@/components/billing/billingFormatters";
+import {
+  formatCurrency,
+  formatDate,
+  type NumericValue,
+} from "@/components/billing/billingFormatters";
 
 type BillRow = {
   id: number;
