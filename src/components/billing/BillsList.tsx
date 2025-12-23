@@ -9,7 +9,11 @@ type BillListItem = {
   periodStart?: Date | null;
   periodEnd?: Date | null;
   totalAmount: NumericValue;
+  totalToPay?: NumericValue | null;
   consumptionLabel?: string | null;
+  billType?: string | null;
+  cancelsInvoiceNumber?: string | null;
+  cancelsBillId?: number | null;
 };
 
 type BillsListProps = {
@@ -39,7 +43,11 @@ export default function BillsList({ title, emptyMessage, bills, detailHref }: Bi
           periodStart: bill.periodStart?.getTime() ?? null,
           periodEnd: bill.periodEnd?.getTime() ?? null,
           totalAmount: bill.totalAmount.toString(),
+          totalToPay: bill.totalToPay != null ? bill.totalToPay.toString() : null,
           consumptionLabel: bill.consumptionLabel,
+          billType: bill.billType,
+          cancelsInvoiceNumber: bill.cancelsInvoiceNumber,
+          cancelsHref: bill.cancelsBillId ? detailHref(bill.cancelsBillId) : null,
           href: detailHref(bill.id),
         }))}
       />

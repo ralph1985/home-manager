@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import {
   formatCurrency,
   formatDate,
@@ -6,7 +8,7 @@ import {
 
 type SummaryRow = {
   label: string;
-  value: string;
+  value: ReactNode;
 };
 
 type BillSummaryProps = {

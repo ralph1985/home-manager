@@ -8,6 +8,7 @@ export type WaterBillDetail = Prisma.WaterBillGetPayload<{
   include: {
     provider: true;
     supplyPoint: true;
+    cancelsBill: true;
     costLines: { include: { category: true } };
   };
 }>;
@@ -26,6 +27,7 @@ export async function getWaterBillById(homeId: number, billId: number) {
     include: {
       provider: true,
       supplyPoint: true,
+      cancelsBill: true,
       costLines: { include: { category: true } },
     },
   });

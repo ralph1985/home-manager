@@ -8,6 +8,7 @@ import {
   formatDate,
   type NumericValue,
 } from "@/components/billing/billingFormatters";
+import { billTypeBadgeClass, formatBillType } from "@/components/billing/billTypeFormatters";
 import TableShell from "@/components/TableShell";
 import FilterSelect from "@/components/tables/FilterSelect";
 import PillTag from "@/components/tables/PillTag";
@@ -22,7 +23,11 @@ type BillRow = {
   periodStart?: Date | string | number | null;
   periodEnd?: Date | string | number | null;
   totalAmount: NumericValue;
+  totalToPay?: NumericValue | null;
   consumptionLabel?: string | null;
+  billType?: string | null;
+  cancelsInvoiceNumber?: string | null;
+  cancelsHref?: string | null;
   href: string;
 };
 
@@ -159,7 +164,7 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
     >
       {sortedRows.length === 0 ? null : (
         <div className="mt-6 overflow-x-auto rounded-3xl border border-slate-200 bg-white">
-          <table className="min-w-[820px] w-full text-left text-sm text-slate-700">
+          <table className="min-w-[980px] w-full text-left text-sm text-slate-700">
             <thead className="bg-slate-50 text-xs uppercase tracking-[0.2em] text-slate-400">
               <tr>
                 <th className="px-4 py-3 font-semibold">
@@ -178,6 +183,7 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                     onClick={() => toggleSort("invoice")}
                   />
                 </th>
+                <th className="px-4 py-3 text-right font-semibold">Detalle</th>
                 <th className="px-4 py-3 font-semibold">
                   <SortButton
                     label={sortLabels.provider}
@@ -186,6 +192,7 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                     onClick={() => toggleSort("provider")}
                   />
                 </th>
+                <th className="px-4 py-3 font-semibold">Tipo</th>
                 <th className="px-4 py-3 font-semibold">Periodo</th>
                 <th className="px-4 py-3 text-right font-semibold">
                   <div className="ml-auto flex">
@@ -197,6 +204,7 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                     />
                   </div>
                 </th>
+                <th className="px-4 py-3 text-right font-semibold">Total a pagar</th>
                 <th className="px-4 py-3 text-right font-semibold">
                   <div className="ml-auto flex">
                     <SortButton
@@ -207,7 +215,7 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                     />
                   </div>
                 </th>
-                <th className="px-4 py-3 text-right font-semibold">Detalle</th>
+                <th className="px-4 py-3 font-semibold">Anula</th>
               </tr>
             </thead>
             <tbody>
@@ -225,16 +233,6 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                     <td className="px-4 py-3 font-semibold text-slate-900">
                       {bill.invoiceNumber ?? "Factura"}
                     </td>
-                    <td className="px-4 py-3 text-slate-600">
-                      {bill.providerName ? <PillTag label={bill.providerName} /> : "-"}
-                    </td>
-                    <td className="px-4 py-3 text-xs text-slate-500">{periodLabel}</td>
-                    <td className="px-4 py-3 text-right text-lg font-semibold text-slate-900">
-                      {formatCurrency(bill.totalAmount)}
-                    </td>
-                    <td className="px-4 py-3 text-right text-xs text-slate-500">
-                      {bill.consumptionLabel ?? "-"}
-                    </td>
                     <td className="px-4 py-3 text-right">
                       <Link
                         className="hm-pill hm-shadow-soft bg-slate-900 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
@@ -242,6 +240,46 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                       >
                         Ver
                       </Link>
+                    </td>
+                    <td className="px-4 py-3 text-slate-600">
+                      {bill.providerName ? <PillTag label={bill.providerName} /> : "-"}
+                    </td>
+                    <td className="px-4 py-3 text-slate-600">
+                      {bill.billType ? (
+                        <span
+                          className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] ${billTypeBadgeClass(
+                            bill.billType
+                          )}`}
+                        >
+                          {formatBillType(bill.billType)}
+                        </span>
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+                    <td className="px-4 py-3 text-xs text-slate-500">{periodLabel}</td>
+                    <td className="px-4 py-3 text-right text-lg font-semibold text-slate-900">
+                      {formatCurrency(bill.totalAmount)}
+                    </td>
+                    <td className="px-4 py-3 text-right text-sm font-semibold text-slate-700">
+                      {bill.totalToPay != null ? formatCurrency(bill.totalToPay) : "-"}
+                    </td>
+                    <td className="px-4 py-3 text-right text-xs text-slate-500">
+                      {bill.consumptionLabel ?? "-"}
+                    </td>
+                    <td className="px-4 py-3 text-xs text-slate-500">
+                      {bill.cancelsHref ? (
+                        <Link
+                          className="text-xs font-semibold text-slate-700 underline decoration-slate-300 underline-offset-4"
+                          href={bill.cancelsHref}
+                        >
+                          #{bill.cancelsInvoiceNumber ?? "Factura"}
+                        </Link>
+                      ) : bill.cancelsInvoiceNumber ? (
+                        `#${bill.cancelsInvoiceNumber}`
+                      ) : (
+                        "-"
+                      )}
                     </td>
                   </tr>
                 );

@@ -5,6 +5,7 @@ import Link from "next/link";
 type SectionHeaderProps = {
   eyebrow?: string;
   title: string;
+  titleBadge?: ReactNode;
   description?: string;
   actionLabel?: string;
   actionHref?: string;
@@ -14,6 +15,7 @@ type SectionHeaderProps = {
 export default function SectionHeader({
   eyebrow,
   title,
+  titleBadge,
   description,
   actionLabel,
   actionHref,
@@ -27,9 +29,12 @@ export default function SectionHeader({
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="mt-4 text-4xl font-[var(--font-display)] leading-tight text-slate-950 md:text-5xl">
-          {title}
-        </h1>
+        <div className="mt-4 flex flex-wrap items-baseline gap-3">
+          <h1 className="text-4xl font-[var(--font-display)] leading-tight text-slate-950 md:text-5xl">
+            {title}
+          </h1>
+          {titleBadge ? titleBadge : null}
+        </div>
         {description ? <p className="mt-4 text-lg text-slate-600">{description}</p> : null}
       </div>
       {actionNode ? (

@@ -1,9 +1,13 @@
+import type { ReactNode } from "react";
+
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import BillSummary from "@/components/billing/BillSummary";
 import ContractPanel from "@/components/billing/ContractPanel";
 import CostBreakdown from "@/components/billing/CostBreakdown";
-import { formatDate } from "@/components/billing/billingFormatters";
+import { billTypeBadgeClass, formatBillType } from "@/components/billing/billTypeFormatters";
+import { formatCurrency, formatDate } from "@/components/billing/billingFormatters";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { getWaterBillUseCase } from "@/usecases/waterBills";
@@ -34,11 +38,44 @@ export default async function WaterBillPage({ params }: WaterBillPageProps) {
       ? `${formatDate(bill.periodStart)} - ${formatDate(bill.periodEnd)}`
       : formatDate(bill.issueDate);
 
+  const extraRows: Array<{ label: string; value: ReactNode }> = [
+    { label: "Tipo", value: bill.billType ?? "-" },
+    ...(bill.status ? [{ label: "Estado", value: bill.status }] : []),
+    ...(bill.totalToPay != null
+      ? [{ label: "Total a pagar", value: formatCurrency(bill.totalToPay) }]
+      : []),
+  ];
+
+  if (bill.cancelsBill) {
+    extraRows.push({
+      label: "Anula",
+      value: (
+        <Link
+          className="text-sm font-semibold text-slate-900 underline decoration-slate-300 underline-offset-4"
+          href={`/homes/${homeId}/water/${bill.cancelsBill.id}`}
+        >
+          #{bill.cancelsBill.invoiceNumber ?? bill.cancelsBill.id}
+        </Link>
+      ),
+    });
+  } else if (bill.cancelsInvoiceNumber) {
+    extraRows.push({ label: "Anula", value: `#${bill.cancelsInvoiceNumber}` });
+  }
+
   return (
     <PageShell>
       <SectionHeader
         eyebrow="Factura de agua"
         title={bill.invoiceNumber ?? "Factura"}
+        titleBadge={
+          <span
+            className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] ${billTypeBadgeClass(
+              bill.billType
+            )}`}
+          >
+            {formatBillType(bill.billType)}
+          </span>
+        }
         description={periodLabel}
         actionLabel="Volver al listado"
         actionHref={`/homes/${homeId}/water`}
@@ -53,7 +90,7 @@ export default async function WaterBillPage({ params }: WaterBillPageProps) {
           issueDate={bill.issueDate}
           paymentDate={bill.paymentDate}
           pdfUrl={bill.pdfUrl}
-          extraRows={bill.status ? [{ label: "Estado", value: bill.status }] : undefined}
+          extraRows={extraRows}
         />
         <ContractPanel
           title="Contrato"
