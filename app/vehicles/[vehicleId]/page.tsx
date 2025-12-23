@@ -104,9 +104,9 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
         maintenances={maintenances.map((maintenance) => ({
           id: maintenance.id,
           title: maintenance.title,
-          serviceDate: maintenance.serviceDate,
+          serviceDate: maintenance.serviceDate.toISOString(),
           odometerKm: maintenance.odometerKm,
-          cost: maintenance.cost ?? undefined,
+          cost: maintenance.cost != null ? maintenance.cost.toString() : undefined,
           workshopName: maintenance.workshop?.name,
           description: maintenance.description,
         }))}
