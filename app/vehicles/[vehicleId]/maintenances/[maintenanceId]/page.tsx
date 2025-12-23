@@ -31,7 +31,8 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
   }
 
   const details = parseMaintenanceDescription(maintenance.description);
-  const vehicleTitle = maintenance.vehicle.name ?? `${maintenance.vehicle.brand} ${maintenance.vehicle.model}`;
+  const vehicleTitle =
+    maintenance.vehicle.name ?? `${maintenance.vehicle.brand} ${maintenance.vehicle.model}`;
 
   return (
     <PageShell>
@@ -51,9 +52,10 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
             { label: "Taller", value: maintenance.workshop?.name ?? "-" },
             {
               label: "Odometro",
-              value: maintenance.odometerKm != null
-                ? `${kmFormatter.format(maintenance.odometerKm)} km`
-                : "-",
+              value:
+                maintenance.odometerKm != null
+                  ? `${kmFormatter.format(maintenance.odometerKm)} km`
+                  : "-",
             },
             {
               label: "Coste",

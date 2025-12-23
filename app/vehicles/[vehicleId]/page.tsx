@@ -43,7 +43,9 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
         description={vehicle.licensePlate ?? "Sin matricula registrada"}
         actionLabel="Volver al listado"
         actionHref="/vehicles"
-        actionNode={<InfoPanel label="mantenimientos" value={vehicle._count.maintenances.toString()} />}
+        actionNode={
+          <InfoPanel label="mantenimientos" value={vehicle._count.maintenances.toString()} />
+        }
       />
 
       <section className="mt-12 grid gap-6 md:grid-cols-2">
@@ -67,9 +69,10 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
             },
             {
               label: "Ultimo odometro",
-              value: latestMaintenance?.odometerKm != null
-                ? `${kmFormatter.format(latestMaintenance.odometerKm)} km`
-                : "-",
+              value:
+                latestMaintenance?.odometerKm != null
+                  ? `${kmFormatter.format(latestMaintenance.odometerKm)} km`
+                  : "-",
             },
             {
               label: "Ultimo coste",
@@ -107,9 +110,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
           workshopName: maintenance.workshop?.name,
           description: maintenance.description,
         }))}
-        detailHref={(maintenanceId) =>
-          `/vehicles/${vehicle.id}/maintenances/${maintenanceId}`
-        }
+        detailHref={(maintenanceId) => `/vehicles/${vehicle.id}/maintenances/${maintenanceId}`}
       />
     </PageShell>
   );
