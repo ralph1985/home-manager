@@ -1,10 +1,5 @@
-import Link from "next/link";
-
-import {
-  formatCurrency,
-  formatDate,
-  type NumericValue,
-} from "@/components/billing/billingFormatters";
+import type { NumericValue } from "@/components/billing/billingFormatters";
+import BillsTable from "@/components/billing/BillsTable";
 
 type BillListItem = {
   id: number;
@@ -34,50 +29,20 @@ export default function BillsList({ title, emptyMessage, bills, detailHref }: Bi
         </span>
       </div>
 
-      {bills.length === 0 ? (
-        <div className="hm-panel mt-6 p-6 text-slate-600">{emptyMessage}</div>
-      ) : (
-        <ul className="mt-6 grid gap-6 md:grid-cols-2">
-          {bills.map((bill) => (
-            <li key={bill.id} className="hm-panel p-6">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                    {bill.providerName ?? "Proveedor"}
-                  </p>
-                  <h3 className="mt-3 text-xl font-semibold text-slate-900">
-                    {bill.invoiceNumber ?? "Factura"}
-                  </h3>
-                  <p className="mt-2 text-sm text-slate-600">
-                    {bill.periodStart && bill.periodEnd
-                      ? `${formatDate(bill.periodStart)} - ${formatDate(bill.periodEnd)}`
-                      : formatDate(bill.issueDate)}
-                  </p>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-                    total
-                  </p>
-                  <p className="mt-2 text-lg font-semibold text-slate-900">
-                    {formatCurrency(bill.totalAmount)}
-                  </p>
-                  {bill.consumptionLabel ? (
-                    <p className="mt-1 text-xs text-slate-500">{bill.consumptionLabel}</p>
-                  ) : null}
-                </div>
-              </div>
-              <div className="mt-6">
-                <Link
-                  className="hm-pill hm-shadow-soft bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
-                  href={detailHref(bill.id)}
-                >
-                  Ver detalle
-                </Link>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+      <BillsTable
+        emptyMessage={emptyMessage}
+        rows={bills.map((bill) => ({
+          id: bill.id,
+          providerName: bill.providerName,
+          invoiceNumber: bill.invoiceNumber,
+          issueDate: bill.issueDate.getTime(),
+          periodStart: bill.periodStart?.getTime() ?? null,
+          periodEnd: bill.periodEnd?.getTime() ?? null,
+          totalAmount: bill.totalAmount.toString(),
+          consumptionLabel: bill.consumptionLabel,
+          href: detailHref(bill.id),
+        }))}
+      />
     </section>
   );
 }
