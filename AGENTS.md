@@ -67,6 +67,7 @@ Desde Clean Architecture: en la descripción, explica el impacto por capas (domi
 ## Working Style (Agent Instructions)
 
 Avanza paso a paso y explica siempre qué se ha hecho y por qué, para facilitar el aprendizaje. Antes de cambios grandes, confirma el alcance y espera validación.
+Revisa de vez en cuando `docs/todo.md` y recuérdame las tareas pendientes cuando corresponda.
 
 ## Security & Configuration Tips
 
