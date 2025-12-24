@@ -2,7 +2,11 @@
 
 ## Panel general
 
-- `/` — selector de viviendas.
+- `/` — panel de control.
+
+## Viviendas
+
+- `/homes` — selector de viviendas.
 
 ## Vivienda
 
@@ -17,3 +21,9 @@
 
 - `/homes/[homeId]/water` — listado de facturas de agua.
 - `/homes/[homeId]/water/[billId]` — detalle de factura de agua.
+
+## Vehiculos
+
+- `/vehicles` — listado de vehiculos.
+- `/vehicles/[vehicleId]` — detalle de vehiculo.
+- `/vehicles/[vehicleId]/maintenances/[maintenanceId]` — detalle de mantenimiento.
