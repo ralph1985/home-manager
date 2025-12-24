@@ -17,4 +17,4 @@
 ## UI
 
 - `src/components/Button.tsx` — boton reutilizable (variantes, tamanos, loading).
-- `src/components/HomeCard.tsx` — tarjeta de vivienda.
+- `src/components/EntityCard.tsx` — tarjeta generica para entidades (viviendas, vehiculos).
