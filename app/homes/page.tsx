@@ -1,8 +1,10 @@
-import HomeCard from "@/components/HomeCard";
+import EntityCard from "@/components/EntityCard";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { listHomesUseCase } from "@/usecases/homes";
+
+const homeSummary = "Acceso directo a facturas, consumo y mantenimientos.";
 
 export default async function HomesPage() {
   const homes = await listHomesUseCase();
@@ -25,7 +27,17 @@ export default async function HomesPage() {
 
         <ul className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {homes.map((home) => (
-            <HomeCard key={home.id} home={home} />
+            <EntityCard
+              key={home.id}
+              badge="Vivienda"
+              title={home.name}
+              description={homeSummary}
+              icon={home.name.slice(0, 1).toUpperCase()}
+              actions={[
+                { label: "Abrir panel", href: `/homes/${home.id}`, variant: "primary" },
+                { label: "Ver facturas", href: `/homes/${home.id}/energy`, variant: "secondary" },
+              ]}
+            />
           ))}
         </ul>
       </section>
