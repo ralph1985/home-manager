@@ -163,8 +163,10 @@ export const labels = {
       type: "Tipo",
       period: "Periodo",
       totalToPay: "Total a pagar",
+      pdf: "PDF",
       cancels: "Anula",
     },
+    pdfPending: "Pendiente de subir",
     invoiceFallback: "Factura",
   },
   billSummary: {

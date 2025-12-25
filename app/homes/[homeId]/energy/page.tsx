@@ -51,6 +51,7 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
           periodEnd: bill.periodEnd ?? undefined,
           totalAmount: bill.totalAmount,
           consumptionLabel: `${bill.consumptionKwh} ${labels.units.kwh}`,
+          pdfUrl: bill.pdfUrl,
         }))}
         detailHref={(billId) => `/homes/${home.id}/energy/${billId}`}
       />

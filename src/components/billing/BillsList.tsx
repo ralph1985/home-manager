@@ -16,6 +16,7 @@ type BillListItem = {
   billType?: string | null;
   cancelsInvoiceNumber?: string | null;
   cancelsBillId?: number | null;
+  pdfUrl?: string | null;
 };
 
 type BillsListProps = {
@@ -59,6 +60,7 @@ export default async function BillsList({
           cancelsInvoiceNumber: bill.cancelsInvoiceNumber,
           cancelsHref: bill.cancelsBillId ? detailHref(bill.cancelsBillId) : null,
           href: detailHref(bill.id),
+          pdfUrl: bill.pdfUrl ?? null,
         }))}
       />
     </section>

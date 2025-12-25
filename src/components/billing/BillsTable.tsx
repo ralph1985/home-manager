@@ -30,6 +30,7 @@ type BillRow = {
   cancelsInvoiceNumber?: string | null;
   cancelsHref?: string | null;
   href: string;
+  pdfUrl?: string | null;
 };
 
 type SortKey = "date" | "invoice" | "provider" | "total" | "consumption";
@@ -205,6 +206,7 @@ export default function BillsTable({ rows, emptyMessage, labels }: BillsTablePro
                 <th className="px-4 py-3 text-right font-semibold">
                   {labels.bills.headers.totalToPay}
                 </th>
+                <th className="px-4 py-3 font-semibold">{labels.bills.headers.pdf}</th>
                 <th className="px-4 py-3 text-right font-semibold">
                   <div className="ml-auto flex">
                     <SortButton
@@ -269,6 +271,20 @@ export default function BillsTable({ rows, emptyMessage, labels }: BillsTablePro
                       {bill.totalToPay != null
                         ? formatCurrency(bill.totalToPay)
                         : labels.common.emptyValue}
+                    </td>
+                    <td className="px-4 py-3 text-xs text-slate-500">
+                      {bill.pdfUrl ? (
+                        <a
+                          className="text-xs font-semibold text-slate-900 underline decoration-slate-300 underline-offset-4"
+                          href={bill.pdfUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {labels.common.open}
+                        </a>
+                      ) : (
+                        labels.bills.pdfPending
+                      )}
                     </td>
                     <td className="px-4 py-3 text-right text-xs text-slate-500">
                       {bill.consumptionLabel ?? labels.common.emptyValue}
