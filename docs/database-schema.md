@@ -31,3 +31,20 @@ npm run backup:db
 ```
 
 Las copias se guardan en `data/backups/`.
+
+## Snapshot (antes/después de cambios)
+
+Para comparar el estado completo de la BD antes y después de cambios, genera dos dumps SQL:
+
+```bash
+npm run snapshot:db -- before-change
+# ...aplica cambios en la BD...
+npm run snapshot:db -- after-change
+```
+
+Los snapshots se guardan en `data/snapshots/` con timestamp y etiqueta opcional.
+Para ver diferencias:
+
+```bash
+diff -u data/snapshots/ARCHIVO1.sql data/snapshots/ARCHIVO2.sql
+```

@@ -86,6 +86,7 @@ Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
 - Modelos separados por servicio: electricidad (`ElectricityBill`) y agua (`WaterBill`) con desglose por líneas (`*BillCostLine`).
 - Copia de seguridad: ejecutar `npm run backup:db` de forma periódica (genera archivos en `data/backups/`).
 - Antes de cualquier cambio en la base de datos, ejecutar `npm run backup:db`.
+- Para auditar cambios, generar snapshots antes y después con `npm run snapshot:db -- etiqueta` (guarda dumps en `data/snapshots/`).
 
 ## Styling & UI
 
