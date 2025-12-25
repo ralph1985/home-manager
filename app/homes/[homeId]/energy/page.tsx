@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import BillsList from "@/components/billing/BillsList";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
+import { labels } from "@/infrastructure/ui/labels/es";
 import { listEnergyBillsUseCase } from "@/usecases/energyBills";
 import { getHomeUseCase } from "@/usecases/homes";
 
@@ -31,15 +32,15 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
   return (
     <PageShell>
       <SectionHeader
-        eyebrow="Luz"
-        title={`Facturas de ${home.name}`}
-        description="Revisa los importes y periodos de facturacion de electricidad."
-        actionLabel="Volver al panel"
+        eyebrow={labels.energy.eyebrow}
+        title={labels.energy.title(home.name)}
+        description={labels.energy.description}
+        actionLabel={labels.common.backToPanel}
         actionHref={`/homes/${home.id}`}
       />
       <BillsList
-        title="Listado de facturas"
-        emptyMessage="Todavia no hay facturas registradas."
+        title={labels.energy.listTitle}
+        emptyMessage={labels.energy.emptyList}
         bills={bills.map((bill) => ({
           id: bill.id,
           providerName: bill.provider?.name,
@@ -48,7 +49,7 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
           periodStart: bill.periodStart ?? undefined,
           periodEnd: bill.periodEnd ?? undefined,
           totalAmount: bill.totalAmount,
-          consumptionLabel: `${bill.consumptionKwh} kWh`,
+          consumptionLabel: `${bill.consumptionKwh} ${labels.units.kwh}`,
         }))}
         detailHref={(billId) => `/homes/${home.id}/energy/${billId}`}
       />

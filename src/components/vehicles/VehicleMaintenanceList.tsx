@@ -1,5 +1,6 @@
 import type { NumericValue } from "@/components/billing/billingFormatters";
 import MaintenanceTable from "@/components/vehicles/MaintenanceTable";
+import { labels } from "@/infrastructure/ui/labels/es";
 
 type VehicleMaintenanceListItem = {
   id: number;
@@ -29,7 +30,7 @@ export default function VehicleMaintenanceList({
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold text-slate-900">{title}</h2>
         <span className="text-sm text-slate-500">
-          {maintenances.length} mantenimiento{maintenances.length === 1 ? "" : "s"}
+          {labels.maintenanceList.countLabel(maintenances.length)}
         </span>
       </div>
 

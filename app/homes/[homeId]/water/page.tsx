@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import BillsList from "@/components/billing/BillsList";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
+import { labels } from "@/infrastructure/ui/labels/es";
 import { getHomeUseCase } from "@/usecases/homes";
 import { listWaterBillsUseCase } from "@/usecases/waterBills";
 
@@ -31,15 +32,15 @@ export default async function WaterPage({ params }: WaterPageProps) {
   return (
     <PageShell>
       <SectionHeader
-        eyebrow="Agua"
-        title={`Facturas de ${home.name}`}
-        description="Revisa los importes y periodos de facturacion de agua."
-        actionLabel="Volver al panel"
+        eyebrow={labels.water.eyebrow}
+        title={labels.water.title(home.name)}
+        description={labels.water.description}
+        actionLabel={labels.common.backToPanel}
         actionHref={`/homes/${home.id}`}
       />
       <BillsList
-        title="Listado de facturas"
-        emptyMessage="Todavia no hay facturas registradas."
+        title={labels.water.listTitle}
+        emptyMessage={labels.water.emptyList}
         bills={bills.map((bill) => ({
           id: bill.id,
           providerName: bill.provider?.name,
@@ -49,7 +50,9 @@ export default async function WaterPage({ params }: WaterPageProps) {
           periodEnd: bill.periodEnd ?? undefined,
           totalAmount: bill.totalAmount,
           totalToPay: bill.totalToPay,
-          consumptionLabel: bill.consumptionM3 ? `${bill.consumptionM3} m³` : undefined,
+          consumptionLabel: bill.consumptionM3
+            ? `${bill.consumptionM3} ${labels.units.m3}`
+            : undefined,
           billType: bill.billType,
           cancelsInvoiceNumber: bill.cancelsInvoiceNumber ?? undefined,
           cancelsBillId: bill.cancelsBillId ?? undefined,

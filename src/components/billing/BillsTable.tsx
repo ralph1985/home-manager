@@ -14,6 +14,7 @@ import FilterSelect from "@/components/tables/FilterSelect";
 import PillTag from "@/components/tables/PillTag";
 import SortButton from "@/components/tables/SortButton";
 import { compareValues, formatMonthYear, parseDate } from "@/components/tables/tableUtils";
+import { labels } from "@/infrastructure/ui/labels/es";
 
 type BillRow = {
   id: number;
@@ -38,13 +39,7 @@ type BillsTableProps = {
   emptyMessage: string;
 };
 
-const sortLabels: Record<SortKey, string> = {
-  date: "Fecha",
-  invoice: "Factura",
-  provider: "Proveedor",
-  total: "Total",
-  consumption: "Consumo",
-};
+const sortLabels: Record<SortKey, string> = labels.bills.sortLabels;
 
 function parseConsumption(label?: string | null) {
   if (!label) return null;
@@ -142,20 +137,20 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
       filters={
         <>
           <FilterSelect
-            label="Proveedor"
+            label={labels.bills.filters.provider}
             value={providerFilter}
             onChange={setProviderFilter}
             options={[
-              { value: "all", label: "Todos" },
+              { value: "all", label: labels.bills.filters.all },
               ...providerOptions.map((provider) => ({ value: provider, label: provider })),
             ]}
           />
           <FilterSelect
-            label="Ano"
+            label={labels.bills.filters.year}
             value={yearFilter}
             onChange={setYearFilter}
             options={[
-              { value: "all", label: "Todos" },
+              { value: "all", label: labels.bills.filters.all },
               ...yearOptions.map((year) => ({ value: year.toString(), label: year.toString() })),
             ]}
           />
@@ -183,7 +178,9 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                     onClick={() => toggleSort("invoice")}
                   />
                 </th>
-                <th className="px-4 py-3 text-right font-semibold">Detalle</th>
+                <th className="px-4 py-3 text-right font-semibold">
+                  {labels.bills.headers.detail}
+                </th>
                 <th className="px-4 py-3 font-semibold">
                   <SortButton
                     label={sortLabels.provider}
@@ -192,8 +189,8 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                     onClick={() => toggleSort("provider")}
                   />
                 </th>
-                <th className="px-4 py-3 font-semibold">Tipo</th>
-                <th className="px-4 py-3 font-semibold">Periodo</th>
+                <th className="px-4 py-3 font-semibold">{labels.bills.headers.type}</th>
+                <th className="px-4 py-3 font-semibold">{labels.bills.headers.period}</th>
                 <th className="px-4 py-3 text-right font-semibold">
                   <div className="ml-auto flex">
                     <SortButton
@@ -204,7 +201,9 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                     />
                   </div>
                 </th>
-                <th className="px-4 py-3 text-right font-semibold">Total a pagar</th>
+                <th className="px-4 py-3 text-right font-semibold">
+                  {labels.bills.headers.totalToPay}
+                </th>
                 <th className="px-4 py-3 text-right font-semibold">
                   <div className="ml-auto flex">
                     <SortButton
@@ -215,7 +214,7 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                     />
                   </div>
                 </th>
-                <th className="px-4 py-3 font-semibold">Anula</th>
+                <th className="px-4 py-3 font-semibold">{labels.bills.headers.cancels}</th>
               </tr>
             </thead>
             <tbody>
@@ -231,18 +230,22 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                       {formatMonthYear(bill.issueDate)}
                     </td>
                     <td className="px-4 py-3 font-semibold text-slate-900">
-                      {bill.invoiceNumber ?? "Factura"}
+                      {bill.invoiceNumber ?? labels.bills.invoiceFallback}
                     </td>
                     <td className="px-4 py-3 text-right">
                       <Link
                         className="hm-pill hm-shadow-soft bg-slate-900 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
                         href={bill.href}
                       >
-                        Ver
+                        {labels.common.view}
                       </Link>
                     </td>
                     <td className="px-4 py-3 text-slate-600">
-                      {bill.providerName ? <PillTag label={bill.providerName} /> : "-"}
+                      {bill.providerName ? (
+                        <PillTag label={bill.providerName} />
+                      ) : (
+                        labels.common.emptyValue
+                      )}
                     </td>
                     <td className="px-4 py-3 text-slate-600">
                       {bill.billType ? (
@@ -254,7 +257,7 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                           {formatBillType(bill.billType)}
                         </span>
                       ) : (
-                        "-"
+                        labels.common.emptyValue
                       )}
                     </td>
                     <td className="px-4 py-3 text-xs text-slate-500">{periodLabel}</td>
@@ -262,10 +265,12 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                       {formatCurrency(bill.totalAmount)}
                     </td>
                     <td className="px-4 py-3 text-right text-sm font-semibold text-slate-700">
-                      {bill.totalToPay != null ? formatCurrency(bill.totalToPay) : "-"}
+                      {bill.totalToPay != null
+                        ? formatCurrency(bill.totalToPay)
+                        : labels.common.emptyValue}
                     </td>
                     <td className="px-4 py-3 text-right text-xs text-slate-500">
-                      {bill.consumptionLabel ?? "-"}
+                      {bill.consumptionLabel ?? labels.common.emptyValue}
                     </td>
                     <td className="px-4 py-3 text-xs text-slate-500">
                       {bill.cancelsHref ? (
@@ -273,12 +278,12 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                           className="text-xs font-semibold text-slate-700 underline decoration-slate-300 underline-offset-4"
                           href={bill.cancelsHref}
                         >
-                          #{bill.cancelsInvoiceNumber ?? "Factura"}
+                          #{bill.cancelsInvoiceNumber ?? labels.bills.invoiceFallback}
                         </Link>
                       ) : bill.cancelsInvoiceNumber ? (
                         `#${bill.cancelsInvoiceNumber}`
                       ) : (
-                        "-"
+                        labels.common.emptyValue
                       )}
                     </td>
                   </tr>

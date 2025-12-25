@@ -4,32 +4,33 @@ import { notFound } from "next/navigation";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
+import { labels } from "@/infrastructure/ui/labels/es";
 import { getHomeUseCase } from "@/usecases/homes";
 
 export const runtime = "nodejs";
 
 const tiles = [
   {
-    title: "Luz",
-    description: "Facturas y consumo electrico.",
-    action: "Abrir",
+    title: labels.homeDetail.tiles.energy.title,
+    description: labels.homeDetail.tiles.energy.description,
+    action: labels.homeDetail.tiles.energy.action,
     href: "/energy",
   },
   {
-    title: "Agua",
-    description: "Recibos y seguimiento del consumo.",
-    action: "Abrir",
+    title: labels.homeDetail.tiles.water.title,
+    description: labels.homeDetail.tiles.water.description,
+    action: labels.homeDetail.tiles.water.action,
     href: "/water",
   },
   {
-    title: "Gas",
-    description: "Facturacion y consumo de gas.",
-    action: "Proximamente",
+    title: labels.homeDetail.tiles.gas.title,
+    description: labels.homeDetail.tiles.gas.description,
+    action: labels.homeDetail.tiles.gas.action,
   },
   {
-    title: "Seguros",
-    description: "Polizas y vencimientos.",
-    action: "Proximamente",
+    title: labels.homeDetail.tiles.insurance.title,
+    description: labels.homeDetail.tiles.insurance.description,
+    action: labels.homeDetail.tiles.insurance.action,
   },
 ];
 
@@ -50,17 +51,24 @@ export default async function HomeDetailPage({ params }: { params: Promise<{ hom
   return (
     <PageShell>
       <SectionHeader
-        eyebrow="Vivienda"
+        eyebrow={labels.homeDetail.eyebrow}
         title={home.name}
-        description="Accesos rapidos a los apartados principales de la vivienda."
-        actionLabel="Volver al selector"
-        actionHref="/"
-        actionNode={<InfoPanel label="panel activo" value={home.name.slice(0, 1).toUpperCase()} />}
+        description={labels.homeDetail.description}
+        actionLabel={labels.common.backToSelector}
+        actionHref="/homes"
+        actionNode={
+          <InfoPanel
+            label={labels.common.panelActiveLabel}
+            value={home.name.slice(0, 1).toUpperCase()}
+          />
+        }
       />
 
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-2xl font-semibold text-slate-900">Servicios principales</h2>
+          <h2 className="text-2xl font-semibold text-slate-900">
+            {labels.homeDetail.servicesTitle}
+          </h2>
         </div>
 
         <div className="mt-6 grid gap-6 md:grid-cols-2">

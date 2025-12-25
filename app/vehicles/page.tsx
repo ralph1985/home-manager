@@ -2,6 +2,7 @@ import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import VehicleList from "@/components/vehicles/VehicleList";
+import { labels } from "@/infrastructure/ui/labels/es";
 import { listVehiclesUseCase } from "@/usecases/vehicles";
 
 export const runtime = "nodejs";
@@ -12,17 +13,19 @@ export default async function VehiclesPage() {
   return (
     <PageShell>
       <SectionHeader
-        eyebrow="Vehiculos"
-        title="Gestiona tu flota domestica"
-        description="Consulta fichas y mantenimientos recientes de cada coche."
-        actionLabel="Volver al inicio"
+        eyebrow={labels.vehicles.eyebrow}
+        title={labels.vehicles.title}
+        description={labels.vehicles.description}
+        actionLabel={labels.common.backToHome}
         actionHref="/"
-        actionNode={<InfoPanel label="vehiculos activos" value={vehicles.length.toString()} />}
+        actionNode={
+          <InfoPanel label={labels.common.vehiclesActiveLabel} value={vehicles.length.toString()} />
+        }
       />
 
       <VehicleList
-        title="Vehiculos registrados"
-        emptyMessage="Todavia no hay vehiculos registrados."
+        title={labels.vehicles.listTitle}
+        emptyMessage={labels.vehicles.emptyList}
         vehicles={vehicles.map((vehicle) => ({
           id: vehicle.id,
           name: vehicle.name,

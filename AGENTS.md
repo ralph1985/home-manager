@@ -92,3 +92,4 @@ Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
 - Tailwind se carga en `app/tailwind.css`.
 - SCSS global en `app/globals.scss` y parciales en `styles/` (`_tokens.scss`, `_base.scss`, `_components.scss`).
 - Componentes reutilizables en `src/components` (layout y billing).
+- El copy UI y textos visibles deben vivir en `src/infrastructure/ui/labels/` (por idioma); evita literales en componentes.

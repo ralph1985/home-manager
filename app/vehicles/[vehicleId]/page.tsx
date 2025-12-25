@@ -6,6 +6,7 @@ import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import VehicleMaintenanceList from "@/components/vehicles/VehicleMaintenanceList";
+import { labels } from "@/infrastructure/ui/labels/es";
 import { getVehicleUseCase, listVehicleMaintenancesUseCase } from "@/usecases/vehicles";
 
 export const runtime = "nodejs";
@@ -38,51 +39,65 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
   return (
     <PageShell>
       <SectionHeader
-        eyebrow="Vehiculo"
+        eyebrow={labels.vehicleDetail.eyebrow}
         title={vehicleTitle}
-        description={vehicle.licensePlate ?? "Sin matricula registrada"}
-        actionLabel="Volver al listado"
+        description={vehicle.licensePlate ?? labels.vehicleDetail.noPlate}
+        actionLabel={labels.common.backToList}
         actionHref="/vehicles"
         actionNode={
-          <InfoPanel label="mantenimientos" value={vehicle._count.maintenances.toString()} />
+          <InfoPanel
+            label={labels.vehicles.statLabel}
+            value={vehicle._count.maintenances.toString()}
+          />
         }
       />
 
       <section className="mt-12 grid gap-6 md:grid-cols-2">
         <ContractPanel
-          title="Ficha"
+          title={labels.vehicleDetail.sheetTitle}
           rows={[
-            { label: "Marca", value: vehicle.brand },
-            { label: "Modelo", value: vehicle.model },
-            { label: "Ano", value: vehicle.year ?? "-" },
-            { label: "Matricula", value: vehicle.licensePlate ?? "-" },
-            { label: "VIN", value: vehicle.vin ?? "-" },
+            { label: labels.vehicleDetail.labels.brand, value: vehicle.brand },
+            { label: labels.vehicleDetail.labels.model, value: vehicle.model },
+            {
+              label: labels.vehicleDetail.labels.year,
+              value: vehicle.year ?? labels.common.emptyValue,
+            },
+            {
+              label: labels.vehicleDetail.labels.plate,
+              value: vehicle.licensePlate ?? labels.common.emptyValue,
+            },
+            {
+              label: labels.vehicleDetail.labels.vin,
+              value: vehicle.vin ?? labels.common.emptyValue,
+            },
           ]}
         />
         <ContractPanel
-          title="Resumen"
+          title={labels.vehicleDetail.summaryTitle}
           rows={[
-            { label: "Mantenimientos", value: vehicle._count.maintenances },
+            { label: labels.vehicleDetail.labels.maintenances, value: vehicle._count.maintenances },
             {
-              label: "Ultimo servicio",
-              value: latestMaintenance ? formatDate(latestMaintenance.serviceDate) : "-",
+              label: labels.vehicleDetail.labels.lastService,
+              value: latestMaintenance
+                ? formatDate(latestMaintenance.serviceDate)
+                : labels.common.emptyValue,
             },
             {
-              label: "Ultimo odometro",
+              label: labels.vehicleDetail.labels.lastOdometer,
               value:
                 latestMaintenance?.odometerKm != null
-                  ? `${kmFormatter.format(latestMaintenance.odometerKm)} km`
-                  : "-",
+                  ? `${kmFormatter.format(latestMaintenance.odometerKm)} ${labels.units.km}`
+                  : labels.common.emptyValue,
             },
             {
-              label: "Ultimo coste",
+              label: labels.vehicleDetail.labels.lastCost,
               value:
                 latestMaintenance?.cost != null ? (
                   <span className="text-lg font-semibold text-slate-900">
                     {formatCurrency(latestMaintenance.cost)}
                   </span>
                 ) : (
-                  "-"
+                  labels.common.emptyValue
                 ),
             },
           ]}
@@ -92,15 +107,17 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
       {vehicle.notes ? (
         <section className="mt-6">
           <div className="hm-panel p-6">
-            <h2 className="text-xl font-semibold text-slate-900">Notas</h2>
+            <h2 className="text-xl font-semibold text-slate-900">
+              {labels.vehicleDetail.notesTitle}
+            </h2>
             <p className="mt-3 text-sm text-slate-600">{vehicle.notes}</p>
           </div>
         </section>
       ) : null}
 
       <VehicleMaintenanceList
-        title="Historial de mantenimientos"
-        emptyMessage="Todavia no hay mantenimientos registrados."
+        title={labels.vehicleDetail.maintenanceHistoryTitle}
+        emptyMessage={labels.vehicleDetail.emptyMaintenances}
         maintenances={maintenances.map((maintenance) => ({
           id: maintenance.id,
           title: maintenance.title,

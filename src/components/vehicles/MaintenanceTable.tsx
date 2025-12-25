@@ -10,6 +10,7 @@ import PillTag from "@/components/tables/PillTag";
 import SortButton from "@/components/tables/SortButton";
 import { compareValues, formatMonthYear, parseDate } from "@/components/tables/tableUtils";
 import { parseMaintenanceDescription } from "@/components/vehicles/maintenanceDescription";
+import { labels } from "@/infrastructure/ui/labels/es";
 
 type MaintenanceRow = {
   id: number;
@@ -30,13 +31,7 @@ type MaintenanceTableProps = {
 };
 
 const kmFormatter = new Intl.NumberFormat("es-ES");
-const sortLabels: Record<SortKey, string> = {
-  date: "Fecha",
-  title: "Mantenimiento",
-  workshop: "Taller",
-  cost: "Coste",
-  odometer: "KM",
-};
+const sortLabels: Record<SortKey, string> = labels.maintenanceTable.sortLabels;
 
 export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTableProps) {
   const [workshopFilter, setWorkshopFilter] = useState("all");
@@ -126,20 +121,20 @@ export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTabl
       filters={
         <>
           <FilterSelect
-            label="Taller"
+            label={labels.maintenanceTable.filters.workshop}
             value={workshopFilter}
             onChange={setWorkshopFilter}
             options={[
-              { value: "all", label: "Todos" },
+              { value: "all", label: labels.maintenanceTable.filters.all },
               ...workshopOptions.map((workshop) => ({ value: workshop, label: workshop })),
             ]}
           />
           <FilterSelect
-            label="Ano"
+            label={labels.maintenanceTable.filters.year}
             value={yearFilter}
             onChange={setYearFilter}
             options={[
-              { value: "all", label: "Todos" },
+              { value: "all", label: labels.maintenanceTable.filters.all },
               ...yearOptions.map((year) => ({ value: year.toString(), label: year.toString() })),
             ]}
           />
@@ -175,7 +170,9 @@ export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTabl
                     onClick={() => toggleSort("workshop")}
                   />
                 </th>
-                <th className="px-4 py-3 font-semibold">Resumen</th>
+                <th className="px-4 py-3 font-semibold">
+                  {labels.maintenanceTable.headers.summary}
+                </th>
                 <th className="px-4 py-3 text-right font-semibold">
                   <div className="ml-auto flex">
                     <SortButton
@@ -196,7 +193,9 @@ export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTabl
                     />
                   </div>
                 </th>
-                <th className="px-4 py-3 text-right font-semibold">Detalle</th>
+                <th className="px-4 py-3 text-right font-semibold">
+                  {labels.maintenanceTable.headers.detail}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -204,15 +203,20 @@ export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTabl
                 const details = parseMaintenanceDescription(maintenance.description);
                 const jobLabel =
                   details.jobs.length > 0
-                    ? `Trabajo: ${details.jobs[0]}${details.jobs.length > 1 ? ` +${details.jobs.length - 1}` : ""}`
+                    ? `${labels.maintenanceTable.summary.jobPrefix}: ${details.jobs[0]}${
+                        details.jobs.length > 1 ? ` +${details.jobs.length - 1}` : ""
+                      }`
                     : null;
                 const partsLabel =
-                  !jobLabel && details.parts.length > 0 ? `Piezas: ${details.parts.length}` : null;
+                  !jobLabel && details.parts.length > 0
+                    ? `${labels.maintenanceTable.summary.partsPrefix}: ${details.parts.length}`
+                    : null;
                 const totalsLabel =
                   !jobLabel && !partsLabel && details.totals.length > 0
-                    ? "Importes detallados"
+                    ? labels.maintenanceTable.summary.totals
                     : null;
-                const summaryLabel = jobLabel ?? partsLabel ?? totalsLabel ?? "-";
+                const summaryLabel =
+                  jobLabel ?? partsLabel ?? totalsLabel ?? labels.common.emptyValue;
 
                 return (
                   <tr key={maintenance.id} className="border-t border-slate-100">
@@ -224,24 +228,26 @@ export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTabl
                       {maintenance.workshopName ? (
                         <PillTag label={maintenance.workshopName} />
                       ) : (
-                        "-"
+                        labels.common.emptyValue
                       )}
                     </td>
                     <td className="px-4 py-3 text-xs text-slate-500">{summaryLabel}</td>
                     <td className="px-4 py-3 text-right text-lg font-semibold text-slate-900">
-                      {maintenance.cost != null ? formatCurrency(maintenance.cost) : "-"}
+                      {maintenance.cost != null
+                        ? formatCurrency(maintenance.cost)
+                        : labels.common.emptyValue}
                     </td>
                     <td className="px-4 py-3 text-right text-xs text-slate-500">
                       {maintenance.odometerKm != null
-                        ? `${kmFormatter.format(maintenance.odometerKm)} km`
-                        : "-"}
+                        ? `${kmFormatter.format(maintenance.odometerKm)} ${labels.units.km}`
+                        : labels.common.emptyValue}
                     </td>
                     <td className="px-4 py-3 text-right">
                       <Link
                         className="hm-pill hm-shadow-soft bg-slate-900 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
                         href={maintenance.href}
                       >
-                        Ver
+                        {labels.common.view}
                       </Link>
                     </td>
                   </tr>

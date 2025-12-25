@@ -1,4 +1,5 @@
 import EntityCard from "@/components/EntityCard";
+import { labels } from "@/infrastructure/ui/labels/es";
 
 type VehicleListItem = {
   id: number;
@@ -22,7 +23,7 @@ export default function VehicleList({ title, emptyMessage, vehicles }: VehicleLi
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold text-slate-900">{title}</h2>
         <span className="text-sm text-slate-500">
-          {vehicles.length} vehiculo{vehicles.length === 1 ? "" : "s"}
+          {labels.vehiclesList.countLabel(vehicles.length)}
         </span>
       </div>
 
@@ -34,17 +35,21 @@ export default function VehicleList({ title, emptyMessage, vehicles }: VehicleLi
             const headline = vehicle.name ?? `${vehicle.brand} ${vehicle.model}`;
             const meta = [vehicle.year, vehicle.licensePlate].filter(Boolean).join(" · ");
             const iconSource = vehicle.name ?? vehicle.brand;
-            const icon = iconSource?.trim().slice(0, 1).toUpperCase() || "V";
+            const icon =
+              iconSource?.trim().slice(0, 1).toUpperCase() || labels.vehicles.defaultIcon;
 
             return (
               <EntityCard
                 key={vehicle.id}
-                badge="Vehiculo"
+                badge={labels.vehicles.cardBadge}
                 title={headline}
-                description={meta || "Sin detalles extra"}
+                description={meta || labels.common.noExtraDetails}
                 icon={icon}
-                stat={{ label: "mantenimientos", value: vehicle.maintenanceCount.toString() }}
-                actions={[{ label: "Ver detalle", href: `/vehicles/${vehicle.id}` }]}
+                stat={{
+                  label: labels.vehicles.statLabel,
+                  value: vehicle.maintenanceCount.toString(),
+                }}
+                actions={[{ label: labels.common.viewDetail, href: `/vehicles/${vehicle.id}` }]}
               />
             );
           })}

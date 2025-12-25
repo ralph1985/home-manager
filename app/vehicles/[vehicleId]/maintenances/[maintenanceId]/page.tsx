@@ -5,6 +5,7 @@ import ContractPanel from "@/components/billing/ContractPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { parseMaintenanceDescription } from "@/components/vehicles/maintenanceDescription";
+import { labels } from "@/infrastructure/ui/labels/es";
 import { getVehicleMaintenanceUseCase } from "@/usecases/vehicles";
 
 export const runtime = "nodejs";
@@ -37,46 +38,63 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
   return (
     <PageShell>
       <SectionHeader
-        eyebrow="Mantenimiento"
+        eyebrow={labels.maintenanceDetail.eyebrow}
         title={maintenance.title}
         description={`${vehicleTitle} · ${formatDate(maintenance.serviceDate)}`}
-        actionLabel="Volver al vehiculo"
+        actionLabel={labels.maintenanceDetail.actionBack}
         actionHref={`/vehicles/${maintenance.vehicleId}`}
       />
 
       <section className="mt-12 grid gap-6 md:grid-cols-2">
         <ContractPanel
-          title="Detalle"
+          title={labels.maintenanceDetail.detailTitle}
           rows={[
-            { label: "Fecha", value: formatDate(maintenance.serviceDate) },
-            { label: "Taller", value: maintenance.workshop?.name ?? "-" },
             {
-              label: "Odometro",
-              value:
-                maintenance.odometerKm != null
-                  ? `${kmFormatter.format(maintenance.odometerKm)} km`
-                  : "-",
+              label: labels.maintenanceDetail.labels.date,
+              value: formatDate(maintenance.serviceDate),
             },
             {
-              label: "Coste",
-              value: maintenance.cost != null ? formatCurrency(maintenance.cost) : "-",
+              label: labels.maintenanceDetail.labels.workshop,
+              value: maintenance.workshop?.name ?? labels.common.emptyValue,
+            },
+            {
+              label: labels.maintenanceDetail.labels.odometer,
+              value:
+                maintenance.odometerKm != null
+                  ? `${kmFormatter.format(maintenance.odometerKm)} ${labels.units.km}`
+                  : labels.common.emptyValue,
+            },
+            {
+              label: labels.maintenanceDetail.labels.cost,
+              value:
+                maintenance.cost != null
+                  ? formatCurrency(maintenance.cost)
+                  : labels.common.emptyValue,
             },
           ]}
         />
         <ContractPanel
-          title="Vehiculo"
+          title={labels.maintenanceDetail.vehicleTitle}
           rows={[
-            { label: "Marca", value: maintenance.vehicle.brand },
-            { label: "Modelo", value: maintenance.vehicle.model },
-            { label: "Ano", value: maintenance.vehicle.year ?? "-" },
-            { label: "Matricula", value: maintenance.vehicle.licensePlate ?? "-" },
+            { label: labels.vehicleDetail.labels.brand, value: maintenance.vehicle.brand },
+            { label: labels.vehicleDetail.labels.model, value: maintenance.vehicle.model },
+            {
+              label: labels.vehicleDetail.labels.year,
+              value: maintenance.vehicle.year ?? labels.common.emptyValue,
+            },
+            {
+              label: labels.vehicleDetail.labels.plate,
+              value: maintenance.vehicle.licensePlate ?? labels.common.emptyValue,
+            },
           ]}
         />
       </section>
 
       <section className="mt-6">
         <div className="hm-panel p-6">
-          <h2 className="text-xl font-semibold text-slate-900">Detalle de trabajos</h2>
+          <h2 className="text-xl font-semibold text-slate-900">
+            {labels.maintenanceDetail.workDetailTitle}
+          </h2>
 
           {details.general.length > 0 ? (
             <div className="mt-4 text-sm text-slate-600">
@@ -89,7 +107,7 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
           {details.jobs.length > 0 ? (
             <div className="mt-6">
               <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Trabajos
+                {labels.maintenanceDetail.sections.jobs}
               </h3>
               <ul className="mt-3 space-y-2 text-sm text-slate-600">
                 {details.jobs.map((job) => (
@@ -102,14 +120,18 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
           {details.parts.length > 0 ? (
             <div className="mt-6">
               <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Piezas
+                {labels.maintenanceDetail.sections.parts}
               </h3>
               <div className="mt-3 overflow-hidden rounded-2xl border border-slate-200">
                 <table className="w-full text-left text-sm text-slate-700">
                   <thead className="bg-slate-50 text-xs uppercase tracking-[0.2em] text-slate-400">
                     <tr>
-                      <th className="px-4 py-3 font-semibold">Concepto</th>
-                      <th className="px-4 py-3 text-right font-semibold">Importe</th>
+                      <th className="px-4 py-3 font-semibold">
+                        {labels.maintenanceDetail.table.concept}
+                      </th>
+                      <th className="px-4 py-3 text-right font-semibold">
+                        {labels.maintenanceDetail.table.amount}
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -117,7 +139,9 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
                       <tr key={part.label} className="border-t border-slate-100">
                         <td className="px-4 py-3">{part.label}</td>
                         <td className="px-4 py-3 text-right font-semibold text-slate-900">
-                          {part.amount != null ? formatCurrency(part.amount) : "-"}
+                          {part.amount != null
+                            ? formatCurrency(part.amount)
+                            : labels.common.emptyValue}
                         </td>
                       </tr>
                     ))}
@@ -130,7 +154,7 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
           {details.totals.length > 0 ? (
             <div className="mt-6">
               <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
-                Importes
+                {labels.maintenanceDetail.sections.totals}
               </h3>
               <div className="mt-3 overflow-hidden rounded-2xl border border-slate-200">
                 <table className="w-full text-left text-sm text-slate-700">
@@ -153,7 +177,9 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
                               : "font-semibold text-slate-900"
                           }`}
                         >
-                          {total.amount != null ? formatCurrency(total.amount) : "-"}
+                          {total.amount != null
+                            ? formatCurrency(total.amount)
+                            : labels.common.emptyValue}
                         </td>
                       </tr>
                     ))}
@@ -167,7 +193,7 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
           details.jobs.length === 0 &&
           details.parts.length === 0 &&
           details.totals.length === 0 ? (
-            <p className="mt-3 text-sm text-slate-600">Sin detalles adicionales.</p>
+            <p className="mt-3 text-sm text-slate-600">{labels.common.noAdditionalDetails}</p>
           ) : null}
         </div>
       </section>

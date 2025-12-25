@@ -3,6 +3,8 @@ import { Fraunces, Manrope } from "next/font/google";
 import "./globals.scss";
 import "./tailwind.css";
 
+import { labels } from "@/infrastructure/ui/labels/es";
+
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
@@ -14,8 +16,8 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Home Manager",
-  description: "Panel de control para la gestion del hogar.",
+  title: labels.meta.title,
+  description: labels.meta.description,
 };
 
 export default function RootLayout({

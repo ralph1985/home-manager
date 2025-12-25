@@ -6,6 +6,7 @@ import CostBreakdown from "@/components/billing/CostBreakdown";
 import { formatDate } from "@/components/billing/billingFormatters";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
+import { labels } from "@/infrastructure/ui/labels/es";
 import { getEnergyBillUseCase } from "@/usecases/energyBills";
 
 export const runtime = "nodejs";
@@ -37,36 +38,45 @@ export default async function EnergyBillPage({ params }: EnergyBillPageProps) {
   return (
     <PageShell>
       <SectionHeader
-        eyebrow="Factura de luz"
-        title={bill.invoiceNumber ?? "Factura"}
+        eyebrow={labels.energyBill.eyebrow}
+        title={bill.invoiceNumber ?? labels.energyBill.fallbackTitle}
         description={periodLabel}
-        actionLabel="Volver al listado"
+        actionLabel={labels.common.backToList}
         actionHref={`/homes/${homeId}/energy`}
       />
 
       <section className="mt-12 grid gap-6 md:grid-cols-2">
         <BillSummary
-          title="Resumen"
+          title={labels.energyBill.summaryTitle}
           providerName={bill.provider?.name}
           totalAmount={bill.totalAmount}
-          consumptionLabel={`${bill.consumptionKwh} kWh`}
+          consumptionLabel={`${bill.consumptionKwh} ${labels.units.kwh}`}
           issueDate={bill.issueDate}
           paymentDate={bill.paymentDate}
           pdfUrl={bill.pdfUrl}
         />
         <ContractPanel
-          title="Contrato"
+          title={labels.energyBill.contractTitle}
           rows={[
-            { label: "Tarifa", value: bill.tariff ?? "-" },
-            { label: "Contrato", value: bill.contractNumber ?? "-" },
+            {
+              label: labels.energyBill.contractLabels.tariff,
+              value: bill.tariff ?? labels.common.emptyValue,
+            },
+            {
+              label: labels.energyBill.contractLabels.contract,
+              value: bill.contractNumber ?? labels.common.emptyValue,
+            },
             ...(bill.supplyPoint
               ? [
-                  { label: "CUPS", value: bill.supplyPoint.cups },
+                  { label: labels.energyBill.contractLabels.cups, value: bill.supplyPoint.cups },
                   {
-                    label: "Distribuidora",
-                    value: bill.supplyPoint.distributor ?? "-",
+                    label: labels.energyBill.contractLabels.distributor,
+                    value: bill.supplyPoint.distributor ?? labels.common.emptyValue,
                   },
-                  { label: "Peaje", value: bill.supplyPoint.gridToll ?? "-" },
+                  {
+                    label: labels.energyBill.contractLabels.gridToll,
+                    value: bill.supplyPoint.gridToll ?? labels.common.emptyValue,
+                  },
                 ]
               : []),
           ]}
@@ -74,11 +84,11 @@ export default async function EnergyBillPage({ params }: EnergyBillPageProps) {
       </section>
 
       <CostBreakdown
-        title="Desglose"
-        emptyMessage="No hay lineas de coste asociadas."
+        title={labels.energyBill.costTitle}
+        emptyMessage={labels.energyBill.costEmpty}
         lines={bill.costLines.map((line) => ({
           id: line.id,
-          label: line.category?.name ?? "Categoria",
+          label: line.category?.name ?? labels.energyBill.costCategoryFallback,
           amount: line.amount,
         }))}
       />

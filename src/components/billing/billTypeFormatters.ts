@@ -1,8 +1,6 @@
-const billTypeLabels: Record<string, string> = {
-  factura_regular: "Regular",
-  factura_sustitutiva: "Sustitutiva",
-  factura_anulacion: "Anulacion",
-};
+import { labels } from "@/infrastructure/ui/labels/es";
+
+const billTypeLabels: Record<string, string> = labels.billTypes;
 
 const billTypeBadgeClasses: Record<string, string> = {
   factura_regular: "bg-emerald-100 text-emerald-800",
@@ -11,7 +9,7 @@ const billTypeBadgeClasses: Record<string, string> = {
 };
 
 export function formatBillType(value?: string | null) {
-  if (!value) return "-";
+  if (!value) return labels.common.emptyValue;
   return billTypeLabels[value] ?? value.replace(/_/g, " ");
 }
 

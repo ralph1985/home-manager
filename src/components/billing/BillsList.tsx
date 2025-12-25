@@ -1,5 +1,6 @@
 import type { NumericValue } from "@/components/billing/billingFormatters";
 import BillsTable from "@/components/billing/BillsTable";
+import { labels } from "@/infrastructure/ui/labels/es";
 
 type BillListItem = {
   id: number;
@@ -28,9 +29,7 @@ export default function BillsList({ title, emptyMessage, bills, detailHref }: Bi
     <section className="mt-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold text-slate-900">{title}</h2>
-        <span className="text-sm text-slate-500">
-          {bills.length} factura{bills.length === 1 ? "" : "s"}
-        </span>
+        <span className="text-sm text-slate-500">{labels.bills.countLabel(bills.length)}</span>
       </div>
 
       <BillsTable

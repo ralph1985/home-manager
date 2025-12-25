@@ -5,6 +5,7 @@ import {
   formatDate,
   type NumericValue,
 } from "@/components/billing/billingFormatters";
+import { labels } from "@/infrastructure/ui/labels/es";
 
 type SummaryRow = {
   label: string;
@@ -37,26 +38,28 @@ export default function BillSummary({
       <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
       <dl className="mt-4 space-y-3 text-sm text-slate-700">
         <div className="flex items-center justify-between">
-          <dt className="text-slate-500">Proveedor</dt>
-          <dd className="font-semibold text-slate-900">{providerName ?? "-"}</dd>
+          <dt className="text-slate-500">{labels.billSummary.provider}</dt>
+          <dd className="font-semibold text-slate-900">
+            {providerName ?? labels.common.emptyValue}
+          </dd>
         </div>
         <div className="flex items-center justify-between">
-          <dt className="text-slate-500">Importe total</dt>
+          <dt className="text-slate-500">{labels.billSummary.totalAmount}</dt>
           <dd className="font-semibold text-slate-900">{formatCurrency(totalAmount)}</dd>
         </div>
         {consumptionLabel ? (
           <div className="flex items-center justify-between">
-            <dt className="text-slate-500">Consumo</dt>
+            <dt className="text-slate-500">{labels.billSummary.consumption}</dt>
             <dd className="font-semibold text-slate-900">{consumptionLabel}</dd>
           </div>
         ) : null}
         <div className="flex items-center justify-between">
-          <dt className="text-slate-500">Fecha de emision</dt>
+          <dt className="text-slate-500">{labels.billSummary.issueDate}</dt>
           <dd className="font-semibold text-slate-900">{formatDate(issueDate)}</dd>
         </div>
         {paymentDate ? (
           <div className="flex items-center justify-between">
-            <dt className="text-slate-500">Fecha de cargo</dt>
+            <dt className="text-slate-500">{labels.billSummary.paymentDate}</dt>
             <dd className="font-semibold text-slate-900">{formatDate(paymentDate)}</dd>
           </div>
         ) : null}
@@ -68,7 +71,7 @@ export default function BillSummary({
         ))}
         {pdfUrl ? (
           <div className="flex items-center justify-between">
-            <dt className="text-slate-500">PDF</dt>
+            <dt className="text-slate-500">{labels.billSummary.pdf}</dt>
             <dd>
               <a
                 className="text-sm font-semibold text-slate-900 underline decoration-slate-300 underline-offset-4"
@@ -76,7 +79,7 @@ export default function BillSummary({
                 target="_blank"
                 rel="noreferrer"
               >
-                Abrir archivo
+                {labels.billSummary.openFile}
               </a>
             </dd>
           </div>

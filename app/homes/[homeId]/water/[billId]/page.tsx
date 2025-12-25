@@ -10,6 +10,7 @@ import { billTypeBadgeClass, formatBillType } from "@/components/billing/billTyp
 import { formatCurrency, formatDate } from "@/components/billing/billingFormatters";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
+import { labels } from "@/infrastructure/ui/labels/es";
 import { getWaterBillUseCase } from "@/usecases/waterBills";
 
 export const runtime = "nodejs";
@@ -39,16 +40,21 @@ export default async function WaterBillPage({ params }: WaterBillPageProps) {
       : formatDate(bill.issueDate);
 
   const extraRows: Array<{ label: string; value: ReactNode }> = [
-    { label: "Tipo", value: bill.billType ?? "-" },
-    ...(bill.status ? [{ label: "Estado", value: bill.status }] : []),
+    { label: labels.waterBill.extraLabels.type, value: bill.billType ?? labels.common.emptyValue },
+    ...(bill.status ? [{ label: labels.waterBill.extraLabels.status, value: bill.status }] : []),
     ...(bill.totalToPay != null
-      ? [{ label: "Total a pagar", value: formatCurrency(bill.totalToPay) }]
+      ? [
+          {
+            label: labels.waterBill.extraLabels.totalToPay,
+            value: formatCurrency(bill.totalToPay),
+          },
+        ]
       : []),
   ];
 
   if (bill.cancelsBill) {
     extraRows.push({
-      label: "Anula",
+      label: labels.waterBill.extraLabels.cancels,
       value: (
         <Link
           className="text-sm font-semibold text-slate-900 underline decoration-slate-300 underline-offset-4"
@@ -59,14 +65,17 @@ export default async function WaterBillPage({ params }: WaterBillPageProps) {
       ),
     });
   } else if (bill.cancelsInvoiceNumber) {
-    extraRows.push({ label: "Anula", value: `#${bill.cancelsInvoiceNumber}` });
+    extraRows.push({
+      label: labels.waterBill.extraLabels.cancels,
+      value: `#${bill.cancelsInvoiceNumber}`,
+    });
   }
 
   return (
     <PageShell>
       <SectionHeader
-        eyebrow="Factura de agua"
-        title={bill.invoiceNumber ?? "Factura"}
+        eyebrow={labels.waterBill.eyebrow}
+        title={bill.invoiceNumber ?? labels.waterBill.fallbackTitle}
         titleBadge={
           <span
             className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] ${billTypeBadgeClass(
@@ -77,38 +86,52 @@ export default async function WaterBillPage({ params }: WaterBillPageProps) {
           </span>
         }
         description={periodLabel}
-        actionLabel="Volver al listado"
+        actionLabel={labels.common.backToList}
         actionHref={`/homes/${homeId}/water`}
       />
 
       <section className="mt-12 grid gap-6 md:grid-cols-2">
         <BillSummary
-          title="Resumen"
+          title={labels.waterBill.summaryTitle}
           providerName={bill.provider?.name}
           totalAmount={bill.totalAmount}
-          consumptionLabel={bill.consumptionM3 ? `${bill.consumptionM3} m³` : undefined}
+          consumptionLabel={
+            bill.consumptionM3 ? `${bill.consumptionM3} ${labels.units.m3}` : undefined
+          }
           issueDate={bill.issueDate}
           paymentDate={bill.paymentDate}
           pdfUrl={bill.pdfUrl}
           extraRows={extraRows}
         />
         <ContractPanel
-          title="Contrato"
+          title={labels.waterBill.contractTitle}
           rows={[
-            { label: "Contrato", value: bill.supplyPoint?.contractNumber ?? "-" },
-            { label: "Contador", value: bill.supplyPoint?.meterNumber ?? "-" },
-            { label: "Uso", value: bill.supplyPoint?.usage ?? "-" },
-            { label: "Tipo suministro", value: bill.supplyPoint?.supplyType ?? "-" },
+            {
+              label: labels.waterBill.contractLabels.contract,
+              value: bill.supplyPoint?.contractNumber ?? labels.common.emptyValue,
+            },
+            {
+              label: labels.waterBill.contractLabels.meter,
+              value: bill.supplyPoint?.meterNumber ?? labels.common.emptyValue,
+            },
+            {
+              label: labels.waterBill.contractLabels.usage,
+              value: bill.supplyPoint?.usage ?? labels.common.emptyValue,
+            },
+            {
+              label: labels.waterBill.contractLabels.supplyType,
+              value: bill.supplyPoint?.supplyType ?? labels.common.emptyValue,
+            },
           ]}
         />
       </section>
 
       <CostBreakdown
-        title="Desglose"
-        emptyMessage="No hay lineas de coste asociadas."
+        title={labels.waterBill.costTitle}
+        emptyMessage={labels.waterBill.costEmpty}
         lines={bill.costLines.map((line) => ({
           id: line.id,
-          label: line.category?.name ?? "Categoria",
+          label: line.category?.name ?? labels.waterBill.costCategoryFallback,
           amount: line.amount,
         }))}
       />
