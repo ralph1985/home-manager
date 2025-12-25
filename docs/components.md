@@ -3,6 +3,7 @@
 ## Layout
 
 - `src/components/layout/PageShell.tsx` — fondo + layout general.
+- `src/components/layout/Header.tsx` — cabecera global con marca y selector de idioma.
 - `src/components/layout/SectionHeader.tsx` — encabezado con titulo, descripcion y accion.
 - `src/components/layout/InfoPanel.tsx` — panel pequeño con etiqueta y valor.
 
