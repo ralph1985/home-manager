@@ -8,6 +8,7 @@ type TableShellProps = {
   totalCount: number;
   filteredCount: number;
   filters: ReactNode;
+  afterFilters?: ReactNode;
   children: ReactNode;
   labels: Labels;
 };
@@ -17,6 +18,7 @@ export default function TableShell({
   totalCount,
   filteredCount,
   filters,
+  afterFilters,
   children,
   labels,
 }: TableShellProps) {
@@ -32,6 +34,8 @@ export default function TableShell({
           {formatCountLabel(filteredCount, labels.tableShell.resultsLabel)}
         </div>
       </div>
+
+      {afterFilters}
 
       {filteredCount === 0 ? (
         <div className="hm-panel mt-6 p-6 text-slate-600">{labels.tableShell.noResults}</div>

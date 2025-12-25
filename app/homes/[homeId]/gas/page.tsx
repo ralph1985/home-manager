@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import BillsList from "@/components/billing/BillsList";
+import GasBillsTable from "@/components/billing/GasBillsTable";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { getServerLabels } from "@/infrastructure/ui/labels/server";
@@ -29,6 +29,8 @@ export default async function GasPage({ params }: GasPageProps) {
   }
 
   const bills = await listGasBillsUseCase(homeId);
+  const toNumber = (value?: { toString(): string } | null) =>
+    value == null ? null : Number(value.toString());
 
   return (
     <PageShell>
@@ -39,26 +41,34 @@ export default async function GasPage({ params }: GasPageProps) {
         actionLabel={labels.common.backToPanel}
         actionHref={`/homes/${home.id}`}
       />
-      <BillsList
+      <GasBillsTable
         title={labels.gas.listTitle}
         emptyMessage={labels.gas.emptyList}
-        bills={bills.map((bill) => ({
-          id: bill.id,
-          providerName: bill.provider?.name,
-          invoiceNumber: bill.invoiceNumber,
-          issueDate: bill.issueDate,
-          periodStart: bill.periodStart ?? undefined,
-          periodEnd: bill.periodEnd ?? undefined,
-          totalAmount: bill.totalAmount,
-          totalToPay: bill.totalToPay,
-          consumptionLabel: bill.consumptionM3
-            ? `${bill.consumptionM3} ${labels.units.m3}`
-            : bill.consumptionKwh
-              ? `${bill.consumptionKwh} ${labels.units.kwh}`
-              : undefined,
-          pdfUrl: bill.pdfUrl,
-        }))}
-        detailHref={(billId) => `/homes/${home.id}/gas/${billId}`}
+        labels={labels}
+        bills={bills.map((bill) => {
+          const consumptionM3 = toNumber(bill.consumptionM3);
+          const consumptionKwh = toNumber(bill.consumptionKwh);
+          return {
+            id: bill.id,
+            providerName: bill.provider?.name,
+            invoiceNumber: bill.invoiceNumber,
+            issueDate: bill.issueDate.getTime(),
+            periodStart: bill.periodStart?.getTime() ?? null,
+            periodEnd: bill.periodEnd?.getTime() ?? null,
+            totalAmount: bill.totalAmount.toString(),
+            totalAmountValue: Number(bill.totalAmount.toString()),
+            totalToPay: bill.totalToPay ? bill.totalToPay.toString() : null,
+            consumptionLabel: consumptionM3
+              ? `${consumptionM3} ${labels.units.m3}`
+              : consumptionKwh
+                ? `${consumptionKwh} ${labels.units.kwh}`
+                : null,
+            consumptionKwh,
+            consumptionM3,
+            pdfUrl: bill.pdfUrl ?? null,
+            href: `/homes/${home.id}/gas/${bill.id}`,
+          };
+        })}
       />
     </PageShell>
   );

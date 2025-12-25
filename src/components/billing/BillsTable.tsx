@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 
 import {
   formatCurrency,
@@ -24,8 +24,11 @@ type BillRow = {
   periodStart?: Date | string | number | null;
   periodEnd?: Date | string | number | null;
   totalAmount: NumericValue;
+  totalAmountValue?: number | null;
   totalToPay?: NumericValue | null;
   consumptionLabel?: string | null;
+  consumptionKwh?: number | null;
+  consumptionM3?: number | null;
   billType?: string | null;
   cancelsInvoiceNumber?: string | null;
   cancelsHref?: string | null;
@@ -39,6 +42,7 @@ type BillsTableProps = {
   rows: BillRow[];
   emptyMessage: string;
   labels: Labels;
+  chart?: (rows: BillRow[]) => ReactNode;
 };
 
 function parseConsumption(label?: string | null) {
@@ -49,7 +53,7 @@ function parseConsumption(label?: string | null) {
   return Number.isNaN(value) ? null : value;
 }
 
-export default function BillsTable({ rows, emptyMessage, labels }: BillsTableProps) {
+export default function BillsTable({ rows, emptyMessage, labels, chart }: BillsTableProps) {
   const sortLabels: Record<SortKey, string> = labels.bills.sortLabels;
   const [providerFilter, setProviderFilter] = useState("all");
   const [yearFilter, setYearFilter] = useState("all");
@@ -136,6 +140,7 @@ export default function BillsTable({ rows, emptyMessage, labels }: BillsTablePro
       totalCount={rows.length}
       filteredCount={filteredRows.length}
       labels={labels}
+      afterFilters={chart ? chart(filteredRows) : null}
       filters={
         <>
           <FilterSelect

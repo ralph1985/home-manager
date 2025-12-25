@@ -113,6 +113,15 @@ export const labels = {
     description: "Review gas billing amounts and periods.",
     listTitle: "Bill list",
     emptyList: "No bills registered yet.",
+    chartTitle: "Gas consumption",
+    chartSubtitle: "kWh and m³ per bill",
+    chartEmpty: "No consumption recorded to display.",
+    chartSeriesKwh: "Consumption (kWh)",
+    chartSeriesM3: "Consumption (m³)",
+    chartSeriesAmount: "Amount (€)",
+    chartAxisKwh: "kWh",
+    chartAxisM3: "m³",
+    chartAxisAmount: "€",
   },
   energyBill: {
     eyebrow: "Electricity bill",
@@ -301,5 +310,6 @@ export const labels = {
     kwh: "kWh",
     m3: "m³",
     km: "km",
+    eur: "€",
   },
 } as const;

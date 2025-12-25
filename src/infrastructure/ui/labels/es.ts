@@ -113,6 +113,15 @@ export const labels = {
     description: "Revisa los importes y períodos de facturación de gas.",
     listTitle: "Listado de facturas",
     emptyList: "Todavía no hay facturas registradas.",
+    chartTitle: "Consumo de gas",
+    chartSubtitle: "kWh y m³ por factura",
+    chartEmpty: "No hay consumo registrado para representar.",
+    chartSeriesKwh: "Consumo (kWh)",
+    chartSeriesM3: "Consumo (m³)",
+    chartSeriesAmount: "Importe (€)",
+    chartAxisKwh: "kWh",
+    chartAxisM3: "m³",
+    chartAxisAmount: "€",
   },
   energyBill: {
     eyebrow: "Factura de luz",
@@ -301,5 +310,6 @@ export const labels = {
     kwh: "kWh",
     m3: "m³",
     km: "km",
+    eur: "€",
   },
 } as const;
