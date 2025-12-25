@@ -2,10 +2,11 @@ import EntityCard from "@/components/EntityCard";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { listHomesUseCase } from "@/usecases/homes";
 
 export default async function HomesPage() {
+  const labels = await getServerLabels();
   const homes = await listHomesUseCase();
 
   return (

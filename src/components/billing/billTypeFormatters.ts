@@ -1,6 +1,4 @@
-import { labels } from "@/infrastructure/ui/labels/es";
-
-const billTypeLabels: Record<string, string> = labels.billTypes;
+import type { Labels } from "@/infrastructure/ui/labels";
 
 const billTypeBadgeClasses: Record<string, string> = {
   factura_regular: "bg-emerald-100 text-emerald-800",
@@ -8,9 +6,12 @@ const billTypeBadgeClasses: Record<string, string> = {
   factura_anulacion: "bg-rose-100 text-rose-800",
 };
 
-export function formatBillType(value?: string | null) {
+export function formatBillType(value: string | null | undefined, labels: Labels) {
   if (!value) return labels.common.emptyValue;
-  return billTypeLabels[value] ?? value.replace(/_/g, " ");
+  if (value in labels.billTypes) {
+    return labels.billTypes[value as keyof typeof labels.billTypes];
+  }
+  return value.replace(/_/g, " ");
 }
 
 export function billTypeBadgeClass(value?: string | null) {

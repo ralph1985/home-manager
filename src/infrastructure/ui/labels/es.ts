@@ -1,6 +1,3 @@
-const countLabel = (count: number, singular: string, plural: string) =>
-  `${count} ${count === 1 ? singular : plural}`;
-
 export const labels = {
   meta: {
     title: "Home Manager",
@@ -24,6 +21,11 @@ export const labels = {
     emptyValue: "-",
     noExtraDetails: "Sin detalles extra",
     noAdditionalDetails: "Sin detalles adicionales.",
+    languageLabel: "Idioma",
+    languageOptions: {
+      es: "Español",
+      en: "Inglés",
+    },
   },
   dashboard: {
     eyebrow: "Panel de control",
@@ -93,14 +95,14 @@ export const labels = {
   },
   energy: {
     eyebrow: "Luz",
-    title: (homeName: string) => `Facturas de ${homeName}`,
+    titlePrefix: "Facturas de",
     description: "Revisa los importes y períodos de facturación de electricidad.",
     listTitle: "Listado de facturas",
     emptyList: "Todavía no hay facturas registradas.",
   },
   water: {
     eyebrow: "Agua",
-    title: (homeName: string) => `Facturas de ${homeName}`,
+    titlePrefix: "Facturas de",
     description: "Revisa los importes y períodos de facturación de agua.",
     listTitle: "Listado de facturas",
     emptyList: "Todavía no hay facturas registradas.",
@@ -143,7 +145,7 @@ export const labels = {
     },
   },
   bills: {
-    countLabel: (count: number) => countLabel(count, "factura", "facturas"),
+    countLabel: { singular: "factura", plural: "facturas" },
     sortLabels: {
       date: "Fecha",
       invoice: "Factura",
@@ -180,11 +182,11 @@ export const labels = {
     factura_anulacion: "Anulación",
   },
   tableShell: {
-    resultsLabel: (count: number) => countLabel(count, "resultado", "resultados"),
+    resultsLabel: { singular: "resultado", plural: "resultados" },
     noResults: "Sin resultados.",
   },
   maintenanceList: {
-    countLabel: (count: number) => countLabel(count, "mantenimiento", "mantenimientos"),
+    countLabel: { singular: "mantenimiento", plural: "mantenimientos" },
   },
   maintenanceTable: {
     sortLabels: {
@@ -252,7 +254,7 @@ export const labels = {
     },
   },
   vehiclesList: {
-    countLabel: (count: number) => countLabel(count, "vehículo", "vehículos"),
+    countLabel: { singular: "vehículo", plural: "vehículos" },
   },
   button: {
     loading: "Cargando",

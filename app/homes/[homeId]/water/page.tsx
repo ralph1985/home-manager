@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import BillsList from "@/components/billing/BillsList";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { getHomeUseCase } from "@/usecases/homes";
 import { listWaterBillsUseCase } from "@/usecases/waterBills";
 
@@ -14,6 +14,7 @@ type WaterPageProps = {
 };
 
 export default async function WaterPage({ params }: WaterPageProps) {
+  const labels = await getServerLabels();
   const { homeId: rawHomeId } = await params;
   const homeId = Number.parseInt(rawHomeId, 10);
 
@@ -33,7 +34,7 @@ export default async function WaterPage({ params }: WaterPageProps) {
     <PageShell>
       <SectionHeader
         eyebrow={labels.water.eyebrow}
-        title={labels.water.title(home.name)}
+        title={`${labels.water.titlePrefix} ${home.name}`}
         description={labels.water.description}
         actionLabel={labels.common.backToPanel}
         actionHref={`/homes/${home.id}`}

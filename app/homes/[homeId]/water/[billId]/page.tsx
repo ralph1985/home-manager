@@ -10,7 +10,7 @@ import { billTypeBadgeClass, formatBillType } from "@/components/billing/billTyp
 import { formatCurrency, formatDate } from "@/components/billing/billingFormatters";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { getWaterBillUseCase } from "@/usecases/waterBills";
 
 export const runtime = "nodejs";
@@ -20,6 +20,7 @@ type WaterBillPageProps = {
 };
 
 export default async function WaterBillPage({ params }: WaterBillPageProps) {
+  const labels = await getServerLabels();
   const { homeId: rawHomeId, billId: rawBillId } = await params;
   const homeId = Number.parseInt(rawHomeId, 10);
   const billId = Number.parseInt(rawBillId, 10);
@@ -82,7 +83,7 @@ export default async function WaterBillPage({ params }: WaterBillPageProps) {
               bill.billType
             )}`}
           >
-            {formatBillType(bill.billType)}
+            {formatBillType(bill.billType, labels)}
           </span>
         }
         description={periodLabel}

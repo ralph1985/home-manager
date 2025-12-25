@@ -6,7 +6,7 @@ import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import VehicleMaintenanceList from "@/components/vehicles/VehicleMaintenanceList";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { getVehicleUseCase, listVehicleMaintenancesUseCase } from "@/usecases/vehicles";
 
 export const runtime = "nodejs";
@@ -18,6 +18,7 @@ type VehicleDetailPageProps = {
 const kmFormatter = new Intl.NumberFormat("es-ES");
 
 export default async function VehicleDetailPage({ params }: VehicleDetailPageProps) {
+  const labels = await getServerLabels();
   const { vehicleId: rawVehicleId } = await params;
   const vehicleId = Number.parseInt(rawVehicleId, 10);
 

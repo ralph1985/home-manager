@@ -5,7 +5,7 @@ import ContractPanel from "@/components/billing/ContractPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { parseMaintenanceDescription } from "@/components/vehicles/maintenanceDescription";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { getVehicleMaintenanceUseCase } from "@/usecases/vehicles";
 
 export const runtime = "nodejs";
@@ -17,6 +17,7 @@ type MaintenanceDetailPageProps = {
 const kmFormatter = new Intl.NumberFormat("es-ES");
 
 export default async function MaintenanceDetailPage({ params }: MaintenanceDetailPageProps) {
+  const labels = await getServerLabels();
   const { vehicleId: rawVehicleId, maintenanceId: rawMaintenanceId } = await params;
   const vehicleId = Number.parseInt(rawVehicleId, 10);
   const maintenanceId = Number.parseInt(rawMaintenanceId, 10);

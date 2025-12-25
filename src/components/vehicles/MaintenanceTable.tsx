@@ -10,7 +10,7 @@ import PillTag from "@/components/tables/PillTag";
 import SortButton from "@/components/tables/SortButton";
 import { compareValues, formatMonthYear, parseDate } from "@/components/tables/tableUtils";
 import { parseMaintenanceDescription } from "@/components/vehicles/maintenanceDescription";
-import { labels } from "@/infrastructure/ui/labels/es";
+import type { Labels } from "@/infrastructure/ui/labels";
 
 type MaintenanceRow = {
   id: number;
@@ -28,12 +28,13 @@ type SortKey = "date" | "title" | "workshop" | "cost" | "odometer";
 type MaintenanceTableProps = {
   rows: MaintenanceRow[];
   emptyMessage: string;
+  labels: Labels;
 };
 
 const kmFormatter = new Intl.NumberFormat("es-ES");
-const sortLabels: Record<SortKey, string> = labels.maintenanceTable.sortLabels;
+export default function MaintenanceTable({ rows, emptyMessage, labels }: MaintenanceTableProps) {
+  const sortLabels: Record<SortKey, string> = labels.maintenanceTable.sortLabels;
 
-export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTableProps) {
   const [workshopFilter, setWorkshopFilter] = useState("all");
   const [yearFilter, setYearFilter] = useState("all");
   const [sortKey, setSortKey] = useState<SortKey>("date");
@@ -118,6 +119,7 @@ export default function MaintenanceTable({ rows, emptyMessage }: MaintenanceTabl
       emptyMessage={emptyMessage}
       totalCount={rows.length}
       filteredCount={filteredRows.length}
+      labels={labels}
       filters={
         <>
           <FilterSelect

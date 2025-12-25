@@ -1,6 +1,4 @@
 import type { ButtonHTMLAttributes } from "react";
-
-import { labels } from "@/infrastructure/ui/labels/es";
 const baseClassName =
   "hm-pill font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/30 disabled:cursor-not-allowed disabled:opacity-60";
 
@@ -26,6 +24,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: ButtonVariant;
   size?: ButtonSize;
   isLoading?: boolean;
+  loadingLabel: string;
 };
 
 export default function Button({
@@ -34,6 +33,7 @@ export default function Button({
   size = "md",
   type = "button",
   isLoading = false,
+  loadingLabel,
   ...props
 }: ButtonProps) {
   const classes = [baseClassName, variantClassName[variant], sizeClassName[size], className]
@@ -45,7 +45,7 @@ export default function Button({
       {isLoading ? (
         <span className="inline-flex items-center gap-2">
           <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-          {labels.button.loading}
+          {loadingLabel}
         </span>
       ) : (
         props.children

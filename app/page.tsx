@@ -3,9 +3,11 @@ import Link from "next/link";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 
 export default async function Home() {
+  const labels = await getServerLabels();
+
   return (
     <PageShell>
       <SectionHeader

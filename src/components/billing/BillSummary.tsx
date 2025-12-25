@@ -5,7 +5,7 @@ import {
   formatDate,
   type NumericValue,
 } from "@/components/billing/billingFormatters";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 
 type SummaryRow = {
   label: string;
@@ -23,7 +23,7 @@ type BillSummaryProps = {
   extraRows?: SummaryRow[];
 };
 
-export default function BillSummary({
+export default async function BillSummary({
   title,
   providerName,
   totalAmount,
@@ -33,6 +33,8 @@ export default function BillSummary({
   pdfUrl,
   extraRows,
 }: BillSummaryProps) {
+  const labels = await getServerLabels();
+
   return (
     <div className="hm-panel p-6">
       <h2 className="text-xl font-semibold text-slate-900">{title}</h2>

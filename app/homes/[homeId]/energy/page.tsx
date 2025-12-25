@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import BillsList from "@/components/billing/BillsList";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { listEnergyBillsUseCase } from "@/usecases/energyBills";
 import { getHomeUseCase } from "@/usecases/homes";
 
@@ -14,6 +14,7 @@ type EnergyPageProps = {
 };
 
 export default async function EnergyPage({ params }: EnergyPageProps) {
+  const labels = await getServerLabels();
   const { homeId: rawHomeId } = await params;
   const homeId = Number.parseInt(rawHomeId, 10);
 
@@ -33,7 +34,7 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
     <PageShell>
       <SectionHeader
         eyebrow={labels.energy.eyebrow}
-        title={labels.energy.title(home.name)}
+        title={`${labels.energy.titlePrefix} ${home.name}`}
         description={labels.energy.description}
         actionLabel={labels.common.backToPanel}
         actionHref={`/homes/${home.id}`}

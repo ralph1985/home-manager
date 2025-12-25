@@ -14,7 +14,7 @@ import FilterSelect from "@/components/tables/FilterSelect";
 import PillTag from "@/components/tables/PillTag";
 import SortButton from "@/components/tables/SortButton";
 import { compareValues, formatMonthYear, parseDate } from "@/components/tables/tableUtils";
-import { labels } from "@/infrastructure/ui/labels/es";
+import type { Labels } from "@/infrastructure/ui/labels";
 
 type BillRow = {
   id: number;
@@ -37,9 +37,8 @@ type SortKey = "date" | "invoice" | "provider" | "total" | "consumption";
 type BillsTableProps = {
   rows: BillRow[];
   emptyMessage: string;
+  labels: Labels;
 };
-
-const sortLabels: Record<SortKey, string> = labels.bills.sortLabels;
 
 function parseConsumption(label?: string | null) {
   if (!label) return null;
@@ -49,7 +48,8 @@ function parseConsumption(label?: string | null) {
   return Number.isNaN(value) ? null : value;
 }
 
-export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
+export default function BillsTable({ rows, emptyMessage, labels }: BillsTableProps) {
+  const sortLabels: Record<SortKey, string> = labels.bills.sortLabels;
   const [providerFilter, setProviderFilter] = useState("all");
   const [yearFilter, setYearFilter] = useState("all");
   const [sortKey, setSortKey] = useState<SortKey>("date");
@@ -134,6 +134,7 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
       emptyMessage={emptyMessage}
       totalCount={rows.length}
       filteredCount={filteredRows.length}
+      labels={labels}
       filters={
         <>
           <FilterSelect
@@ -254,7 +255,7 @@ export default function BillsTable({ rows, emptyMessage }: BillsTableProps) {
                             bill.billType
                           )}`}
                         >
-                          {formatBillType(bill.billType)}
+                          {formatBillType(bill.billType, labels)}
                         </span>
                       ) : (
                         labels.common.emptyValue

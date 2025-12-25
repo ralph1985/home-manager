@@ -1,6 +1,7 @@
 import type { NumericValue } from "@/components/billing/billingFormatters";
 import MaintenanceTable from "@/components/vehicles/MaintenanceTable";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { formatCountLabel } from "@/infrastructure/ui/labels";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 
 type VehicleMaintenanceListItem = {
   id: number;
@@ -19,23 +20,26 @@ type VehicleMaintenanceListProps = {
   detailHref: (maintenanceId: number) => string;
 };
 
-export default function VehicleMaintenanceList({
+export default async function VehicleMaintenanceList({
   title,
   emptyMessage,
   maintenances,
   detailHref,
 }: VehicleMaintenanceListProps) {
+  const labels = await getServerLabels();
+
   return (
     <section className="mt-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold text-slate-900">{title}</h2>
         <span className="text-sm text-slate-500">
-          {labels.maintenanceList.countLabel(maintenances.length)}
+          {formatCountLabel(maintenances.length, labels.maintenanceList.countLabel)}
         </span>
       </div>
 
       <MaintenanceTable
         emptyMessage={emptyMessage}
+        labels={labels}
         rows={maintenances.map((maintenance) => ({
           id: maintenance.id,
           title: maintenance.title,

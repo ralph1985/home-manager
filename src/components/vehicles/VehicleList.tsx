@@ -1,5 +1,6 @@
 import EntityCard from "@/components/EntityCard";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { formatCountLabel } from "@/infrastructure/ui/labels";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 
 type VehicleListItem = {
   id: number;
@@ -17,13 +18,15 @@ type VehicleListProps = {
   vehicles: VehicleListItem[];
 };
 
-export default function VehicleList({ title, emptyMessage, vehicles }: VehicleListProps) {
+export default async function VehicleList({ title, emptyMessage, vehicles }: VehicleListProps) {
+  const labels = await getServerLabels();
+
   return (
     <section className="mt-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold text-slate-900">{title}</h2>
         <span className="text-sm text-slate-500">
-          {labels.vehiclesList.countLabel(vehicles.length)}
+          {formatCountLabel(vehicles.length, labels.vehiclesList.countLabel)}
         </span>
       </div>
 

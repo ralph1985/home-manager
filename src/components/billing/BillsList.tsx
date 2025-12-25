@@ -1,6 +1,7 @@
 import type { NumericValue } from "@/components/billing/billingFormatters";
 import BillsTable from "@/components/billing/BillsTable";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { formatCountLabel } from "@/infrastructure/ui/labels";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 
 type BillListItem = {
   id: number;
@@ -24,16 +25,26 @@ type BillsListProps = {
   detailHref: (billId: number) => string;
 };
 
-export default function BillsList({ title, emptyMessage, bills, detailHref }: BillsListProps) {
+export default async function BillsList({
+  title,
+  emptyMessage,
+  bills,
+  detailHref,
+}: BillsListProps) {
+  const labels = await getServerLabels();
+
   return (
     <section className="mt-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-2xl font-semibold text-slate-900">{title}</h2>
-        <span className="text-sm text-slate-500">{labels.bills.countLabel(bills.length)}</span>
+        <span className="text-sm text-slate-500">
+          {formatCountLabel(bills.length, labels.bills.countLabel)}
+        </span>
       </div>
 
       <BillsTable
         emptyMessage={emptyMessage}
+        labels={labels}
         rows={bills.map((bill) => ({
           id: bill.id,
           providerName: bill.providerName,

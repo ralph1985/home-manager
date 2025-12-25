@@ -6,7 +6,7 @@ import CostBreakdown from "@/components/billing/CostBreakdown";
 import { formatDate } from "@/components/billing/billingFormatters";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { getEnergyBillUseCase } from "@/usecases/energyBills";
 
 export const runtime = "nodejs";
@@ -16,6 +16,7 @@ type EnergyBillPageProps = {
 };
 
 export default async function EnergyBillPage({ params }: EnergyBillPageProps) {
+  const labels = await getServerLabels();
   const { homeId: rawHomeId, billId: rawBillId } = await params;
   const homeId = Number.parseInt(rawHomeId, 10);
   const billId = Number.parseInt(rawBillId, 10);

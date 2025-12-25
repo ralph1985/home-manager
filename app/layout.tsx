@@ -3,7 +3,7 @@ import { Fraunces, Manrope } from "next/font/google";
 import "./globals.scss";
 import "./tailwind.css";
 
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels, getServerLocale } from "@/infrastructure/ui/labels/server";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -15,18 +15,23 @@ const fraunces = Fraunces({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: labels.meta.title,
-  description: labels.meta.description,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const labels = await getServerLabels();
+  return {
+    title: labels.meta.title,
+    description: labels.meta.description,
+  };
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getServerLocale();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={`${manrope.variable} ${fraunces.variable} antialiased`}>{children}</body>
     </html>
   );

@@ -4,37 +4,13 @@ import { notFound } from "next/navigation";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { getHomeUseCase } from "@/usecases/homes";
 
 export const runtime = "nodejs";
 
-const tiles = [
-  {
-    title: labels.homeDetail.tiles.energy.title,
-    description: labels.homeDetail.tiles.energy.description,
-    action: labels.homeDetail.tiles.energy.action,
-    href: "/energy",
-  },
-  {
-    title: labels.homeDetail.tiles.water.title,
-    description: labels.homeDetail.tiles.water.description,
-    action: labels.homeDetail.tiles.water.action,
-    href: "/water",
-  },
-  {
-    title: labels.homeDetail.tiles.gas.title,
-    description: labels.homeDetail.tiles.gas.description,
-    action: labels.homeDetail.tiles.gas.action,
-  },
-  {
-    title: labels.homeDetail.tiles.insurance.title,
-    description: labels.homeDetail.tiles.insurance.description,
-    action: labels.homeDetail.tiles.insurance.action,
-  },
-];
-
 export default async function HomeDetailPage({ params }: { params: Promise<{ homeId: string }> }) {
+  const labels = await getServerLabels();
   const { homeId: rawHomeId } = await params;
   const homeId = Number.parseInt(rawHomeId, 10);
 
@@ -47,6 +23,31 @@ export default async function HomeDetailPage({ params }: { params: Promise<{ hom
   if (!home) {
     notFound();
   }
+
+  const tiles = [
+    {
+      title: labels.homeDetail.tiles.energy.title,
+      description: labels.homeDetail.tiles.energy.description,
+      action: labels.homeDetail.tiles.energy.action,
+      href: "/energy",
+    },
+    {
+      title: labels.homeDetail.tiles.water.title,
+      description: labels.homeDetail.tiles.water.description,
+      action: labels.homeDetail.tiles.water.action,
+      href: "/water",
+    },
+    {
+      title: labels.homeDetail.tiles.gas.title,
+      description: labels.homeDetail.tiles.gas.description,
+      action: labels.homeDetail.tiles.gas.action,
+    },
+    {
+      title: labels.homeDetail.tiles.insurance.title,
+      description: labels.homeDetail.tiles.insurance.description,
+      action: labels.homeDetail.tiles.insurance.action,
+    },
+  ];
 
   return (
     <PageShell>

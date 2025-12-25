@@ -2,12 +2,13 @@ import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import VehicleList from "@/components/vehicles/VehicleList";
-import { labels } from "@/infrastructure/ui/labels/es";
+import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { listVehiclesUseCase } from "@/usecases/vehicles";
 
 export const runtime = "nodejs";
 
 export default async function VehiclesPage() {
+  const labels = await getServerLabels();
   const vehicles = await listVehiclesUseCase();
 
   return (
