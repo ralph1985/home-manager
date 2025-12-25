@@ -9,6 +9,12 @@ El esquema vive en `prisma/schema.prisma` y se versiona junto a las migraciones.
 - `ElectricityBill` facturas (importe, fechas, consumo, PDF).
 - `CostCategory` categorías de coste.
 - `BillCostLine` desglose por categoría.
+- `GasProvider` compañías de gas.
+- `GasSupplyPoint` puntos de suministro de gas.
+- `GasBill` facturas de gas (importe, fechas, consumo, lecturas, peajes, PDF).
+- `GasCostCategory` categorías de coste de gas.
+- `GasBillCostLine` desglose de costes de gas.
+- `WaterBill` facturas de agua.
 
 ## Base local
 

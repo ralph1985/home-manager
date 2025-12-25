@@ -10,12 +10,14 @@ datasource db {
 }
 
 model Home {
-  id        Int               @id @default(autoincrement())
-  name      String
-  bills     ElectricityBill[]
-  supplies  SupplyPoint[]
-  waterBills WaterBill[]
+  id           Int               @id @default(autoincrement())
+  name         String
+  bills        ElectricityBill[]
+  supplies     SupplyPoint[]
+  waterBills   WaterBill[]
   waterSupplies WaterSupplyPoint[]
+  gasBills     GasBill[]
+  gasSupplies  GasSupplyPoint[]
 }
 
 model Provider {
@@ -163,6 +165,104 @@ model WaterBillCostLine {
   category   WaterCostCategory @relation(fields: [categoryId], references: [id])
 
   @@unique([billId, categoryId])
+}
+
+model GasProvider {
+  id      Int       @id @default(autoincrement())
+  name    String
+  taxId   String?
+  address String?
+  web     String?
+  email   String?
+  phones  Json?
+  bills   GasBill[]
+}
+
+model GasSupplyPoint {
+  id              Int       @id @default(autoincrement())
+  homeId          Int
+  cups            String
+  accessTariff    String?
+  commercialTariff String?
+  contractNumber  String?
+  meterNumber     String?
+  addressLine     String?
+  postalCode      String?
+  city            String?
+  region          String?
+  country         String?
+  home            Home      @relation(fields: [homeId], references: [id])
+  bills           GasBill[]
+
+  @@unique([cups])
+}
+
+model GasBill {
+  id                 Int       @id @default(autoincrement())
+  homeId             Int
+  providerId         Int
+  supplyPointId      Int?
+  invoiceNumber      String?
+  mandateReference   String?
+  issueDate          DateTime
+  chargeDate         DateTime?
+  periodStart        DateTime?
+  periodEnd          DateTime?
+  periodDays         Int?
+  totalAmount        Decimal
+  totalToPay         Decimal?
+  currency           String?
+  totalGasAmount     Decimal?
+  vatRate            Decimal?
+  vatAmount          Decimal?
+  consumptionM3      Decimal?
+  conversionFactor   Decimal?
+  consumptionKwh     Decimal?
+  supplyPressureBar  Decimal?
+  meterNumber        String?
+  readingPrevDate    DateTime?
+  readingPrevType    String?
+  readingPrevM3      Decimal?
+  readingCurrDate    DateTime?
+  readingCurrType    String?
+  readingCurrM3      Decimal?
+  accessTariff       String?
+  commercialTariff   String?
+  contractNumber     String?
+  peajesAmount       Decimal?
+  cargosAmount       Decimal?
+  cnmcPercent        Decimal?
+  gtsPercent         Decimal?
+  bankEntity         String?
+  bankIbanMasked     String?
+  pdfUrl             String?
+  home               Home       @relation(fields: [homeId], references: [id])
+  provider           GasProvider @relation(fields: [providerId], references: [id])
+  supplyPoint        GasSupplyPoint? @relation(fields: [supplyPointId], references: [id])
+  costLines          GasBillCostLine[]
+}
+
+model GasCostCategory {
+  id    Int               @id @default(autoincrement())
+  name  String
+  lines GasBillCostLine[]
+}
+
+model GasBillCostLine {
+  id          Int             @id @default(autoincrement())
+  billId      Int
+  categoryId  Int
+  amount      Decimal
+  periodStart DateTime?
+  periodEnd   DateTime?
+  days        Int?
+  quantity    Decimal?
+  unit        String?
+  unitPrice   Decimal?
+  bill        GasBill         @relation(fields: [billId], references: [id])
+  category    GasCostCategory @relation(fields: [categoryId], references: [id])
+
+  @@unique([billId, categoryId, periodStart, periodEnd])
 }
 
 model Vehicle {

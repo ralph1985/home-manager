@@ -22,6 +22,11 @@
 - `/homes/[homeId]/water` — listado de facturas de agua.
 - `/homes/[homeId]/water/[billId]` — detalle de factura de agua.
 
+## Gas
+
+- `/homes/[homeId]/gas` — listado de facturas de gas.
+- `/homes/[homeId]/gas/[billId]` — detalle de factura de gas.
+
 ## Vehiculos
 
 - `/vehicles` — listado de vehiculos.

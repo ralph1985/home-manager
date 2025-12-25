@@ -41,6 +41,7 @@ export default async function HomeDetailPage({ params }: { params: Promise<{ hom
       title: labels.homeDetail.tiles.gas.title,
       description: labels.homeDetail.tiles.gas.description,
       action: labels.homeDetail.tiles.gas.action,
+      href: "/gas",
     },
     {
       title: labels.homeDetail.tiles.insurance.title,
