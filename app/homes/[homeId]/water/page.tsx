@@ -57,6 +57,7 @@ export default async function WaterPage({ params }: WaterPageProps) {
           billType: bill.billType,
           cancelsInvoiceNumber: bill.cancelsInvoiceNumber ?? undefined,
           cancelsBillId: bill.cancelsBillId ?? undefined,
+          pdfUrl: bill.pdfUrl,
         }))}
         detailHref={(billId) => `/homes/${home.id}/water/${billId}`}
       />
