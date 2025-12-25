@@ -85,7 +85,7 @@ Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
 - Prisma 7 con SQLite requiere adapter (`@prisma/adapter-better-sqlite3`).
 - Modelos separados por servicio: electricidad (`ElectricityBill`) y agua (`WaterBill`) con desglose por líneas (`*BillCostLine`).
 - Copia de seguridad: ejecutar `npm run backup:db` de forma periódica (genera archivos en `data/backups/`).
-- Antes de cualquier cambio en la base de datos, ejecutar `npm run backup:db`.
+- Antes de cualquier cambio en la base de datos o en el schema, ejecutar `npm run backup:db`.
 - Para auditar cambios, generar snapshots antes y después con `npm run snapshot:db -- etiqueta` (guarda dumps en `data/snapshots/`).
 
 ## Styling & UI
@@ -94,3 +94,11 @@ Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
 - SCSS global en `app/globals.scss` y parciales en `styles/` (`_tokens.scss`, `_base.scss`, `_components.scss`).
 - Componentes reutilizables en `src/components` (layout y billing).
 - El copy UI y textos visibles deben vivir en `src/infrastructure/ui/labels/` (por idioma); evita literales en componentes.
+
+## Gestión de tareas y horas
+
+- Al empezar, identifica el proyecto y usa ese nombre en `project`.
+- Busca si ya existe una tarea "En curso" para ese trabajo; si existe, registra horas y notas ahí.
+- Si no existe, crea una nueva con `npm run task:add` en el monorepo (o edita a mano manteniendo `dd/mm/aaaa`, id incremental y mínimos: `status`, `startDate`, `hours`, `project`).
+- Registra siempre la actividad en `../../data/projects-tasks.json` del monorepo (estado, fechas, horas, notas, proyecto).
+- Proyecto de referencia para este repo: `home-manager`.
