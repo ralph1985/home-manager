@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import BillsList from "@/components/billing/BillsList";
+import WaterBillsTable from "@/components/billing/WaterBillsTable";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { getServerLabels } from "@/infrastructure/ui/labels/server";
@@ -29,6 +29,8 @@ export default async function WaterPage({ params }: WaterPageProps) {
   }
 
   const bills = await listWaterBillsUseCase(homeId);
+  const toNumber = (value?: { toString(): string } | null) =>
+    value == null ? null : Number(value.toString());
 
   return (
     <PageShell>
@@ -39,27 +41,33 @@ export default async function WaterPage({ params }: WaterPageProps) {
         actionLabel={labels.common.backToPanel}
         actionHref={`/homes/${home.id}`}
       />
-      <BillsList
+      <WaterBillsTable
         title={labels.water.listTitle}
         emptyMessage={labels.water.emptyList}
-        bills={bills.map((bill) => ({
-          id: bill.id,
-          providerName: bill.provider?.name,
-          invoiceNumber: bill.invoiceNumber,
-          issueDate: bill.issueDate,
-          periodStart: bill.periodStart ?? undefined,
-          periodEnd: bill.periodEnd ?? undefined,
-          totalAmount: bill.totalAmount,
-          totalToPay: bill.totalToPay,
-          consumptionLabel: bill.consumptionM3
-            ? `${bill.consumptionM3} ${labels.units.m3}`
-            : undefined,
-          billType: bill.billType,
-          cancelsInvoiceNumber: bill.cancelsInvoiceNumber ?? undefined,
-          cancelsBillId: bill.cancelsBillId ?? undefined,
-          pdfUrl: bill.pdfUrl,
-        }))}
-        detailHref={(billId) => `/homes/${home.id}/water/${billId}`}
+        labels={labels}
+        bills={bills.map((bill) => {
+          const consumptionM3 = toNumber(bill.consumptionM3);
+          return {
+            id: bill.id,
+            providerName: bill.provider?.name,
+            invoiceNumber: bill.invoiceNumber,
+            issueDate: bill.issueDate.getTime(),
+            periodStart: bill.periodStart?.getTime() ?? null,
+            periodEnd: bill.periodEnd?.getTime() ?? null,
+            totalAmount: bill.totalAmount.toString(),
+            totalAmountValue: Number(bill.totalAmount.toString()),
+            totalToPay: bill.totalToPay ? bill.totalToPay.toString() : null,
+            consumptionLabel: consumptionM3 ? `${consumptionM3} ${labels.units.m3}` : null,
+            consumptionM3,
+            billType: bill.billType ?? null,
+            cancelsInvoiceNumber: bill.cancelsInvoiceNumber ?? null,
+            cancelsHref: bill.cancelsBillId
+              ? `/homes/${home.id}/water/${bill.cancelsBillId}`
+              : null,
+            pdfUrl: bill.pdfUrl ?? null,
+            href: `/homes/${home.id}/water/${bill.id}`,
+          };
+        })}
       />
     </PageShell>
   );

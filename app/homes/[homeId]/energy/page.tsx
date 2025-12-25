@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import BillsList from "@/components/billing/BillsList";
+import EnergyBillsTable from "@/components/billing/EnergyBillsTable";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { getServerLabels } from "@/infrastructure/ui/labels/server";
@@ -29,6 +29,8 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
   }
 
   const bills = await listEnergyBillsUseCase(homeId);
+  const toNumber = (value?: { toString(): string } | null) =>
+    value == null ? null : Number(value.toString());
 
   return (
     <PageShell>
@@ -39,21 +41,27 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
         actionLabel={labels.common.backToPanel}
         actionHref={`/homes/${home.id}`}
       />
-      <BillsList
+      <EnergyBillsTable
         title={labels.energy.listTitle}
         emptyMessage={labels.energy.emptyList}
-        bills={bills.map((bill) => ({
-          id: bill.id,
-          providerName: bill.provider?.name,
-          invoiceNumber: bill.invoiceNumber,
-          issueDate: bill.issueDate,
-          periodStart: bill.periodStart ?? undefined,
-          periodEnd: bill.periodEnd ?? undefined,
-          totalAmount: bill.totalAmount,
-          consumptionLabel: `${bill.consumptionKwh} ${labels.units.kwh}`,
-          pdfUrl: bill.pdfUrl,
-        }))}
-        detailHref={(billId) => `/homes/${home.id}/energy/${billId}`}
+        labels={labels}
+        bills={bills.map((bill) => {
+          const consumptionKwh = toNumber(bill.consumptionKwh);
+          return {
+            id: bill.id,
+            providerName: bill.provider?.name,
+            invoiceNumber: bill.invoiceNumber,
+            issueDate: bill.issueDate.getTime(),
+            periodStart: bill.periodStart?.getTime() ?? null,
+            periodEnd: bill.periodEnd?.getTime() ?? null,
+            totalAmount: bill.totalAmount.toString(),
+            totalAmountValue: Number(bill.totalAmount.toString()),
+            consumptionLabel: consumptionKwh ? `${consumptionKwh} ${labels.units.kwh}` : null,
+            consumptionKwh,
+            pdfUrl: bill.pdfUrl ?? null,
+            href: `/homes/${home.id}/energy/${bill.id}`,
+          };
+        })}
       />
     </PageShell>
   );

@@ -11,7 +11,7 @@ type ChartSeries = {
   unit: string;
 };
 
-type GasConsumptionChartProps = {
+type ConsumptionChartProps = {
   title: string;
   subtitle?: string;
   emptyMessage: string;
@@ -19,18 +19,18 @@ type GasConsumptionChartProps = {
   yAxisTitles: string[];
 };
 
-export default function GasConsumptionChart({
+export default function ConsumptionChart({
   title,
   subtitle,
   emptyMessage,
   series,
   yAxisTitles,
-}: GasConsumptionChartProps) {
+}: ConsumptionChartProps) {
   const hasData = series.some((serie) => serie.data.some((point) => point[1] != null));
 
   if (!hasData) {
     return (
-      <section className="mt-12">
+      <section className="mt-6">
         <div className="hm-panel p-6">
           <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
           {subtitle ? <p className="mt-1 text-sm text-slate-500">{subtitle}</p> : null}
@@ -94,7 +94,7 @@ export default function GasConsumptionChart({
   };
 
   return (
-    <section className="mt-12">
+    <section className="mt-6">
       <div className="hm-panel p-6">
         <HighchartsReact highcharts={Highcharts} options={options} />
       </div>

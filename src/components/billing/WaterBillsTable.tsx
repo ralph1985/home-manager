@@ -4,7 +4,7 @@ import BillsTable from "@/components/billing/BillsTable";
 import ConsumptionChart from "@/components/billing/ConsumptionChart";
 import { formatCountLabel, type Labels } from "@/infrastructure/ui/labels";
 
-type GasBillRow = {
+type WaterBillRow = {
   id: number;
   providerName?: string | null;
   invoiceNumber?: string | null;
@@ -15,20 +15,27 @@ type GasBillRow = {
   totalAmountValue?: number | null;
   totalToPay?: string | null;
   consumptionLabel?: string | null;
-  consumptionKwh?: number | null;
   consumptionM3?: number | null;
+  billType?: string | null;
+  cancelsInvoiceNumber?: string | null;
+  cancelsHref?: string | null;
   pdfUrl?: string | null;
   href: string;
 };
 
-type GasBillsTableProps = {
+type WaterBillsTableProps = {
   labels: Labels;
   title: string;
   emptyMessage: string;
-  bills: GasBillRow[];
+  bills: WaterBillRow[];
 };
 
-export default function GasBillsTable({ labels, title, emptyMessage, bills }: GasBillsTableProps) {
+export default function WaterBillsTable({
+  labels,
+  title,
+  emptyMessage,
+  bills,
+}: WaterBillsTableProps) {
   return (
     <section className="mt-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -51,8 +58,10 @@ export default function GasBillsTable({ labels, title, emptyMessage, bills }: Ga
           totalAmountValue: bill.totalAmountValue ?? null,
           totalToPay: bill.totalToPay ?? null,
           consumptionLabel: bill.consumptionLabel ?? null,
-          consumptionKwh: bill.consumptionKwh ?? null,
           consumptionM3: bill.consumptionM3 ?? null,
+          billType: bill.billType ?? null,
+          cancelsInvoiceNumber: bill.cancelsInvoiceNumber ?? null,
+          cancelsHref: bill.cancelsHref ?? null,
           href: bill.href,
           pdfUrl: bill.pdfUrl ?? null,
         }))}
@@ -60,7 +69,6 @@ export default function GasBillsTable({ labels, title, emptyMessage, bills }: Ga
           const points = rows
             .map((row) => ({
               x: Number(row.issueDate),
-              kwh: row.consumptionKwh ?? null,
               m3: row.consumptionM3 ?? null,
               amount:
                 row.totalAmountValue != null
@@ -69,29 +77,17 @@ export default function GasBillsTable({ labels, title, emptyMessage, bills }: Ga
             }))
             .sort((a, b) => a.x - b.x);
 
-          const kwhSeries = points.map((point) => [point.x, point.kwh] as const);
           const m3Series = points.map((point) => [point.x, point.m3] as const);
           const amountSeries = points.map((point) => [point.x, point.amount] as const);
 
           const series = [
-            ...(kwhSeries.some(([, value]) => value != null)
-              ? [
-                  {
-                    name: labels.gas.chartSeriesKwh,
-                    data: kwhSeries,
-                    type: "column" as const,
-                    yAxis: 0,
-                    unit: labels.units.kwh,
-                  },
-                ]
-              : []),
             ...(m3Series.some(([, value]) => value != null)
               ? [
                   {
-                    name: labels.gas.chartSeriesM3,
+                    name: labels.water.chartSeriesM3,
                     data: m3Series,
-                    type: "line" as const,
-                    yAxis: 1,
+                    type: "column" as const,
+                    yAxis: 0,
                     unit: labels.units.m3,
                   },
                 ]
@@ -99,10 +95,10 @@ export default function GasBillsTable({ labels, title, emptyMessage, bills }: Ga
             ...(amountSeries.some(([, value]) => Number.isFinite(value))
               ? [
                   {
-                    name: labels.gas.chartSeriesAmount,
+                    name: labels.water.chartSeriesAmount,
                     data: amountSeries,
                     type: "line" as const,
-                    yAxis: 2,
+                    yAxis: 1,
                     unit: labels.units.eur,
                   },
                 ]
@@ -111,15 +107,11 @@ export default function GasBillsTable({ labels, title, emptyMessage, bills }: Ga
 
           return (
             <ConsumptionChart
-              title={labels.gas.chartTitle}
-              subtitle={labels.gas.chartSubtitle}
-              emptyMessage={labels.gas.chartEmpty}
+              title={labels.water.chartTitle}
+              subtitle={labels.water.chartSubtitle}
+              emptyMessage={labels.water.chartEmpty}
               series={series}
-              yAxisTitles={[
-                labels.gas.chartAxisKwh,
-                labels.gas.chartAxisM3,
-                labels.gas.chartAxisAmount,
-              ]}
+              yAxisTitles={[labels.water.chartAxisM3, labels.water.chartAxisAmount]}
             />
           );
         }}

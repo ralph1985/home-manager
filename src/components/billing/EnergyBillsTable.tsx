@@ -4,7 +4,7 @@ import BillsTable from "@/components/billing/BillsTable";
 import ConsumptionChart from "@/components/billing/ConsumptionChart";
 import { formatCountLabel, type Labels } from "@/infrastructure/ui/labels";
 
-type GasBillRow = {
+type EnergyBillRow = {
   id: number;
   providerName?: string | null;
   invoiceNumber?: string | null;
@@ -13,22 +13,25 @@ type GasBillRow = {
   periodEnd?: number | null;
   totalAmount: string;
   totalAmountValue?: number | null;
-  totalToPay?: string | null;
   consumptionLabel?: string | null;
   consumptionKwh?: number | null;
-  consumptionM3?: number | null;
   pdfUrl?: string | null;
   href: string;
 };
 
-type GasBillsTableProps = {
+type EnergyBillsTableProps = {
   labels: Labels;
   title: string;
   emptyMessage: string;
-  bills: GasBillRow[];
+  bills: EnergyBillRow[];
 };
 
-export default function GasBillsTable({ labels, title, emptyMessage, bills }: GasBillsTableProps) {
+export default function EnergyBillsTable({
+  labels,
+  title,
+  emptyMessage,
+  bills,
+}: EnergyBillsTableProps) {
   return (
     <section className="mt-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -49,10 +52,8 @@ export default function GasBillsTable({ labels, title, emptyMessage, bills }: Ga
           periodEnd: bill.periodEnd ?? null,
           totalAmount: bill.totalAmount,
           totalAmountValue: bill.totalAmountValue ?? null,
-          totalToPay: bill.totalToPay ?? null,
           consumptionLabel: bill.consumptionLabel ?? null,
           consumptionKwh: bill.consumptionKwh ?? null,
-          consumptionM3: bill.consumptionM3 ?? null,
           href: bill.href,
           pdfUrl: bill.pdfUrl ?? null,
         }))}
@@ -61,7 +62,6 @@ export default function GasBillsTable({ labels, title, emptyMessage, bills }: Ga
             .map((row) => ({
               x: Number(row.issueDate),
               kwh: row.consumptionKwh ?? null,
-              m3: row.consumptionM3 ?? null,
               amount:
                 row.totalAmountValue != null
                   ? row.totalAmountValue
@@ -70,14 +70,13 @@ export default function GasBillsTable({ labels, title, emptyMessage, bills }: Ga
             .sort((a, b) => a.x - b.x);
 
           const kwhSeries = points.map((point) => [point.x, point.kwh] as const);
-          const m3Series = points.map((point) => [point.x, point.m3] as const);
           const amountSeries = points.map((point) => [point.x, point.amount] as const);
 
           const series = [
             ...(kwhSeries.some(([, value]) => value != null)
               ? [
                   {
-                    name: labels.gas.chartSeriesKwh,
+                    name: labels.energy.chartSeriesKwh,
                     data: kwhSeries,
                     type: "column" as const,
                     yAxis: 0,
@@ -85,24 +84,13 @@ export default function GasBillsTable({ labels, title, emptyMessage, bills }: Ga
                   },
                 ]
               : []),
-            ...(m3Series.some(([, value]) => value != null)
-              ? [
-                  {
-                    name: labels.gas.chartSeriesM3,
-                    data: m3Series,
-                    type: "line" as const,
-                    yAxis: 1,
-                    unit: labels.units.m3,
-                  },
-                ]
-              : []),
             ...(amountSeries.some(([, value]) => Number.isFinite(value))
               ? [
                   {
-                    name: labels.gas.chartSeriesAmount,
+                    name: labels.energy.chartSeriesAmount,
                     data: amountSeries,
                     type: "line" as const,
-                    yAxis: 2,
+                    yAxis: 1,
                     unit: labels.units.eur,
                   },
                 ]
@@ -111,15 +99,11 @@ export default function GasBillsTable({ labels, title, emptyMessage, bills }: Ga
 
           return (
             <ConsumptionChart
-              title={labels.gas.chartTitle}
-              subtitle={labels.gas.chartSubtitle}
-              emptyMessage={labels.gas.chartEmpty}
+              title={labels.energy.chartTitle}
+              subtitle={labels.energy.chartSubtitle}
+              emptyMessage={labels.energy.chartEmpty}
               series={series}
-              yAxisTitles={[
-                labels.gas.chartAxisKwh,
-                labels.gas.chartAxisM3,
-                labels.gas.chartAxisAmount,
-              ]}
+              yAxisTitles={[labels.energy.chartAxisKwh, labels.energy.chartAxisAmount]}
             />
           );
         }}
