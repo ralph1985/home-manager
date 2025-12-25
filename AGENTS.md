@@ -87,6 +87,12 @@ Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
 - Copia de seguridad: ejecutar `npm run backup:db` de forma periódica (genera archivos en `data/backups/`).
 - Antes de cualquier cambio en la base de datos o en el schema, ejecutar `npm run backup:db`.
 - Para auditar cambios, generar snapshots antes y después con `npm run snapshot:db -- etiqueta` (guarda dumps en `data/snapshots/`).
+- Para revisar/importar PDFs de facturas (electricidad) hay un script base en `scripts/update-electricity-from-pdfs.mjs`:
+  - Inspección sin tocar DB: `npm run pdf:electricity:dry -- "<ruta|carpeta>"`
+  - Con OCR (tesseract/ocrmypdf): `npm run pdf:electricity:ocr -- "<ruta|carpeta>"`
+  - Con firmas digitales (invalidarlas): `npm run pdf:electricity:ocr:force -- "<ruta|carpeta>"`
+  - Flags útiles: `--debug` (líneas clave), `--grep=<texto>`, `--ocr-max-mpixels=<n>`
+  - Flujo obligatorio: backup + snapshots antes/después de tocar la DB.
 
 ## Styling & UI
 
