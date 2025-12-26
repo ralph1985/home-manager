@@ -42,6 +42,7 @@ Stack: TypeScript, Next.js, Tailwind. ESLint está habilitado via `npm run lint`
 - Indentación: 2 espacios (convención en TS/Next).
 - Archivos: `kebab-case` en rutas `app/`, `camelCase` o `PascalCase` en `src/` según el lenguaje.
 - Tipos/clases en `PascalCase`, funciones en `camelCase`.
+- Al instalar dependencias, usa versiones fijas sin el prefijo `^` en `package.json`.
 
 Idea clave del libro: el código de dominio debe ser legible y aislado; evita anotaciones de framework en `src/domain/`.
 
