@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import EnergyBillsTable from "@/components/billing/EnergyBillsTable";
@@ -38,8 +39,22 @@ export default async function EnergyPage({ params }: EnergyPageProps) {
         eyebrow={labels.energy.eyebrow}
         title={`${labels.energy.titlePrefix} ${home.name}`}
         description={labels.energy.description}
-        actionLabel={labels.common.backToPanel}
-        actionHref={`/homes/${home.id}`}
+        actionNode={
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link
+              className="hm-pill border border-slate-900/10 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-900/20 hover:bg-slate-50"
+              href={`/homes/${home.id}`}
+            >
+              {labels.common.backToPanel}
+            </Link>
+            <Link
+              className="hm-pill bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
+              href={`/homes/${home.id}/energy/comparison`}
+            >
+              {labels.energy.comparison.actionLabel}
+            </Link>
+          </div>
+        }
       />
       <EnergyBillsTable
         title={labels.energy.listTitle}
