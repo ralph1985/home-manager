@@ -5,15 +5,28 @@ import { useMemo, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-import type { EnergyComparison } from "@/usecases/energyComparison";
-import type { Labels } from "@/infrastructure/ui/labels";
+import type { YearComparison } from "@/usecases/billComparisons";
 
-type MetricKey = "amount" | "kwh";
-
-type EnergyComparisonChartProps = {
-  labels: Labels;
-  comparison: EnergyComparison;
+type ComparisonChartCopy = {
+  title: string;
+  subtitle?: string;
+  metricLabel: string;
+  metricAmount: string;
+  metricUsage: string;
+  axisAmount: string;
+  axisUsage: string;
 };
+
+type YearComparisonChartProps = {
+  comparison: YearComparison;
+  copy: ComparisonChartCopy;
+  units: {
+    amount: string;
+    usage: string;
+  };
+};
+
+type MetricKey = "amount" | "usage";
 
 const monthFormatter = new Intl.DateTimeFormat("es-ES", { month: "short" });
 
@@ -23,16 +36,13 @@ function buildMonthLabels() {
   );
 }
 
-export default function EnergyComparisonChart({
-  labels,
-  comparison,
-}: EnergyComparisonChartProps) {
+export default function YearComparisonChart({ comparison, copy, units }: YearComparisonChartProps) {
   const [metric, setMetric] = useState<MetricKey>("amount");
-
   const monthLabels = useMemo(() => buildMonthLabels(), []);
+
   const seriesData = useMemo(() => {
     const byMonth = [...comparison.months].sort((a, b) => a.month - b.month);
-    const valueKey = metric === "amount" ? "amount" : "kwh";
+    const valueKey = metric === "amount" ? "amount" : "usage";
 
     const yearAData = byMonth.map((month) => month.yearA?.[valueKey] ?? null);
     const yearBData = byMonth.map((month) => month.yearB?.[valueKey] ?? null);
@@ -43,11 +53,8 @@ export default function EnergyComparisonChart({
     ];
   }, [comparison, metric]);
 
-  const yAxisTitle =
-    metric === "amount"
-      ? labels.energy.comparison.chartAxisAmount
-      : labels.energy.comparison.chartAxisKwh;
-  const valueSuffix = metric === "amount" ? ` ${labels.units.eur}` : ` ${labels.units.kwh}`;
+  const yAxisTitle = metric === "amount" ? copy.axisAmount : copy.axisUsage;
+  const valueSuffix = metric === "amount" ? ` ${units.amount}` : ` ${units.usage}`;
 
   const options: Highcharts.Options = {
     chart: {
@@ -55,13 +62,13 @@ export default function EnergyComparisonChart({
       spacingTop: 24,
     },
     title: {
-      text: labels.energy.comparison.chartTitle,
+      text: copy.title,
       align: "left",
       style: { fontSize: "20px", fontWeight: "600", color: "#0f172a" },
     },
-    subtitle: labels.energy.comparison.chartSubtitle
+    subtitle: copy.subtitle
       ? {
-          text: labels.energy.comparison.chartSubtitle,
+          text: copy.subtitle,
           align: "left",
           style: { fontSize: "12px", color: "#64748b" },
         }
@@ -101,9 +108,9 @@ export default function EnergyComparisonChart({
       <div className="hm-panel p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-            <span>{labels.energy.comparison.chartMetricLabel}</span>
+            <span>{copy.metricLabel}</span>
             <div className="flex rounded-full border border-slate-200 bg-white">
-              {(["amount", "kwh"] as const).map((key) => (
+              {(["amount", "usage"] as const).map((key) => (
                 <button
                   key={key}
                   type="button"
@@ -114,9 +121,7 @@ export default function EnergyComparisonChart({
                   }`}
                   onClick={() => setMetric(key)}
                 >
-                  {key === "amount"
-                    ? labels.energy.comparison.chartMetricAmount
-                    : labels.energy.comparison.chartMetricKwh}
+                  {key === "amount" ? copy.metricAmount : copy.metricUsage}
                 </button>
               ))}
             </div>

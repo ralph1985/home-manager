@@ -1,11 +1,11 @@
-import { listEnergyBillsByHomeAndYears } from "@/infrastructure/energyRepository";
+import { listGasBillsByHomeAndYears } from "@/infrastructure/gasRepository";
 import {
   buildYearComparison,
   type ComparisonBillItem,
   type YearComparison,
 } from "@/usecases/billComparisons";
 
-export async function getEnergyComparisonUseCase(
+export async function getGasComparisonUseCase(
   homeId: number,
   yearA: number,
   yearB: number
@@ -14,7 +14,7 @@ export async function getEnergyComparisonUseCase(
     return null;
   }
 
-  const bills = await listEnergyBillsByHomeAndYears(homeId, [yearA, yearB]);
+  const bills = await listGasBillsByHomeAndYears(homeId, [yearA, yearB]);
   if (bills.length === 0) {
     return null;
   }

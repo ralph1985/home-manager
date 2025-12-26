@@ -4,13 +4,13 @@ import YearComparisonSection from "@/components/billing/YearComparisonSection";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { getServerLabels } from "@/infrastructure/ui/labels/server";
-import { listEnergyBillYearsUseCase } from "@/usecases/energyBills";
-import { getEnergyComparisonUseCase } from "@/usecases/energyComparison";
+import { getWaterComparisonUseCase } from "@/usecases/waterComparison";
 import { getHomeUseCase } from "@/usecases/homes";
+import { listWaterBillYearsUseCase } from "@/usecases/waterBills";
 
 export const runtime = "nodejs";
 
-type EnergyComparisonPageProps = {
+type WaterComparisonPageProps = {
   params: Promise<{ homeId: string }>;
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
@@ -40,10 +40,10 @@ function resolveYears(availableYears: number[], yearA?: number | null, yearB?: n
   return { yearA: resolvedA, yearB: resolvedB };
 }
 
-export default async function EnergyComparisonPage({
+export default async function WaterComparisonPage({
   params,
   searchParams,
-}: EnergyComparisonPageProps) {
+}: WaterComparisonPageProps) {
   const labels = await getServerLabels();
   const { homeId: rawHomeId } = await params;
   const homeId = Number.parseInt(rawHomeId, 10);
@@ -59,26 +59,26 @@ export default async function EnergyComparisonPage({
   }
 
   const search = (await searchParams) ?? {};
-  const availableYears = await listEnergyBillYearsUseCase(homeId);
+  const availableYears = await listWaterBillYearsUseCase(homeId);
   const requestedYearA = parseYear(search.yearA);
   const requestedYearB = parseYear(search.yearB);
   const { yearA, yearB } = resolveYears(availableYears, requestedYearA, requestedYearB);
   const comparison =
-    yearA != null && yearB != null ? await getEnergyComparisonUseCase(homeId, yearA, yearB) : null;
+    yearA != null && yearB != null ? await getWaterComparisonUseCase(homeId, yearA, yearB) : null;
 
   return (
     <PageShell>
       <SectionHeader
-        eyebrow={labels.energy.eyebrow}
-        title={`${labels.energy.comparison.title} ${yearA ?? ""} vs ${yearB ?? ""} - ${home.name}`}
-        description={`${labels.energy.comparison.description} (${yearA ?? "?"} vs ${yearB ?? "?"})`}
+        eyebrow={labels.water.eyebrow}
+        title={`${labels.water.comparison.title} ${yearA ?? ""} vs ${yearB ?? ""} - ${home.name}`}
+        description={`${labels.water.comparison.description} (${yearA ?? "?"} vs ${yearB ?? "?"})`}
         actionLabel={labels.common.backToList}
-        actionHref={`/homes/${home.id}/energy`}
+        actionHref={`/homes/${home.id}/water`}
       />
       <section className="mt-8">
         <form className="hm-panel flex flex-wrap items-end gap-4 p-4" method="get">
           <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-            <span>{labels.energy.comparison.filters.yearA}</span>
+            <span>{labels.water.comparison.filters.yearA}</span>
             <select
               className="rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700"
               name="yearA"
@@ -92,7 +92,7 @@ export default async function EnergyComparisonPage({
             </select>
           </label>
           <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
-            <span>{labels.energy.comparison.filters.yearB}</span>
+            <span>{labels.water.comparison.filters.yearB}</span>
             <select
               className="rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700"
               name="yearB"
@@ -109,16 +109,16 @@ export default async function EnergyComparisonPage({
             className="hm-pill bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
             type="submit"
           >
-            {labels.energy.comparison.filters.apply}
+            {labels.water.comparison.filters.apply}
           </button>
         </form>
       </section>
       <YearComparisonSection
         labels={labels}
         comparison={comparison}
-        billPathPrefix={`/homes/${home.id}/energy`}
-        usageUnit={labels.units.kwh}
-        copy={labels.energy.comparison}
+        billPathPrefix={`/homes/${home.id}/water`}
+        usageUnit={labels.units.m3}
+        copy={labels.water.comparison}
       />
     </PageShell>
   );

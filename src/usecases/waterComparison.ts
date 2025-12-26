@@ -1,11 +1,11 @@
-import { listEnergyBillsByHomeAndYears } from "@/infrastructure/energyRepository";
+import { listWaterBillsByHomeAndYears } from "@/infrastructure/waterRepository";
 import {
   buildYearComparison,
   type ComparisonBillItem,
   type YearComparison,
 } from "@/usecases/billComparisons";
 
-export async function getEnergyComparisonUseCase(
+export async function getWaterComparisonUseCase(
   homeId: number,
   yearA: number,
   yearB: number
@@ -14,7 +14,7 @@ export async function getEnergyComparisonUseCase(
     return null;
   }
 
-  const bills = await listEnergyBillsByHomeAndYears(homeId, [yearA, yearB]);
+  const bills = await listWaterBillsByHomeAndYears(homeId, [yearA, yearB]);
   if (bills.length === 0) {
     return null;
   }
@@ -23,8 +23,7 @@ export async function getEnergyComparisonUseCase(
     id: bill.id,
     issueDate: bill.issueDate,
     totalAmount: bill.totalAmount,
-    usage: bill.consumptionKwh,
-    periodDays: bill.periodDays ?? null,
+    usage: bill.consumptionM3,
     invoiceNumber: bill.invoiceNumber ?? null,
   }));
 
