@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import YearComparisonSection from "@/components/billing/YearComparisonSection";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
+import PillButton from "@/components/PillButton";
 import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { getWaterComparisonUseCase } from "@/usecases/waterComparison";
 import { getHomeUseCase } from "@/usecases/homes";
@@ -105,12 +106,9 @@ export default async function WaterComparisonPage({
               ))}
             </select>
           </label>
-          <button
-            className="hm-pill bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
-            type="submit"
-          >
+          <PillButton type="submit" variant="solid" size="xsWide">
             {labels.water.comparison.filters.apply}
-          </button>
+          </PillButton>
         </form>
       </section>
       <YearComparisonSection

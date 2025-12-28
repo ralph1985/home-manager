@@ -2,7 +2,13 @@
 
 import { useMemo, useState } from "react";
 
+import Pill from "@/components/Pill";
 import TickTickProjectsLink from "@/components/ticktick/TickTickProjectsLink";
+import {
+  pillBaseClassName,
+  pillInteractiveClassName,
+  pillSizeClassName,
+} from "@/components/pillStyles";
 import type { Reminder } from "@/domain/Reminder";
 import type { ReminderListStatus } from "@/interfaces/reminderRepository";
 import { formatCountLabel } from "@/infrastructure/ui/labels";
@@ -109,9 +115,9 @@ export default function VehicleRemindersPanel({
             className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 hover:text-slate-900"
             label={labels.vehicleDetail.remindersProjectsLink}
           />
-          <span className="hm-pill border border-slate-900/10 bg-white px-4 py-2 text-sm font-semibold text-slate-500">
+          <Pill variant="outlineMuted" size="sm">
             {headerStatus}
-          </span>
+          </Pill>
         </div>
       </div>
 
@@ -157,11 +163,15 @@ export default function VehicleRemindersPanel({
               ).map((tab) => (
                 <button
                   key={tab.key}
-                  className={`hm-pill border px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] transition ${
+                  className={[
+                    pillBaseClassName,
+                    pillSizeClassName.xsWide,
+                    pillInteractiveClassName,
+                    "border uppercase tracking-[0.2em]",
                     activeTab === tab.key
                       ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-slate-200/70 bg-white text-slate-500 hover:text-slate-900"
-                  }`}
+                      : "border-slate-200/70 bg-white text-slate-500 hover:text-slate-900",
+                  ].join(" ")}
                   type="button"
                   onClick={() => setActiveTab(tab.key)}
                 >

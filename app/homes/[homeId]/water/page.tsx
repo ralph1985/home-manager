@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import WaterBillsTable from "@/components/billing/WaterBillsTable";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
+import PillLink from "@/components/PillLink";
 import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { getHomeUseCase } from "@/usecases/homes";
 import { listWaterBillsUseCase } from "@/usecases/waterBills";
@@ -41,18 +41,12 @@ export default async function WaterPage({ params }: WaterPageProps) {
         description={labels.water.description}
         actionNode={
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-            <Link
-              className="hm-pill border border-slate-900/10 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-900/20 hover:bg-slate-50"
-              href={`/homes/${home.id}`}
-            >
+            <PillLink href={`/homes/${home.id}`} variant="outline" size="xsWide">
               {labels.common.backToPanel}
-            </Link>
-            <Link
-              className="hm-pill bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition hover:bg-slate-800"
-              href={`/homes/${home.id}/water/comparison`}
-            >
+            </PillLink>
+            <PillLink href={`/homes/${home.id}/water/comparison`} variant="solid" size="xsWide">
               {labels.water.comparison.actionLabel}
-            </Link>
+            </PillLink>
           </div>
         }
       />

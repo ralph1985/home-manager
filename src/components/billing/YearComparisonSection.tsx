@@ -1,6 +1,5 @@
-import Link from "next/link";
-
 import { formatCurrency } from "@/components/billing/billingFormatters";
+import PillLink from "@/components/PillLink";
 import YearComparisonChart from "@/components/billing/YearComparisonChart";
 import type { Labels } from "@/infrastructure/ui/labels";
 import type { YearComparison, YearComparisonBillRef } from "@/usecases/billComparisons";
@@ -65,13 +64,14 @@ function renderBillLinks(bills: YearComparisonBillRef[], billPathPrefix: string,
   return (
     <div className="flex flex-wrap gap-2">
       {bills.map((bill) => (
-        <Link
+        <PillLink
           key={bill.id}
-          className="hm-pill border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50"
           href={`${billPathPrefix}/${bill.id}`}
+          variant="outlineSoft"
+          size="xs"
         >
           {bill.invoiceNumber ? bill.invoiceNumber : labels.common.view}
-        </Link>
+        </PillLink>
       ))}
     </div>
   );

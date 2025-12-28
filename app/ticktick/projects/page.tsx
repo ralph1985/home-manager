@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
+import Pill from "@/components/Pill";
 import { formatCountLabel, getLabels } from "@/infrastructure/ui/labels";
 import { getServerLocale } from "@/infrastructure/ui/labels/server";
 import { listTickTickProjects } from "@/usecases/ticktickProjects";
@@ -25,9 +26,9 @@ export default async function TickTickProjectsPage() {
         title={labels.ticktickProjects.title}
         description={labels.ticktickProjects.description}
         actionNode={
-          <span className="hm-pill border border-slate-900/10 bg-white px-4 py-2 text-sm font-semibold text-slate-500">
+          <Pill variant="outlineMuted" size="sm">
             {statusTag}
-          </span>
+          </Pill>
         }
       />
 

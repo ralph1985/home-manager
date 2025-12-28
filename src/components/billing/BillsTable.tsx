@@ -9,6 +9,7 @@ import {
   type NumericValue,
 } from "@/components/billing/billingFormatters";
 import { billTypeBadgeClass, formatBillType } from "@/components/billing/billTypeFormatters";
+import PillLink from "@/components/PillLink";
 import TableShell from "@/components/TableShell";
 import FilterSelect from "@/components/tables/FilterSelect";
 import PillTag from "@/components/tables/PillTag";
@@ -241,12 +242,9 @@ export default function BillsTable({ rows, emptyMessage, labels, chart }: BillsT
                       {bill.invoiceNumber ?? labels.bills.invoiceFallback}
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <Link
-                        className="hm-pill hm-shadow-soft bg-slate-900 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
-                        href={bill.href}
-                      >
+                      <PillLink href={bill.href} variant="solidElevated" size="xs">
                         {labels.common.view}
-                      </Link>
+                      </PillLink>
                     </td>
                     <td className="px-4 py-3 text-slate-600">
                       {bill.providerName ? (

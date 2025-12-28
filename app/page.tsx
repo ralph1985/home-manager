@@ -1,8 +1,7 @@
-import Link from "next/link";
-
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
+import PillLink from "@/components/PillLink";
 import TickTickProjectsLink from "@/components/ticktick/TickTickProjectsLink";
 import HomeRemindersSection from "@/components/ticktick/HomeRemindersSection";
 import { getLabels } from "@/infrastructure/ui/labels";
@@ -64,12 +63,9 @@ export default async function Home() {
             </h3>
             <p className="mt-2 text-sm text-slate-600">{labels.dashboard.homesCardDescription}</p>
           </div>
-          <Link
-            className="hm-pill hm-shadow-soft bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
-            href="/homes"
-          >
+          <PillLink href="/homes" variant="solidElevated" size="sm">
             {labels.dashboard.homesLinkLabel}
-          </Link>
+          </PillLink>
         </div>
       </section>
 
@@ -89,12 +85,9 @@ export default async function Home() {
               {labels.dashboard.vehiclesCardDescription}
             </p>
           </div>
-          <Link
-            className="hm-pill hm-shadow-soft bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
-            href="/vehicles"
-          >
+          <PillLink href="/vehicles" variant="solidElevated" size="sm">
             {labels.dashboard.vehiclesLinkLabel}
-          </Link>
+          </PillLink>
         </div>
       </section>
 

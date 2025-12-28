@@ -1,6 +1,12 @@
 import type { ButtonHTMLAttributes } from "react";
-const baseClassName =
-  "hm-pill font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/30 disabled:cursor-not-allowed disabled:opacity-60";
+
+import { pillBaseClassName, pillInteractiveClassName } from "./pillStyles";
+
+const baseClassName = [
+  pillBaseClassName,
+  pillInteractiveClassName,
+  "disabled:cursor-not-allowed disabled:opacity-60",
+].join(" ");
 
 const variantClassName = {
   primary: "hm-shadow-soft bg-slate-900 px-4 py-2 text-white hover:bg-slate-800",

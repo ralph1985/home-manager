@@ -3,6 +3,7 @@
 import type { Reminder } from "@/domain/Reminder";
 import type { ReminderListStatus } from "@/interfaces/reminderRepository";
 import type { Labels, Locale } from "@/infrastructure/ui/labels";
+import Pill from "@/components/Pill";
 
 type HomeRemindersSectionProps = {
   reminders: Reminder[];
@@ -99,9 +100,9 @@ export default function HomeRemindersSection({
           </h2>
           <p className="mt-2 text-sm text-slate-600">{labels.dashboard.homeRemindersDescription}</p>
         </div>
-        <span className="hm-pill border border-slate-900/10 bg-white px-4 py-2 text-sm font-semibold text-slate-500">
+        <Pill variant="outlineMuted" size="sm">
           {visibleCount}
-        </span>
+        </Pill>
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">

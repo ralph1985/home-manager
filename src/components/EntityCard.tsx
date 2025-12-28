@@ -1,4 +1,4 @@
-import Link from "next/link";
+import PillLink from "@/components/PillLink";
 
 type EntityCardAction = {
   label: string;
@@ -20,11 +20,12 @@ type EntityCardProps = {
   actions?: EntityCardAction[];
 };
 
-const actionStyles: Record<NonNullable<EntityCardAction["variant"]>, string> = {
-  primary:
-    "hm-pill hm-shadow-soft bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800",
-  secondary:
-    "hm-pill border border-slate-900/10 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-slate-900/20 hover:bg-slate-50",
+const actionVariants: Record<
+  NonNullable<EntityCardAction["variant"]>,
+  "solidElevated" | "outline"
+> = {
+  primary: "solidElevated",
+  secondary: "outline",
 };
 
 export default function EntityCard({
@@ -65,13 +66,14 @@ export default function EntityCard({
             const variant = action.variant ?? "primary";
 
             return (
-              <Link
+              <PillLink
                 key={`${action.href}-${action.label}`}
-                className={actionStyles[variant]}
+                variant={actionVariants[variant]}
+                size="sm"
                 href={action.href}
               >
                 {action.label}
-              </Link>
+              </PillLink>
             );
           })}
         </div>

@@ -1,9 +1,10 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
+import Pill from "@/components/Pill";
+import PillLink from "@/components/PillLink";
 import { getServerLabels } from "@/infrastructure/ui/labels/server";
 import { getHomeUseCase } from "@/usecases/homes";
 
@@ -80,16 +81,17 @@ export default async function HomeDetailPage({ params }: { params: Promise<{ hom
               <p className="mt-2 text-sm text-slate-600">{tile.description}</p>
               <div className="mt-6">
                 {tile.href ? (
-                  <Link
-                    className="hm-pill hm-shadow-soft bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800"
+                  <PillLink
                     href={`/homes/${home.id}${tile.href}`}
+                    variant="solidElevated"
+                    size="sm"
                   >
                     {tile.action}
-                  </Link>
+                  </PillLink>
                 ) : (
-                  <span className="hm-pill border border-slate-900/10 bg-white px-4 py-2 text-sm font-semibold text-slate-400">
+                  <Pill variant="outlineMutedFaint" size="sm">
                     {tile.action}
-                  </span>
+                  </Pill>
                 )}
               </div>
             </div>

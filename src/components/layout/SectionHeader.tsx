@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import Link from "next/link";
+import PillLink from "@/components/PillLink";
 
 type SectionHeaderProps = {
   eyebrow?: string;
@@ -40,12 +40,9 @@ export default function SectionHeader({
       {actionNode ? (
         actionNode
       ) : actionLabel && actionHref ? (
-        <Link
-          className="hm-pill border border-slate-900/10 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-slate-900/20 hover:bg-slate-50"
-          href={actionHref}
-        >
+        <PillLink href={actionHref} variant="outline" size="xsWide">
           {actionLabel}
-        </Link>
+        </PillLink>
       ) : null}
     </header>
   );
