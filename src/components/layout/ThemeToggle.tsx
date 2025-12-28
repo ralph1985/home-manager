@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
 import PillButton from "@/components/PillButton";
 import { getPreferredTheme, isTheme, themeStorageKey, type Theme } from "@/infrastructure/ui/theme";
@@ -14,16 +14,37 @@ function applyTheme(theme: Theme) {
   document.documentElement.dataset.theme = theme;
 }
 
+function subscribe(callback: () => void) {
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key === themeStorageKey) {
+      callback();
+    }
+  };
+
+  const handleThemeChange = () => callback();
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener("theme-change", handleThemeChange);
+
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener("theme-change", handleThemeChange);
+  };
+}
+
+function getSnapshot(): Theme {
+  const stored = window.localStorage.getItem(themeStorageKey);
+  return stored && isTheme(stored) ? stored : getPreferredTheme();
+}
+
+function getServerSnapshot(): Theme {
+  return "light";
+}
+
 export default function ThemeToggle({ labels }: ThemeToggleProps) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === "undefined") return "light";
-    const stored = window.localStorage.getItem(themeStorageKey);
-    return stored && isTheme(stored) ? stored : getPreferredTheme();
-  });
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   useEffect(() => {
     applyTheme(theme);
-    window.localStorage.setItem(themeStorageKey, theme);
   }, [theme]);
 
   const nextTheme = theme === "dark" ? "light" : "dark";
@@ -37,7 +58,11 @@ export default function ThemeToggle({ labels }: ThemeToggleProps) {
       suppressHydrationWarning
       aria-label={nextLabel}
       title={nextLabel}
-      onClick={() => setTheme(nextTheme)}
+      onClick={() => {
+        applyTheme(nextTheme);
+        window.localStorage.setItem(themeStorageKey, nextTheme);
+        window.dispatchEvent(new Event("theme-change"));
+      }}
     >
       {theme === "dark" ? (
         <svg
