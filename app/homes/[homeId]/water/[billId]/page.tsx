@@ -58,7 +58,7 @@ export default async function WaterBillPage({ params }: WaterBillPageProps) {
       label: labels.waterBill.extraLabels.cancels,
       value: (
         <Link
-          className="text-sm font-semibold text-slate-900 underline decoration-slate-300 underline-offset-4"
+          className="text-sm font-semibold text-[color:var(--text-strong)] underline decoration-slate-300 underline-offset-4"
           href={`/homes/${homeId}/water/${bill.cancelsBill.id}`}
         >
           #{bill.cancelsBill.invoiceNumber ?? bill.cancelsBill.id}

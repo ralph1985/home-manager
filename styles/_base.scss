@@ -9,3 +9,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-body);
 }
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}

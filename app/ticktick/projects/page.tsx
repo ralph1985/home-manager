@@ -33,42 +33,57 @@ export default async function TickTickProjectsPage() {
       />
 
       <section className="mt-8">
-        <Link className="text-sm font-semibold text-slate-500 hover:text-slate-900" href="/">
+        <Link
+          className="text-sm font-semibold text-[color:var(--text-subtle)] hover:text-[color:var(--text-strong)]"
+          href="/"
+        >
           {labels.common.backToHome}
         </Link>
       </section>
 
       <section className="hm-panel mt-6 p-6">
         {status === "missing-token" ? (
-          <p className="text-sm text-slate-600">{labels.ticktickProjects.missingTokenMessage}</p>
+          <p className="text-sm text-[color:var(--text-muted)]">
+            {labels.ticktickProjects.missingTokenMessage}
+          </p>
         ) : status === "error" ? (
-          <p className="text-sm text-slate-600">{labels.ticktickProjects.errorMessage}</p>
+          <p className="text-sm text-[color:var(--text-muted)]">
+            {labels.ticktickProjects.errorMessage}
+          </p>
         ) : projects.length === 0 ? (
-          <p className="text-sm text-slate-600">{labels.ticktickProjects.emptyMessage}</p>
+          <p className="text-sm text-[color:var(--text-muted)]">
+            {labels.ticktickProjects.emptyMessage}
+          </p>
         ) : (
           <div className="space-y-4">
-            <p className="text-sm text-slate-600">{labels.ticktickProjects.hintMessage}</p>
-            <div className="overflow-hidden rounded-2xl border border-slate-200/70">
+            <p className="text-sm text-[color:var(--text-muted)]">
+              {labels.ticktickProjects.hintMessage}
+            </p>
+            <div className="overflow-hidden rounded-2xl border border-[var(--surface-border)]">
               <table className="w-full text-left text-sm">
-                <thead className="bg-slate-50">
+                <thead className="bg-[var(--surface-muted)]">
                   <tr>
-                    <th className="px-4 py-3 font-semibold text-slate-600">
+                    <th className="px-4 py-3 font-semibold text-[color:var(--text-muted)]">
                       {labels.ticktickProjects.tableHeaders.name}
                     </th>
-                    <th className="px-4 py-3 font-semibold text-slate-600">
+                    <th className="px-4 py-3 font-semibold text-[color:var(--text-muted)]">
                       {labels.ticktickProjects.tableHeaders.id}
                     </th>
-                    <th className="px-4 py-3 font-semibold text-slate-600">
+                    <th className="px-4 py-3 font-semibold text-[color:var(--text-muted)]">
                       {labels.ticktickProjects.tableHeaders.status}
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200/70">
+                <tbody className="divide-y divide-[var(--surface-border)]">
                   {projects.map((project) => (
-                    <tr key={project.id} className="bg-white">
-                      <td className="px-4 py-3 font-semibold text-slate-900">{project.name}</td>
-                      <td className="px-4 py-3 font-mono text-xs text-slate-600">{project.id}</td>
-                      <td className="px-4 py-3 text-slate-600">
+                    <tr key={project.id} className="bg-[var(--surface)]">
+                      <td className="px-4 py-3 font-semibold text-[color:var(--text-strong)]">
+                        {project.name}
+                      </td>
+                      <td className="px-4 py-3 font-mono text-xs text-[color:var(--text-muted)]">
+                        {project.id}
+                      </td>
+                      <td className="px-4 py-3 text-[color:var(--text-muted)]">
                         {project.closed
                           ? labels.ticktickProjects.statusClosed
                           : labels.ticktickProjects.statusOpen}

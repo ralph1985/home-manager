@@ -47,7 +47,7 @@ export default async function VehiclePurchasePage({ params }: VehiclePurchasePag
 
       {!purchase ? (
         <section className="mt-12">
-          <div className="hm-panel p-6 text-sm text-slate-600">
+          <div className="hm-panel p-6 text-sm text-[color:var(--text-muted)]">
             {labels.vehiclePurchase.emptyState}
           </div>
         </section>
@@ -264,16 +264,18 @@ export default async function VehiclePurchasePage({ params }: VehiclePurchasePag
 
           <section className="mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
             <div className="hm-panel p-6">
-              <h2 className="text-xl font-semibold text-slate-900">
+              <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">
                 {labels.vehiclePurchase.optionsTitle}
               </h2>
               {purchase.options.length === 0 ? (
-                <p className="mt-4 text-sm text-slate-600">{labels.vehiclePurchase.optionsEmpty}</p>
+                <p className="mt-4 text-sm text-[color:var(--text-muted)]">
+                  {labels.vehiclePurchase.optionsEmpty}
+                </p>
               ) : (
                 <div className="mt-4 overflow-x-auto">
-                  <table className="min-w-full text-left text-sm text-slate-700">
+                  <table className="min-w-full text-left text-sm text-[color:var(--text-default)]">
                     <thead>
-                      <tr className="text-xs uppercase tracking-[0.2em] text-slate-400">
+                      <tr className="text-xs uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
                         <th className="py-2 pr-4">
                           {labels.vehiclePurchase.labels.optionDescription}
                         </th>
@@ -283,10 +285,10 @@ export default async function VehiclePurchasePage({ params }: VehiclePurchasePag
                         <th className="py-2">{labels.vehiclePurchase.labels.optionPvpPrice}</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-200">
+                    <tbody className="divide-y divide-[var(--surface-border)]">
                       {purchase.options.map((option) => (
                         <tr key={option.id}>
-                          <td className="py-3 pr-4 font-medium text-slate-900">
+                          <td className="py-3 pr-4 font-medium text-[color:var(--text-strong)]">
                             {option.description}
                           </td>
                           <td className="py-3 pr-4">{formatCurrency(option.basePrice)}</td>

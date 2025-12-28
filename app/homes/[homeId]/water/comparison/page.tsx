@@ -78,10 +78,10 @@ export default async function WaterComparisonPage({
       />
       <section className="mt-8">
         <form className="hm-panel flex flex-wrap items-end gap-4 p-4" method="get">
-          <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-subtle)]">
             <span>{labels.water.comparison.filters.yearA}</span>
             <select
-              className="rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700"
+              className="rounded-full border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[color:var(--text-default)]"
               name="yearA"
               defaultValue={yearA ?? undefined}
             >
@@ -92,10 +92,10 @@ export default async function WaterComparisonPage({
               ))}
             </select>
           </label>
-          <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-subtle)]">
             <span>{labels.water.comparison.filters.yearB}</span>
             <select
-              className="rounded-full border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700"
+              className="rounded-full border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 text-xs font-semibold text-[color:var(--text-default)]"
               name="yearB"
               defaultValue={yearB ?? undefined}
             >

@@ -107,9 +107,9 @@ export default function YearComparisonChart({ comparison, copy, units }: YearCom
     <section className="mt-6">
       <div className="hm-panel p-6">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-subtle)]">
             <span>{copy.metricLabel}</span>
-            <div className="flex rounded-full border border-slate-200 bg-white">
+            <div className="flex rounded-full border border-[var(--surface-border)] bg-[var(--surface)]">
               {(["amount", "usage"] as const).map((key) => (
                 <button
                   key={key}
@@ -117,7 +117,7 @@ export default function YearComparisonChart({ comparison, copy, units }: YearCom
                   className={`px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] transition ${
                     metric === key
                       ? "rounded-full bg-slate-900 text-white"
-                      : "text-slate-600 hover:text-slate-900"
+                      : "text-[color:var(--text-muted)] hover:text-[color:var(--text-strong)]"
                   }`}
                   onClick={() => setMetric(key)}
                 >

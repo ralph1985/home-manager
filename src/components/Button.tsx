@@ -11,8 +11,8 @@ const baseClassName = [
 const variantClassName = {
   primary: "hm-shadow-soft bg-slate-900 px-4 py-2 text-white hover:bg-slate-800",
   secondary:
-    "border border-slate-900/10 bg-white px-4 py-2 text-slate-700 hover:border-slate-900/20 hover:bg-slate-50",
-  ghost: "bg-transparent px-4 py-2 text-slate-700 hover:bg-slate-900/5",
+    "border border-[var(--surface-border)] bg-[var(--surface)] px-4 py-2 text-[color:var(--text-default)] hover:border-[var(--surface-border-strong)] hover:bg-[var(--surface-muted)]",
+  ghost: "bg-transparent px-4 py-2 text-[color:var(--text-default)] hover:bg-slate-900/5",
   danger: "hm-shadow-soft bg-rose-600 px-4 py-2 text-white hover:bg-rose-700",
 } as const;
 

@@ -9,10 +9,10 @@ type FilterSelectProps = {
 
 export default function FilterSelect({ label, value, options, onChange }: FilterSelectProps) {
   return (
-    <div className="flex items-center gap-2 text-sm text-slate-500">
+    <div className="flex items-center gap-2 text-sm text-[color:var(--text-subtle)]">
       <span className="font-semibold uppercase tracking-[0.2em]">{label}</span>
       <select
-        className="rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700"
+        className="rounded-full border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-1 text-sm text-[color:var(--text-default)]"
         value={value}
         onChange={(event) => onChange(event.target.value)}
       >

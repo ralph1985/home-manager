@@ -26,6 +26,9 @@ export const labels = {
       es: "Español",
       en: "Inglés",
     },
+    themeToggleLabel: "Tema",
+    themeToggleLight: "Activar modo claro",
+    themeToggleDark: "Activar modo oscuro",
   },
   dashboard: {
     eyebrow: "Panel de control",

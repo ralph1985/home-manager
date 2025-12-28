@@ -144,9 +144,9 @@ export default function MaintenanceTable({ rows, emptyMessage, labels }: Mainten
       }
     >
       {sortedRows.length === 0 ? null : (
-        <div className="mt-6 overflow-x-auto rounded-3xl border border-slate-200 bg-white">
-          <table className="min-w-[720px] w-full text-left text-sm text-slate-700">
-            <thead className="bg-slate-50 text-xs uppercase tracking-[0.2em] text-slate-400">
+        <div className="mt-6 overflow-x-auto rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)]">
+          <table className="min-w-[720px] w-full text-left text-sm text-[color:var(--text-default)]">
+            <thead className="bg-[var(--surface-muted)] text-xs uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
               <tr>
                 <th className="px-4 py-3 font-semibold">
                   <SortButton
@@ -222,24 +222,28 @@ export default function MaintenanceTable({ rows, emptyMessage, labels }: Mainten
 
                 return (
                   <tr key={maintenance.id} className="border-t border-slate-100">
-                    <td className="px-4 py-3 font-medium text-slate-600">
+                    <td className="px-4 py-3 font-medium text-[color:var(--text-muted)]">
                       {formatMonthYear(maintenance.serviceDate)}
                     </td>
-                    <td className="px-4 py-3 font-semibold text-slate-900">{maintenance.title}</td>
-                    <td className="px-4 py-3 text-slate-600">
+                    <td className="px-4 py-3 font-semibold text-[color:var(--text-strong)]">
+                      {maintenance.title}
+                    </td>
+                    <td className="px-4 py-3 text-[color:var(--text-muted)]">
                       {maintenance.workshopName ? (
                         <PillTag label={maintenance.workshopName} />
                       ) : (
                         labels.common.emptyValue
                       )}
                     </td>
-                    <td className="px-4 py-3 text-xs text-slate-500">{summaryLabel}</td>
-                    <td className="px-4 py-3 text-right text-lg font-semibold text-slate-900">
+                    <td className="px-4 py-3 text-xs text-[color:var(--text-subtle)]">
+                      {summaryLabel}
+                    </td>
+                    <td className="px-4 py-3 text-right text-lg font-semibold text-[color:var(--text-strong)]">
                       {maintenance.cost != null
                         ? formatCurrency(maintenance.cost)
                         : labels.common.emptyValue}
                     </td>
-                    <td className="px-4 py-3 text-right text-xs text-slate-500">
+                    <td className="px-4 py-3 text-right text-xs text-[color:var(--text-subtle)]">
                       {maintenance.odometerKm != null
                         ? `${kmFormatter.format(maintenance.odometerKm)} ${labels.units.km}`
                         : labels.common.emptyValue}

@@ -20,23 +20,23 @@ export default function ContractPanel({
   return (
     <div className="hm-panel p-6">
       <div className="flex items-center justify-between gap-4">
-        <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
+        <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">{title}</h2>
         {actionNode ? (
           actionNode
         ) : actionLabel && actionHref ? (
           <Link
-            className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 transition hover:text-slate-700"
+            className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-subtle)] transition hover:text-[color:var(--text-default)]"
             href={actionHref}
           >
             {actionLabel}
           </Link>
         ) : null}
       </div>
-      <dl className="mt-4 space-y-3 text-sm text-slate-700">
+      <dl className="mt-4 space-y-3 text-sm text-[color:var(--text-default)]">
         {rows.map((row) => (
           <div key={row.label} className="flex items-center justify-between">
-            <dt className="text-slate-500">{row.label}</dt>
-            <dd className="font-semibold text-slate-900">{row.value}</dd>
+            <dt className="text-[color:var(--text-subtle)]">{row.label}</dt>
+            <dd className="font-semibold text-[color:var(--text-strong)]">{row.value}</dd>
           </div>
         ))}
       </dl>

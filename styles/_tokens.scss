@@ -20,6 +20,12 @@
   --color-sand-200: #f1c7a6;
   --color-sage-200: #b9d7d3;
   --color-sun-200: #f8e6cc;
+  --color-ink-50: #f8fafc;
+  --color-ink-100: #f1f5f9;
+  --color-ink-200: #e2e8f0;
+  --color-ink-300: #cbd5e1;
+  --color-ink-400: #94a3b8;
+  --color-ink-500: #64748b;
   --color-ink-900: #0f172a;
   --color-ink-700: #334155;
   --color-ink-600: #475569;
@@ -29,4 +35,57 @@
   --foreground: var(--color-ink-900);
   --font-body: var(--font-manrope);
   --font-display: var(--font-fraunces);
+
+  --panel-bg: rgba(255, 255, 255, 0.82);
+  --panel-border: rgba(255, 255, 255, 0.7);
+
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --surface-border: #e2e8f0;
+  --surface-border-strong: #cbd5e1;
+
+  --text-strong: var(--color-ink-900);
+  --text-default: var(--color-ink-700);
+  --text-muted: var(--color-ink-600);
+  --text-subtle: var(--color-ink-500);
+  --text-faint: var(--color-ink-400);
+  --text-accent: #0f766e;
+  --text-success: #047857;
+  --text-warning: #b45309;
+  --text-danger: #b91c1c;
+
+  --glow-sand: rgba(241, 199, 166, 0.6);
+  --glow-sage: rgba(185, 215, 211, 0.7);
+  --glow-sun: rgba(248, 230, 204, 0.8);
+}
+
+[data-theme="dark"] {
+  --color-paper: #0b1220;
+  --background: #0b1220;
+  --foreground: var(--color-ink-50);
+
+  --shadow-soft: 0 12px 36px -20px rgba(0, 0, 0, 0.65);
+  --shadow-card: 0 20px 48px -32px rgba(0, 0, 0, 0.7);
+
+  --panel-bg: rgba(15, 23, 42, 0.88);
+  --panel-border: rgba(148, 163, 184, 0.2);
+
+  --surface: #0f172a;
+  --surface-muted: #111827;
+  --surface-border: rgba(148, 163, 184, 0.24);
+  --surface-border-strong: rgba(148, 163, 184, 0.36);
+
+  --text-strong: var(--color-ink-50);
+  --text-default: var(--color-ink-200);
+  --text-muted: var(--color-ink-300);
+  --text-subtle: var(--color-ink-400);
+  --text-faint: var(--color-ink-500);
+  --text-accent: #5eead4;
+  --text-success: #6ee7b7;
+  --text-warning: #fbbf24;
+  --text-danger: #fca5a5;
+
+  --glow-sand: rgba(96, 78, 56, 0.35);
+  --glow-sage: rgba(45, 78, 78, 0.35);
+  --glow-sun: rgba(92, 84, 52, 0.35);
 }

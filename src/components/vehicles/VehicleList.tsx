@@ -24,14 +24,14 @@ export default async function VehicleList({ title, emptyMessage, vehicles }: Veh
   return (
     <section className="mt-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h2 className="text-2xl font-semibold text-slate-900">{title}</h2>
-        <span className="text-sm text-slate-500">
+        <h2 className="text-2xl font-semibold text-[color:var(--text-strong)]">{title}</h2>
+        <span className="text-sm text-[color:var(--text-subtle)]">
           {formatCountLabel(vehicles.length, labels.vehiclesList.countLabel)}
         </span>
       </div>
 
       {vehicles.length === 0 ? (
-        <div className="hm-panel mt-6 p-6 text-slate-600">{emptyMessage}</div>
+        <div className="hm-panel mt-6 p-6 text-[color:var(--text-muted)]">{emptyMessage}</div>
       ) : (
         <ul className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {vehicles.map((vehicle) => {

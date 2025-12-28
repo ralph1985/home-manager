@@ -24,7 +24,9 @@ export default async function HomesPage() {
 
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-2xl font-semibold text-slate-900">{labels.homes.selectorTitle}</h2>
+          <h2 className="text-2xl font-semibold text-[color:var(--text-strong)]">
+            {labels.homes.selectorTitle}
+          </h2>
         </div>
 
         <ul className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">

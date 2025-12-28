@@ -18,6 +18,17 @@
 - Variantes disponibles: `solid`, `solidElevated`, `outline`, `outlineMuted`, `outlineMutedFaint`, `outlineSoft`, `ghost`, `danger`.
 - Tamaños disponibles: `xs`, `xsWide`, `sm`, `md`.
 
+## Modo oscuro (MVP)
+
+- El tema se aplica con `data-theme` en `document.documentElement`.
+- El toggle vive en `src/components/layout/ThemeToggle.tsx` y guarda en `localStorage` (`hm_theme`).
+- Los tokens clave se redefinen en `styles/_tokens.scss` para `data-theme="dark"`.
+- Overrides minimos en `styles/_base.scss` ajustan los textos `text-slate-*` mas usados.
+- Script inline en `app/layout.tsx` aplica el tema antes de pintar para evitar flash.
+- Superficies y bordes usan tokens `--surface`, `--surface-muted`, `--surface-border`, `--surface-border-strong`.
+- Texto usa tokens semanticos: `--text-strong`, `--text-default`, `--text-muted`, `--text-subtle`, `--text-faint`.
+- Tokens extra de texto: `--text-accent`, `--text-success`, `--text-warning`, `--text-danger`.
+
 ## Plan de limpieza/uso de tokens
 
 Estado actual (uso real):

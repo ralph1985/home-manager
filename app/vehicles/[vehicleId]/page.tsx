@@ -127,7 +127,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
               label: labels.vehicleDetail.labels.lastCost,
               value:
                 latestMaintenance?.cost != null ? (
-                  <span className="text-lg font-semibold text-slate-900">
+                  <span className="text-lg font-semibold text-[color:var(--text-strong)]">
                     {formatCurrency(latestMaintenance.cost)}
                   </span>
                 ) : (
@@ -141,10 +141,10 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
       {vehicle.notes ? (
         <section className="mt-6">
           <div className="hm-panel p-6">
-            <h2 className="text-xl font-semibold text-slate-900">
+            <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">
               {labels.vehicleDetail.notesTitle}
             </h2>
-            <p className="mt-3 text-sm text-slate-600">{vehicle.notes}</p>
+            <p className="mt-3 text-sm text-[color:var(--text-muted)]">{vehicle.notes}</p>
           </div>
         </section>
       ) : null}

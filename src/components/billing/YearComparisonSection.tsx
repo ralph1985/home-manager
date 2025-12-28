@@ -53,10 +53,10 @@ function formatEurPerUnit(value: number | null, labels: Labels, usageUnit: strin
 }
 
 function deltaClass(value: number | null) {
-  if (value == null) return "text-slate-500";
-  if (value > 0) return "text-rose-600";
-  if (value < 0) return "text-emerald-600";
-  return "text-slate-500";
+  if (value == null) return "text-[color:var(--text-subtle)]";
+  if (value > 0) return "text-[color:var(--text-danger)]";
+  if (value < 0) return "text-[color:var(--text-success)]";
+  return "text-[color:var(--text-subtle)]";
 }
 
 function renderBillLinks(bills: YearComparisonBillRef[], billPathPrefix: string, labels: Labels) {
@@ -87,7 +87,7 @@ export default function YearComparisonSection({
   if (!comparison) {
     return (
       <section className="mt-12">
-        <div className="hm-panel p-6 text-slate-600">{copy.empty}</div>
+        <div className="hm-panel p-6 text-[color:var(--text-muted)]">{copy.empty}</div>
       </section>
     );
   }
@@ -98,40 +98,46 @@ export default function YearComparisonSection({
     <section className="mt-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold text-slate-900">
+          <h2 className="text-2xl font-semibold text-[color:var(--text-strong)]">
             {copy.title} {yearA} vs {yearB}
           </h2>
-          <p className="mt-1 text-sm text-slate-500">{copy.description}</p>
+          <p className="mt-1 text-sm text-[color:var(--text-subtle)]">{copy.description}</p>
         </div>
       </div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-3">
         <div className="hm-panel p-5">
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{yearA}</p>
-          <p className="mt-2 text-2xl font-semibold text-slate-900">
+          <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
+            {yearA}
+          </p>
+          <p className="mt-2 text-2xl font-semibold text-[color:var(--text-strong)]">
             {formatCurrency(summary.yearA.amount)}
           </p>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-[color:var(--text-subtle)]">
             {formatMetric(summary.yearA.usage, usageUnit, labels, 1)}
           </p>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[color:var(--text-faint)]">
             {formatEurPerUnit(summary.yearA.eurPerUnit, labels, usageUnit)}
           </p>
         </div>
         <div className="hm-panel p-5">
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{yearB}</p>
-          <p className="mt-2 text-2xl font-semibold text-slate-900">
+          <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
+            {yearB}
+          </p>
+          <p className="mt-2 text-2xl font-semibold text-[color:var(--text-strong)]">
             {formatCurrency(summary.yearB.amount)}
           </p>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm text-[color:var(--text-subtle)]">
             {formatMetric(summary.yearB.usage, usageUnit, labels, 1)}
           </p>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-[color:var(--text-faint)]">
             {formatEurPerUnit(summary.yearB.eurPerUnit, labels, usageUnit)}
           </p>
         </div>
         <div className="hm-panel p-5">
-          <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{copy.deltaLabel}</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
+            {copy.deltaLabel}
+          </p>
           <p className={`mt-2 text-2xl font-semibold ${deltaClass(summary.deltaAmount)}`}>
             {summary.deltaAmount != null
               ? formatCurrency(summary.deltaAmount)
@@ -159,9 +165,9 @@ export default function YearComparisonSection({
         units={{ amount: labels.units.eur, usage: usageUnit }}
       />
 
-      <div className="mt-6 overflow-x-auto rounded-3xl border border-slate-200 bg-white">
-        <table className="min-w-[980px] w-full text-left text-sm text-slate-700">
-          <thead className="bg-slate-50 text-xs uppercase tracking-[0.2em] text-slate-400">
+      <div className="mt-6 overflow-x-auto rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)]">
+        <table className="min-w-[980px] w-full text-left text-sm text-[color:var(--text-default)]">
+          <thead className="bg-[var(--surface-muted)] text-xs uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
             <tr>
               <th className="px-4 py-3 font-semibold">{copy.columns.month}</th>
               <th className="px-4 py-3 font-semibold">{`${copy.columns.amount} ${yearA}`}</th>
@@ -179,39 +185,39 @@ export default function YearComparisonSection({
           <tbody>
             {months.map((month) => (
               <tr key={month.month} className="border-t border-slate-100">
-                <td className="px-4 py-3 font-medium text-slate-600">
+                <td className="px-4 py-3 font-medium text-[color:var(--text-muted)]">
                   {formatMonthLabel(month.month)}
                 </td>
-                <td className="px-4 py-3 text-slate-900">
+                <td className="px-4 py-3 text-[color:var(--text-strong)]">
                   {month.yearA ? formatCurrency(month.yearA.amount) : labels.common.emptyValue}
                 </td>
-                <td className="px-4 py-3 text-slate-500">
+                <td className="px-4 py-3 text-[color:var(--text-subtle)]">
                   {month.yearA
                     ? formatMetric(month.yearA.usage, usageUnit, labels, 1)
                     : labels.common.emptyValue}
                 </td>
-                <td className="px-4 py-3 text-xs text-slate-400">
+                <td className="px-4 py-3 text-xs text-[color:var(--text-faint)]">
                   {month.yearA
                     ? formatEurPerUnit(month.yearA.eurPerUnit, labels, usageUnit)
                     : labels.common.emptyValue}
                 </td>
-                <td className="px-4 py-3 text-xs text-slate-500">
+                <td className="px-4 py-3 text-xs text-[color:var(--text-subtle)]">
                   {renderBillLinks(month.billsA, billPathPrefix, labels)}
                 </td>
-                <td className="px-4 py-3 text-slate-900">
+                <td className="px-4 py-3 text-[color:var(--text-strong)]">
                   {month.yearB ? formatCurrency(month.yearB.amount) : labels.common.emptyValue}
                 </td>
-                <td className="px-4 py-3 text-slate-500">
+                <td className="px-4 py-3 text-[color:var(--text-subtle)]">
                   {month.yearB
                     ? formatMetric(month.yearB.usage, usageUnit, labels, 1)
                     : labels.common.emptyValue}
                 </td>
-                <td className="px-4 py-3 text-xs text-slate-400">
+                <td className="px-4 py-3 text-xs text-[color:var(--text-faint)]">
                   {month.yearB
                     ? formatEurPerUnit(month.yearB.eurPerUnit, labels, usageUnit)
                     : labels.common.emptyValue}
                 </td>
-                <td className="px-4 py-3 text-xs text-slate-500">
+                <td className="px-4 py-3 text-xs text-[color:var(--text-subtle)]">
                   {renderBillLinks(month.billsB, billPathPrefix, labels)}
                 </td>
                 <td className={`px-4 py-3 text-sm font-semibold ${deltaClass(month.deltaAmount)}`}>

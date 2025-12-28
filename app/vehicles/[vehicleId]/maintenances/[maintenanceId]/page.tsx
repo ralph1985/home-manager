@@ -93,12 +93,12 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
 
       <section className="mt-6">
         <div className="hm-panel p-6">
-          <h2 className="text-xl font-semibold text-slate-900">
+          <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">
             {labels.maintenanceDetail.workDetailTitle}
           </h2>
 
           {details.general.length > 0 ? (
-            <div className="mt-4 text-sm text-slate-600">
+            <div className="mt-4 text-sm text-[color:var(--text-muted)]">
               {details.general.map((line) => (
                 <p key={line}>{line}</p>
               ))}
@@ -107,10 +107,10 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
 
           {details.jobs.length > 0 ? (
             <div className="mt-6">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
                 {labels.maintenanceDetail.sections.jobs}
               </h3>
-              <ul className="mt-3 space-y-2 text-sm text-slate-600">
+              <ul className="mt-3 space-y-2 text-sm text-[color:var(--text-muted)]">
                 {details.jobs.map((job) => (
                   <li key={job}>{job}</li>
                 ))}
@@ -120,12 +120,12 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
 
           {details.parts.length > 0 ? (
             <div className="mt-6">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
                 {labels.maintenanceDetail.sections.parts}
               </h3>
-              <div className="mt-3 overflow-hidden rounded-2xl border border-slate-200">
-                <table className="w-full text-left text-sm text-slate-700">
-                  <thead className="bg-slate-50 text-xs uppercase tracking-[0.2em] text-slate-400">
+              <div className="mt-3 overflow-hidden rounded-2xl border border-[var(--surface-border)]">
+                <table className="w-full text-left text-sm text-[color:var(--text-default)]">
+                  <thead className="bg-[var(--surface-muted)] text-xs uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
                     <tr>
                       <th className="px-4 py-3 font-semibold">
                         {labels.maintenanceDetail.table.concept}
@@ -139,7 +139,7 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
                     {details.parts.map((part) => (
                       <tr key={part.label} className="border-t border-slate-100">
                         <td className="px-4 py-3">{part.label}</td>
-                        <td className="px-4 py-3 text-right font-semibold text-slate-900">
+                        <td className="px-4 py-3 text-right font-semibold text-[color:var(--text-strong)]">
                           {part.amount != null
                             ? formatCurrency(part.amount)
                             : labels.common.emptyValue}
@@ -154,19 +154,19 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
 
           {details.totals.length > 0 ? (
             <div className="mt-6">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
                 {labels.maintenanceDetail.sections.totals}
               </h3>
-              <div className="mt-3 overflow-hidden rounded-2xl border border-slate-200">
-                <table className="w-full text-left text-sm text-slate-700">
+              <div className="mt-3 overflow-hidden rounded-2xl border border-[var(--surface-border)]">
+                <table className="w-full text-left text-sm text-[color:var(--text-default)]">
                   <tbody>
                     {details.totals.map((total) => (
                       <tr key={total.label} className="border-t border-slate-100">
                         <td
                           className={`px-4 py-3 font-medium ${
                             total.label.toLowerCase().includes("total")
-                              ? "text-slate-900"
-                              : "text-slate-500"
+                              ? "text-[color:var(--text-strong)]"
+                              : "text-[color:var(--text-subtle)]"
                           }`}
                         >
                           {total.label}
@@ -174,8 +174,8 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
                         <td
                           className={`px-4 py-3 text-right ${
                             total.label.toLowerCase().includes("total")
-                              ? "text-lg font-semibold text-slate-900"
-                              : "font-semibold text-slate-900"
+                              ? "text-lg font-semibold text-[color:var(--text-strong)]"
+                              : "font-semibold text-[color:var(--text-strong)]"
                           }`}
                         >
                           {total.amount != null
@@ -194,7 +194,9 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
           details.jobs.length === 0 &&
           details.parts.length === 0 &&
           details.totals.length === 0 ? (
-            <p className="mt-3 text-sm text-slate-600">{labels.common.noAdditionalDetails}</p>
+            <p className="mt-3 text-sm text-[color:var(--text-muted)]">
+              {labels.common.noAdditionalDetails}
+            </p>
           ) : null}
         </div>
       </section>

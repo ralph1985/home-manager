@@ -44,24 +44,26 @@ export default async function Home() {
 
       <section className="mt-4 flex justify-end">
         <TickTickProjectsLink
-          className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 hover:text-slate-900"
+          className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-subtle)] hover:text-[color:var(--text-strong)]"
           label={labels.dashboard.ticktickProjectsLink}
         />
       </section>
 
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-2xl font-semibold text-slate-900">
+          <h2 className="text-2xl font-semibold text-[color:var(--text-strong)]">
             {labels.dashboard.homesSectionTitle}
           </h2>
         </div>
 
         <div className="hm-panel mt-6 flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <h3 className="text-xl font-semibold text-slate-900">
+            <h3 className="text-xl font-semibold text-[color:var(--text-strong)]">
               {labels.dashboard.homesCardTitle}
             </h3>
-            <p className="mt-2 text-sm text-slate-600">{labels.dashboard.homesCardDescription}</p>
+            <p className="mt-2 text-sm text-[color:var(--text-muted)]">
+              {labels.dashboard.homesCardDescription}
+            </p>
           </div>
           <PillLink href="/homes" variant="solidElevated" size="sm">
             {labels.dashboard.homesLinkLabel}
@@ -71,17 +73,17 @@ export default async function Home() {
 
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-2xl font-semibold text-slate-900">
+          <h2 className="text-2xl font-semibold text-[color:var(--text-strong)]">
             {labels.dashboard.vehiclesSectionTitle}
           </h2>
         </div>
 
         <div className="hm-panel mt-6 flex flex-col gap-4 p-6 md:flex-row md:items-center md:justify-between">
           <div>
-            <h3 className="text-xl font-semibold text-slate-900">
+            <h3 className="text-xl font-semibold text-[color:var(--text-strong)]">
               {labels.dashboard.vehiclesCardTitle}
             </h3>
-            <p className="mt-2 text-sm text-slate-600">
+            <p className="mt-2 text-sm text-[color:var(--text-muted)]">
               {labels.dashboard.vehiclesCardDescription}
             </p>
           </div>

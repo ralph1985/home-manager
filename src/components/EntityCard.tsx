@@ -44,21 +44,25 @@ export default function EntityCard({
             {icon}
           </div>
           <div className="text-right">
-            <span className="rounded-full bg-slate-900/5 px-3 py-1 text-xs font-semibold text-slate-500">
+            <span className="rounded-full bg-slate-900/5 px-3 py-1 text-xs font-semibold text-[color:var(--text-subtle)]">
               {badge}
             </span>
             {stat ? (
               <div className="mt-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
                   {stat.label}
                 </p>
-                <p className="mt-2 text-lg font-semibold text-slate-900">{stat.value}</p>
+                <p className="mt-2 text-lg font-semibold text-[color:var(--text-strong)]">
+                  {stat.value}
+                </p>
               </div>
             ) : null}
           </div>
         </div>
-        <h3 className="mt-6 text-2xl font-semibold text-slate-900">{title}</h3>
-        {description ? <p className="mt-2 text-sm text-slate-600">{description}</p> : null}
+        <h3 className="mt-6 text-2xl font-semibold text-[color:var(--text-strong)]">{title}</h3>
+        {description ? (
+          <p className="mt-2 text-sm text-[color:var(--text-muted)]">{description}</p>
+        ) : null}
       </div>
       {actions.length > 0 ? (
         <div className="mt-6 flex flex-wrap items-center gap-3">

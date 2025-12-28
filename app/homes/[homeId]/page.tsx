@@ -69,7 +69,7 @@ export default async function HomeDetailPage({ params }: { params: Promise<{ hom
 
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="text-2xl font-semibold text-slate-900">
+          <h2 className="text-2xl font-semibold text-[color:var(--text-strong)]">
             {labels.homeDetail.servicesTitle}
           </h2>
         </div>
@@ -77,8 +77,10 @@ export default async function HomeDetailPage({ params }: { params: Promise<{ hom
         <div className="mt-6 grid gap-6 md:grid-cols-2">
           {tiles.map((tile) => (
             <div key={tile.title} className="hm-panel p-6">
-              <h3 className="text-xl font-semibold text-slate-900">{tile.title}</h3>
-              <p className="mt-2 text-sm text-slate-600">{tile.description}</p>
+              <h3 className="text-xl font-semibold text-[color:var(--text-strong)]">
+                {tile.title}
+              </h3>
+              <p className="mt-2 text-sm text-[color:var(--text-muted)]">{tile.description}</p>
               <div className="mt-6">
                 {tile.href ? (
                   <PillLink

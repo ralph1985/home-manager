@@ -32,9 +32,11 @@ export default function ConsumptionChart({
     return (
       <section className="mt-6">
         <div className="hm-panel p-6">
-          <h2 className="text-xl font-semibold text-slate-900">{title}</h2>
-          {subtitle ? <p className="mt-1 text-sm text-slate-500">{subtitle}</p> : null}
-          <p className="mt-4 text-sm text-slate-500">{emptyMessage}</p>
+          <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">{title}</h2>
+          {subtitle ? (
+            <p className="mt-1 text-sm text-[color:var(--text-subtle)]">{subtitle}</p>
+          ) : null}
+          <p className="mt-4 text-sm text-[color:var(--text-subtle)]">{emptyMessage}</p>
         </div>
       </section>
     );

@@ -92,13 +92,15 @@ export default function HomeRemindersSection({
     <section className="mt-12">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--text-faint)]">
             {labels.dashboard.homeRemindersEyebrow}
           </p>
-          <h2 className="mt-2 text-2xl font-semibold text-slate-900">
+          <h2 className="mt-2 text-2xl font-semibold text-[color:var(--text-strong)]">
             {labels.dashboard.homeRemindersTitle}
           </h2>
-          <p className="mt-2 text-sm text-slate-600">{labels.dashboard.homeRemindersDescription}</p>
+          <p className="mt-2 text-sm text-[color:var(--text-muted)]">
+            {labels.dashboard.homeRemindersDescription}
+          </p>
         </div>
         <Pill variant="outlineMuted" size="sm">
           {visibleCount}
@@ -107,41 +109,45 @@ export default function HomeRemindersSection({
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {status === "missing-token" ? (
-          <div className="hm-panel p-6 text-sm text-slate-600 lg:col-span-3">
+          <div className="hm-panel p-6 text-sm text-[color:var(--text-muted)] lg:col-span-3">
             {labels.dashboard.homeRemindersMissingToken}
           </div>
         ) : status === "missing-project" ? (
-          <div className="hm-panel p-6 text-sm text-slate-600 lg:col-span-3">
+          <div className="hm-panel p-6 text-sm text-[color:var(--text-muted)] lg:col-span-3">
             {labels.dashboard.homeRemindersMissingProject}
           </div>
         ) : status === "error" ? (
-          <div className="hm-panel p-6 text-sm text-slate-600 lg:col-span-3">
+          <div className="hm-panel p-6 text-sm text-[color:var(--text-muted)] lg:col-span-3">
             {labels.dashboard.homeRemindersError}
           </div>
         ) : visibleCount === 0 ? (
-          <div className="hm-panel p-6 text-sm text-slate-600 lg:col-span-3">
+          <div className="hm-panel p-6 text-sm text-[color:var(--text-muted)] lg:col-span-3">
             {labels.dashboard.homeRemindersEmpty}
           </div>
         ) : (
           buckets.map((bucket) => (
             <div key={bucket.key} className="hm-panel p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--text-faint)]">
                 {bucket.title}
               </p>
-              <h3 className="mt-2 text-lg font-semibold text-slate-900">{bucket.description}</h3>
+              <h3 className="mt-2 text-lg font-semibold text-[color:var(--text-strong)]">
+                {bucket.description}
+              </h3>
               {bucket.reminders.length === 0 ? (
-                <p className="mt-4 text-sm text-slate-500">
+                <p className="mt-4 text-sm text-[color:var(--text-subtle)]">
                   {labels.dashboard.homeRemindersBucketEmpty}
                 </p>
               ) : (
-                <ul className="mt-4 space-y-3 text-sm text-slate-600">
+                <ul className="mt-4 space-y-3 text-sm text-[color:var(--text-muted)]">
                   {bucket.reminders.map((reminder) => (
                     <li key={reminder.id} className="flex flex-col gap-1">
-                      <span className="font-semibold text-slate-900">{reminder.title}</span>
-                      <span className="text-xs uppercase tracking-[0.2em] text-slate-400">
+                      <span className="font-semibold text-[color:var(--text-strong)]">
+                        {reminder.title}
+                      </span>
+                      <span className="text-xs uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
                         {reminder.projectName}
                       </span>
-                      <span className="text-xs text-slate-500">
+                      <span className="text-xs text-[color:var(--text-subtle)]">
                         {formatReminderDate(
                           locale,
                           reminder.dueDate,

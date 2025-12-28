@@ -166,9 +166,9 @@ export default function BillsTable({ rows, emptyMessage, labels, chart }: BillsT
       }
     >
       {sortedRows.length === 0 ? null : (
-        <div className="mt-6 overflow-x-auto rounded-3xl border border-slate-200 bg-white">
-          <table className="min-w-[980px] w-full text-left text-sm text-slate-700">
-            <thead className="bg-slate-50 text-xs uppercase tracking-[0.2em] text-slate-400">
+        <div className="mt-6 overflow-x-auto rounded-3xl border border-[var(--surface-border)] bg-[var(--surface)]">
+          <table className="min-w-[980px] w-full text-left text-sm text-[color:var(--text-default)]">
+            <thead className="bg-[var(--surface-muted)] text-xs uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
               <tr>
                 <th className="px-4 py-3 font-semibold">
                   <SortButton
@@ -235,10 +235,10 @@ export default function BillsTable({ rows, emptyMessage, labels, chart }: BillsT
 
                 return (
                   <tr key={bill.id} className="border-t border-slate-100">
-                    <td className="px-4 py-3 font-medium text-slate-600">
+                    <td className="px-4 py-3 font-medium text-[color:var(--text-muted)]">
                       {formatMonthYear(bill.issueDate)}
                     </td>
-                    <td className="px-4 py-3 font-semibold text-slate-900">
+                    <td className="px-4 py-3 font-semibold text-[color:var(--text-strong)]">
                       {bill.invoiceNumber ?? labels.bills.invoiceFallback}
                     </td>
                     <td className="px-4 py-3 text-right">
@@ -246,14 +246,14 @@ export default function BillsTable({ rows, emptyMessage, labels, chart }: BillsT
                         {labels.common.view}
                       </PillLink>
                     </td>
-                    <td className="px-4 py-3 text-slate-600">
+                    <td className="px-4 py-3 text-[color:var(--text-muted)]">
                       {bill.providerName ? (
                         <PillTag label={bill.providerName} />
                       ) : (
                         labels.common.emptyValue
                       )}
                     </td>
-                    <td className="px-4 py-3 text-slate-600">
+                    <td className="px-4 py-3 text-[color:var(--text-muted)]">
                       {bill.billType ? (
                         <span
                           className={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] ${billTypeBadgeClass(
@@ -266,19 +266,21 @@ export default function BillsTable({ rows, emptyMessage, labels, chart }: BillsT
                         labels.common.emptyValue
                       )}
                     </td>
-                    <td className="px-4 py-3 text-xs text-slate-500">{periodLabel}</td>
-                    <td className="px-4 py-3 text-right text-lg font-semibold text-slate-900">
+                    <td className="px-4 py-3 text-xs text-[color:var(--text-subtle)]">
+                      {periodLabel}
+                    </td>
+                    <td className="px-4 py-3 text-right text-lg font-semibold text-[color:var(--text-strong)]">
                       {formatCurrency(bill.totalAmount)}
                     </td>
-                    <td className="px-4 py-3 text-right text-sm font-semibold text-slate-700">
+                    <td className="px-4 py-3 text-right text-sm font-semibold text-[color:var(--text-default)]">
                       {bill.totalToPay != null
                         ? formatCurrency(bill.totalToPay)
                         : labels.common.emptyValue}
                     </td>
-                    <td className="px-4 py-3 text-xs text-slate-500">
+                    <td className="px-4 py-3 text-xs text-[color:var(--text-subtle)]">
                       {bill.pdfUrl ? (
                         <a
-                          className="text-xs font-semibold text-slate-900 underline decoration-slate-300 underline-offset-4"
+                          className="text-xs font-semibold text-[color:var(--text-strong)] underline decoration-slate-300 underline-offset-4"
                           href={bill.pdfUrl}
                           target="_blank"
                           rel="noreferrer"
@@ -289,13 +291,13 @@ export default function BillsTable({ rows, emptyMessage, labels, chart }: BillsT
                         labels.bills.pdfPending
                       )}
                     </td>
-                    <td className="px-4 py-3 text-right text-xs text-slate-500">
+                    <td className="px-4 py-3 text-right text-xs text-[color:var(--text-subtle)]">
                       {bill.consumptionLabel ?? labels.common.emptyValue}
                     </td>
-                    <td className="px-4 py-3 text-xs text-slate-500">
+                    <td className="px-4 py-3 text-xs text-[color:var(--text-subtle)]">
                       {bill.cancelsHref ? (
                         <Link
-                          className="text-xs font-semibold text-slate-700 underline decoration-slate-300 underline-offset-4"
+                          className="text-xs font-semibold text-[color:var(--text-default)] underline decoration-slate-300 underline-offset-4"
                           href={bill.cancelsHref}
                         >
                           #{bill.cancelsInvoiceNumber ?? labels.bills.invoiceFallback}

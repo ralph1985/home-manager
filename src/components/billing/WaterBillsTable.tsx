@@ -39,8 +39,8 @@ export default function WaterBillsTable({
   return (
     <section className="mt-12">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h2 className="text-2xl font-semibold text-slate-900">{title}</h2>
-        <span className="text-sm text-slate-500">
+        <h2 className="text-2xl font-semibold text-[color:var(--text-strong)]">{title}</h2>
+        <span className="text-sm text-[color:var(--text-subtle)]">
           {formatCountLabel(bills.length, labels.bills.countLabel)}
         </span>
       </div>

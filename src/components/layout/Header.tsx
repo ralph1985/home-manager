@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import LocaleSwitch from "@/components/layout/LocaleSwitch";
+import ThemeToggle from "@/components/layout/ThemeToggle";
 import { getServerLabels, getServerLocale } from "@/infrastructure/ui/labels/server";
 
 export default async function Header() {
@@ -15,15 +16,18 @@ export default async function Header() {
         </div>
         <div>
           <Link
-            className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 hover:text-slate-900"
+            className="text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--text-subtle)] hover:text-[color:var(--text-strong)]"
             href="/"
           >
             {labels.meta.title}
           </Link>
-          <p className="text-sm text-slate-500">{labels.meta.description}</p>
+          <p className="text-sm text-[color:var(--text-subtle)]">{labels.meta.description}</p>
         </div>
       </div>
-      <LocaleSwitch currentLocale={locale} labels={labels.common} />
+      <div className="flex items-center gap-3">
+        <LocaleSwitch currentLocale={locale} labels={labels.common} />
+        <ThemeToggle labels={labels.common} />
+      </div>
     </header>
   );
 }

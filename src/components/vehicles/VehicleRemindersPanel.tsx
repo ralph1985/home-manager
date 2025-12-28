@@ -102,17 +102,19 @@ export default function VehicleRemindersPanel({
     <section className="mt-12">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
+          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[color:var(--text-faint)]">
             {labels.vehicleDetail.remindersEyebrow}
           </p>
-          <h2 className="mt-2 text-2xl font-semibold text-slate-900">
+          <h2 className="mt-2 text-2xl font-semibold text-[color:var(--text-strong)]">
             {labels.vehicleDetail.remindersTitle}
           </h2>
-          <p className="mt-2 text-sm text-slate-600">{labels.vehicleDetail.remindersDescription}</p>
+          <p className="mt-2 text-sm text-[color:var(--text-muted)]">
+            {labels.vehicleDetail.remindersDescription}
+          </p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           <TickTickProjectsLink
-            className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 hover:text-slate-900"
+            className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-subtle)] hover:text-[color:var(--text-strong)]"
             label={labels.vehicleDetail.remindersProjectsLink}
           />
           <Pill variant="outlineMuted" size="sm">
@@ -121,17 +123,17 @@ export default function VehicleRemindersPanel({
         </div>
       </div>
 
-      <div className="hm-panel mt-6 divide-y divide-slate-200/70">
+      <div className="hm-panel mt-6 divide-y divide-[var(--surface-border)]">
         {status === "missing-token" ? (
-          <div className="p-6 text-sm text-slate-500">
+          <div className="p-6 text-sm text-[color:var(--text-subtle)]">
             {labels.vehicleDetail.remindersMissingTokenMessage}
           </div>
         ) : status === "missing-project" ? (
-          <div className="p-6 text-sm text-slate-500">
+          <div className="p-6 text-sm text-[color:var(--text-subtle)]">
             {labels.vehicleDetail.remindersMissingProjectMessage}
           </div>
         ) : status === "error" ? (
-          <div className="p-6 text-sm text-slate-500">
+          <div className="p-6 text-sm text-[color:var(--text-subtle)]">
             {labels.vehicleDetail.remindersErrorMessage}
           </div>
         ) : (
@@ -170,7 +172,7 @@ export default function VehicleRemindersPanel({
                     "border uppercase tracking-[0.2em]",
                     activeTab === tab.key
                       ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-slate-200/70 bg-white text-slate-500 hover:text-slate-900",
+                      : "border-[var(--surface-border)] bg-[var(--surface)] text-[color:var(--text-subtle)] hover:text-[color:var(--text-strong)]",
                   ].join(" ")}
                   type="button"
                   onClick={() => setActiveTab(tab.key)}
@@ -181,11 +183,11 @@ export default function VehicleRemindersPanel({
             </div>
 
             {reminders.length === 0 ? (
-              <div className="p-6 text-sm text-slate-500">
+              <div className="p-6 text-sm text-[color:var(--text-subtle)]">
                 {labels.vehicleDetail.remindersEmpty}
               </div>
             ) : activeReminders.length === 0 ? (
-              <div className="p-6 text-sm text-slate-500">
+              <div className="p-6 text-sm text-[color:var(--text-subtle)]">
                 {labels.vehicleDetail.remindersEmpty}
               </div>
             ) : (
@@ -201,15 +203,21 @@ export default function VehicleRemindersPanel({
                       }`}
                     >
                       <div>
-                        <p className="text-sm font-semibold text-slate-900">{reminder.title}</p>
-                        <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+                        <p className="text-sm font-semibold text-[color:var(--text-strong)]">
+                          {reminder.title}
+                        </p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
                           {reminder.projectName}
                         </p>
                       </div>
-                      <div className={`text-sm ${isOverdue ? "text-rose-700" : "text-slate-600"}`}>
+                      <div
+                        className={`text-sm ${isOverdue ? "text-[color:var(--text-danger)]" : "text-[color:var(--text-muted)]"}`}
+                      >
                         <span
                           className={`mr-2 text-xs font-semibold uppercase tracking-[0.3em] ${
-                            isOverdue ? "text-rose-500" : "text-slate-400"
+                            isOverdue
+                              ? "text-[color:var(--text-danger)]"
+                              : "text-[color:var(--text-faint)]"
                           }`}
                         >
                           {isOverdue

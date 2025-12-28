@@ -16,11 +16,14 @@ export const pillVariantClassName = {
   solid: "bg-slate-900 text-white hover:bg-slate-800",
   solidElevated: "hm-shadow-soft bg-slate-900 text-white hover:bg-slate-800",
   outline:
-    "border border-slate-900/10 bg-white text-slate-700 hover:border-slate-900/20 hover:bg-slate-50",
-  outlineMuted: "border border-slate-900/10 bg-white text-slate-500",
-  outlineMutedFaint: "border border-slate-900/10 bg-white text-slate-400",
-  outlineSoft: "border border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50",
-  ghost: "bg-transparent text-slate-700 hover:bg-slate-900/5",
+    "border border-[var(--surface-border)] bg-[var(--surface)] text-[color:var(--text-default)] hover:border-[var(--surface-border-strong)] hover:bg-[var(--surface-muted)]",
+  outlineMuted:
+    "border border-[var(--surface-border)] bg-[var(--surface)] text-[color:var(--text-subtle)]",
+  outlineMutedFaint:
+    "border border-[var(--surface-border)] bg-[var(--surface)] text-[color:var(--text-faint)]",
+  outlineSoft:
+    "border border-[var(--surface-border)] bg-[var(--surface)] text-[color:var(--text-muted)] hover:border-[var(--surface-border-strong)] hover:bg-[var(--surface-muted)]",
+  ghost: "bg-transparent text-[color:var(--text-default)] hover:bg-slate-900/5",
   danger: "hm-shadow-soft bg-rose-600 text-white hover:bg-rose-700",
 } as const;
 

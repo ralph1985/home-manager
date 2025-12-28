@@ -45,10 +45,10 @@ export default function LocaleSwitch({ currentLocale, labels }: LocaleSwitchProp
   };
 
   return (
-    <label className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
+    <label className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-subtle)]">
       <span>{labels.languageLabel}</span>
       <select
-        className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-700"
+        className="rounded-full border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-1 text-xs font-semibold text-[color:var(--text-default)]"
         value={locale}
         onChange={(event) => handleChange(event.target.value)}
       >

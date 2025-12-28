@@ -23,14 +23,14 @@ export default function TableShell({
   labels,
 }: TableShellProps) {
   if (totalCount === 0) {
-    return <div className="hm-panel mt-6 p-6 text-slate-600">{emptyMessage}</div>;
+    return <div className="hm-panel mt-6 p-6 text-[color:var(--text-muted)]">{emptyMessage}</div>;
   }
 
   return (
     <div className="mt-6">
-      <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4">
+      <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-[var(--surface-border)] bg-[var(--surface)] p-4">
         {filters}
-        <div className="text-sm text-slate-400">
+        <div className="text-sm text-[color:var(--text-faint)]">
           {formatCountLabel(filteredCount, labels.tableShell.resultsLabel)}
         </div>
       </div>
@@ -38,7 +38,9 @@ export default function TableShell({
       {afterFilters}
 
       {filteredCount === 0 ? (
-        <div className="hm-panel mt-6 p-6 text-slate-600">{labels.tableShell.noResults}</div>
+        <div className="hm-panel mt-6 p-6 text-[color:var(--text-muted)]">
+          {labels.tableShell.noResults}
+        </div>
       ) : (
         children
       )}
