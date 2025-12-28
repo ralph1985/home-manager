@@ -274,6 +274,7 @@ model Vehicle {
   licensePlate String?
   vin          String?
   notes        String?
+  ticktickProjectId String?
   maintenances VehicleMaintenance[]
 
   @@unique([licensePlate])

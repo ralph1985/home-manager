@@ -3,10 +3,34 @@ import Link from "next/link";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import { getServerLabels } from "@/infrastructure/ui/labels/server";
+import TickTickProjectsLink from "@/components/ticktick/TickTickProjectsLink";
+import HomeRemindersSection from "@/components/ticktick/HomeRemindersSection";
+import { getLabels } from "@/infrastructure/ui/labels";
+import { getServerLocale } from "@/infrastructure/ui/labels/server";
+import { listProjectReminders } from "@/usecases/ticktickReminders";
+import { listVehiclesUseCase } from "@/usecases/vehicles";
 
 export default async function Home() {
-  const labels = await getServerLabels();
+  const locale = await getServerLocale();
+  const labels = getLabels(locale);
+  const vehicles = await listVehiclesUseCase();
+  const projectIds = Array.from(
+    new Set(vehicles.map((vehicle) => vehicle.ticktickProjectId).filter(Boolean))
+  );
+  const remindersResults = await Promise.all(
+    projectIds.map((projectId) => listProjectReminders(projectId))
+  );
+  const reminders = remindersResults
+    .filter((result) => result.status === "ready")
+    .flatMap((result) => result.reminders);
+  const remindersStatus =
+    projectIds.length === 0
+      ? "missing-project"
+      : remindersResults.some((result) => result.status === "missing-token")
+        ? "missing-token"
+        : remindersResults.some((result) => result.status === "error")
+          ? "error"
+          : "ready";
 
   return (
     <PageShell>
@@ -18,6 +42,13 @@ export default async function Home() {
           <InfoPanel label={labels.common.panelActiveLabel} value={labels.dashboard.panelCode} />
         }
       />
+
+      <section className="mt-4 flex justify-end">
+        <TickTickProjectsLink
+          className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 hover:text-slate-900"
+          label={labels.dashboard.ticktickProjectsLink}
+        />
+      </section>
 
       <section className="mt-12">
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -67,22 +98,14 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="hm-panel mt-12 p-6 md:p-8">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
-              {labels.dashboard.nextStepEyebrow}
-            </p>
-            <h3 className="mt-2 text-xl font-semibold text-slate-900">
-              {labels.dashboard.nextStepTitle}
-            </h3>
-            <p className="mt-2 text-sm text-slate-600">{labels.dashboard.nextStepDescription}</p>
-          </div>
-          <span className="hm-pill border border-slate-900/10 bg-white px-4 py-2 text-sm font-semibold text-slate-400">
-            {labels.dashboard.nextStepTag}
-          </span>
-        </div>
-      </section>
+      <div className="mt-16">
+        <HomeRemindersSection
+          labels={labels}
+          locale={locale}
+          reminders={reminders}
+          status={remindersStatus}
+        />
+      </div>
     </PageShell>
   );
 }

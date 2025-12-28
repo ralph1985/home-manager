@@ -27,6 +27,7 @@
 /data/*.sqlite
 /data/backups/
 /data/snapshots/
+/docs/ticktick-api/
 
 # debug
 npm-debug.log*

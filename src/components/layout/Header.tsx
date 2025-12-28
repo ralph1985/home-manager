@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import LocaleSwitch from "@/components/layout/LocaleSwitch";
 import { getServerLabels, getServerLocale } from "@/infrastructure/ui/labels/server";
 
@@ -12,9 +14,12 @@ export default async function Header() {
           {labels.dashboard.panelCode}
         </div>
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">
+          <Link
+            className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 hover:text-slate-900"
+            href="/"
+          >
             {labels.meta.title}
-          </p>
+          </Link>
           <p className="text-sm text-slate-500">{labels.meta.description}</p>
         </div>
       </div>

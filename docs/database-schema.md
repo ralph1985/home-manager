@@ -15,6 +15,7 @@ El esquema vive en `prisma/schema.prisma` y se versiona junto a las migraciones.
 - `GasCostCategory` categorías de coste de gas.
 - `GasBillCostLine` desglose de costes de gas.
 - `WaterBill` facturas de agua.
+- `Vehicle` vehículos (incluye `ticktickProjectId` opcional para recordatorios).
 
 ## Base local
 

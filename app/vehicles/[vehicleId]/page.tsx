@@ -6,7 +6,10 @@ import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import VehicleMaintenanceList from "@/components/vehicles/VehicleMaintenanceList";
-import { getServerLabels } from "@/infrastructure/ui/labels/server";
+import VehicleRemindersPanel from "@/components/vehicles/VehicleRemindersPanel";
+import { getLabels } from "@/infrastructure/ui/labels";
+import { getServerLocale } from "@/infrastructure/ui/labels/server";
+import { listProjectReminders } from "@/usecases/ticktickReminders";
 import { getVehicleUseCase, listVehicleMaintenancesUseCase } from "@/usecases/vehicles";
 
 export const runtime = "nodejs";
@@ -18,7 +21,8 @@ type VehicleDetailPageProps = {
 const kmFormatter = new Intl.NumberFormat("es-ES");
 
 export default async function VehicleDetailPage({ params }: VehicleDetailPageProps) {
-  const labels = await getServerLabels();
+  const locale = await getServerLocale();
+  const labels = getLabels(locale);
   const { vehicleId: rawVehicleId } = await params;
   const vehicleId = Number.parseInt(rawVehicleId, 10);
 
@@ -32,7 +36,10 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
     notFound();
   }
 
-  const maintenances = await listVehicleMaintenancesUseCase(vehicleId);
+  const [maintenances, remindersResult] = await Promise.all([
+    listVehicleMaintenancesUseCase(vehicleId),
+    listProjectReminders(vehicle.ticktickProjectId),
+  ]);
   const latestMaintenance = maintenances[0];
 
   const vehicleTitle = vehicle.name ?? `${vehicle.brand} ${vehicle.model}`;
@@ -115,6 +122,13 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
           </div>
         </section>
       ) : null}
+
+      <VehicleRemindersPanel
+        labels={labels}
+        locale={locale}
+        reminders={remindersResult.reminders}
+        status={remindersResult.status}
+      />
 
       <VehicleMaintenanceList
         title={labels.vehicleDetail.maintenanceHistoryTitle}
