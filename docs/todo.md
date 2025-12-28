@@ -7,3 +7,4 @@
 - [ ] Generar reporte CSV/JSON con cambios por factura tras importar PDFs.
 - [ ] Validar que el total cuadre con líneas + IVA ± ajustes y marcar discrepancias.
 - [ ] Completar fichas de vehículos (alias, matrícula, VIN, notas).
+- [ ] Hacer que las backups de la base de datos se vayan guardando automáticamente en OneDrive.
