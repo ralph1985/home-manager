@@ -275,10 +275,68 @@ model Vehicle {
   vin          String?
   notes        String?
   ticktickProjectId String?
+  purchase     VehiclePurchase?
   maintenances VehicleMaintenance[]
 
   @@unique([licensePlate])
   @@unique([vin])
+}
+
+model VehiclePurchase {
+  id                   Int                      @id @default(autoincrement())
+  vehicleId            Int                      @unique
+  offerIssueDate       DateTime
+  offerValidUntil      DateTime?
+  offerNumber          String?
+  customerNumber       String?
+  dealerName           String
+  dealerAddress        String?
+  dealerPhone          String?
+  dealerEmail          String?
+  advisorName          String?
+  advisorPhone         String?
+  advisorEmail         String?
+  customerFirstName    String?
+  customerLastName     String?
+  customerPhone        String?
+  customerEmail        String?
+  vehicleModel         String
+  vehicleTransmission  String?
+  vehicleTrim          String?
+  vehicleFuel          String?
+  vehiclePowerKw       Int?
+  vehiclePowerCv       Int?
+  vehicleEmissionsCo2WltpGkm Int?
+  optionsTotalBase     Decimal?
+  optionsTotalPvp      Decimal?
+  servicesTotal        Decimal?
+  accessoriesTotal     Decimal?
+  vehicleBasePrice     Decimal?
+  vehiclePvpPrice      Decimal?
+  campaignBase         Decimal?
+  campaignPvp          Decimal?
+  vatAmount            Decimal?
+  registrationTaxAmount Decimal?
+  taxDeduction         Decimal?
+  vehicleSubtotalBase  Decimal?
+  vehicleSubtotalPvp   Decimal?
+  summaryServices      Decimal?
+  summaryAccessories   Decimal?
+  summarySupplies      Decimal?
+  totalWithoutTradeIn  Decimal?
+  tradeInValue         Decimal?
+  totalToPay           Decimal?
+  vehicle              Vehicle                  @relation(fields: [vehicleId], references: [id])
+  options              VehiclePurchaseOption[]
+}
+
+model VehiclePurchaseOption {
+  id          Int             @id @default(autoincrement())
+  purchaseId  Int
+  description String
+  basePrice   Decimal
+  pvpPrice    Decimal
+  purchase    VehiclePurchase @relation(fields: [purchaseId], references: [id])
 }
 
 model VehicleMaintenance {

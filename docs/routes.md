@@ -31,4 +31,5 @@
 
 - `/vehicles` — listado de vehiculos.
 - `/vehicles/[vehicleId]` — detalle de vehiculo.
+- `/vehicles/[vehicleId]/purchase` — detalle de compra del vehiculo.
 - `/vehicles/[vehicleId]/maintenances/[maintenanceId]` — detalle de mantenimiento.

@@ -1,6 +1,7 @@
 import {
   getVehicleById,
   getVehicleMaintenanceById,
+  getVehiclePurchaseByVehicleId,
   listVehicleMaintenances,
   listVehicles,
 } from "@/infrastructure/vehicleRepository";
@@ -35,4 +36,12 @@ export async function getVehicleMaintenanceUseCase(vehicleId: number, maintenanc
   }
 
   return getVehicleMaintenanceById(vehicleId, maintenanceId);
+}
+
+export async function getVehiclePurchaseUseCase(vehicleId: number) {
+  if (!Number.isInteger(vehicleId) || vehicleId <= 0) {
+    return null;
+  }
+
+  return getVehiclePurchaseByVehicleId(vehicleId);
 }

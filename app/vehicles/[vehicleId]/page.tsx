@@ -10,7 +10,11 @@ import VehicleRemindersPanel from "@/components/vehicles/VehicleRemindersPanel";
 import { getLabels } from "@/infrastructure/ui/labels";
 import { getServerLocale } from "@/infrastructure/ui/labels/server";
 import { listProjectReminders } from "@/usecases/ticktickReminders";
-import { getVehicleUseCase, listVehicleMaintenancesUseCase } from "@/usecases/vehicles";
+import {
+  getVehiclePurchaseUseCase,
+  getVehicleUseCase,
+  listVehicleMaintenancesUseCase,
+} from "@/usecases/vehicles";
 
 export const runtime = "nodejs";
 
@@ -36,9 +40,10 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
     notFound();
   }
 
-  const [maintenances, remindersResult] = await Promise.all([
+  const [maintenances, remindersResult, purchase] = await Promise.all([
     listVehicleMaintenancesUseCase(vehicleId),
     listProjectReminders(vehicle.ticktickProjectId),
+    getVehiclePurchaseUseCase(vehicleId),
   ]);
   const latestMaintenance = maintenances[0];
 
@@ -63,6 +68,8 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
       <section className="mt-12 grid gap-6 md:grid-cols-2">
         <ContractPanel
           title={labels.vehicleDetail.sheetTitle}
+          actionLabel={purchase ? labels.vehicleDetail.purchaseActionLabel : undefined}
+          actionHref={purchase ? `/vehicles/${vehicle.id}/purchase` : undefined}
           rows={[
             { label: labels.vehicleDetail.labels.brand, value: vehicle.brand },
             { label: labels.vehicleDetail.labels.model, value: vehicle.model },
@@ -77,6 +84,25 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
             {
               label: labels.vehicleDetail.labels.vin,
               value: vehicle.vin ?? labels.common.emptyValue,
+            },
+            {
+              label: labels.vehicleDetail.labels.purchaseDate,
+              value: purchase ? formatDate(purchase.offerIssueDate) : labels.common.emptyValue,
+            },
+            {
+              label: labels.vehicleDetail.labels.purchaseTotal,
+              value:
+                purchase?.totalToPay != null
+                  ? formatCurrency(purchase.totalToPay)
+                  : labels.common.emptyValue,
+            },
+            {
+              label: labels.vehicleDetail.labels.purchaseModel,
+              value: purchase?.vehicleModel ?? labels.common.emptyValue,
+            },
+            {
+              label: labels.vehicleDetail.labels.purchaseDealer,
+              value: purchase?.dealerName ?? labels.common.emptyValue,
             },
           ]}
         />

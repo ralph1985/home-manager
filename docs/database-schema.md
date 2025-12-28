@@ -16,6 +16,8 @@ El esquema vive en `prisma/schema.prisma` y se versiona junto a las migraciones.
 - `GasBillCostLine` desglose de costes de gas.
 - `WaterBill` facturas de agua.
 - `Vehicle` vehículos (incluye `ticktickProjectId` opcional para recordatorios).
+- `VehiclePurchase` compra final asociada a un vehículo (datos de oferta, detalles económicos y resumen).
+- `VehiclePurchaseOption` opciones/equipamiento incluidos en la compra del vehículo.
 
 ## Base local
 
