@@ -15,6 +15,10 @@ type VehicleRemindersPanelProps = {
   locale: Locale;
 };
 
+function getStartOfToday(now: Date) {
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+}
+
 function formatReminderDate(locale: Locale, value: Date | null, emptyLabel: string) {
   if (!value) return emptyLabel;
   return new Intl.DateTimeFormat(locale, {
@@ -23,15 +27,17 @@ function formatReminderDate(locale: Locale, value: Date | null, emptyLabel: stri
   }).format(value);
 }
 
-type ReminderTabKey = "overdueLong" | "overdueRecent" | "today" | "upcoming" | "noDate";
+type ReminderBucketKey = "overdueLong" | "overdueRecent" | "today" | "upcoming" | "noDate";
+type ReminderTabKey = "recent" | "overdueLong" | "upcoming" | "noDate";
+type ReminderBuckets = Record<ReminderBucketKey, Reminder[]>;
 
-function bucketReminders(reminders: Reminder[]) {
+function bucketReminders(reminders: Reminder[]): ReminderBuckets {
   const now = new Date();
-  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+  const startOfToday = getStartOfToday(now);
   const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
   const threshold = new Date(startOfToday.getTime() - 30 * 24 * 60 * 60 * 1000);
 
-  const buckets: Record<ReminderTabKey, Reminder[]> = {
+  const buckets: ReminderBuckets = {
     overdueLong: [],
     overdueRecent: [],
     today: [],
@@ -68,9 +74,14 @@ export default function VehicleRemindersPanel({
   labels,
   locale,
 }: VehicleRemindersPanelProps) {
-  const [activeTab, setActiveTab] = useState<ReminderTabKey>("today");
+  const [activeTab, setActiveTab] = useState<ReminderTabKey>("recent");
+  const startOfToday = getStartOfToday(new Date());
   const buckets = useMemo(() => bucketReminders(reminders), [reminders]);
-  const activeReminders = buckets[activeTab];
+  const recentReminders = useMemo(
+    () => [...buckets.overdueRecent, ...buckets.today],
+    [buckets.overdueRecent, buckets.today]
+  );
+  const activeReminders = activeTab === "recent" ? recentReminders : buckets[activeTab];
 
   const headerStatus =
     status === "ready"
@@ -123,14 +134,9 @@ export default function VehicleRemindersPanel({
               {(
                 [
                   {
-                    key: "overdueRecent",
-                    label: labels.vehicleDetail.remindersTabs.overdueRecent,
-                    count: buckets.overdueRecent.length,
-                  },
-                  {
-                    key: "today",
-                    label: labels.vehicleDetail.remindersTabs.today,
-                    count: buckets.today.length,
+                    key: "recent",
+                    label: labels.vehicleDetail.remindersTabs.recent,
+                    count: recentReminders.length,
                   },
                   {
                     key: "upcoming",
@@ -174,31 +180,43 @@ export default function VehicleRemindersPanel({
               </div>
             ) : (
               <ul className="flex flex-col">
-                {activeReminders.map((reminder) => (
-                  <li
-                    key={reminder.id}
-                    className="flex flex-col gap-2 px-6 py-4 md:flex-row md:items-center md:justify-between"
-                  >
-                    <div>
-                      <p className="text-sm font-semibold text-slate-900">{reminder.title}</p>
-                      <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
-                        {reminder.projectName}
-                      </p>
-                    </div>
-                    <div className="text-sm text-slate-600">
-                      <span className="mr-2 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
-                        {labels.vehicleDetail.remindersDueLabel}
-                      </span>
-                      <span>
-                        {formatReminderDate(
-                          locale,
-                          reminder.dueDate,
-                          labels.vehicleDetail.remindersNoDueDate
-                        )}
-                      </span>
-                    </div>
-                  </li>
-                ))}
+                {activeReminders.map((reminder) => {
+                  const isOverdue = Boolean(reminder.dueDate && reminder.dueDate < startOfToday);
+
+                  return (
+                    <li
+                      key={reminder.id}
+                      className={`flex flex-col gap-2 border-l-4 px-6 py-4 md:flex-row md:items-center md:justify-between ${
+                        isOverdue ? "border-rose-300 bg-rose-50/60" : "border-transparent"
+                      }`}
+                    >
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900">{reminder.title}</p>
+                        <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+                          {reminder.projectName}
+                        </p>
+                      </div>
+                      <div className={`text-sm ${isOverdue ? "text-rose-700" : "text-slate-600"}`}>
+                        <span
+                          className={`mr-2 text-xs font-semibold uppercase tracking-[0.3em] ${
+                            isOverdue ? "text-rose-500" : "text-slate-400"
+                          }`}
+                        >
+                          {isOverdue
+                            ? labels.vehicleDetail.remindersOverdueLabel
+                            : labels.vehicleDetail.remindersDueLabel}
+                        </span>
+                        <span>
+                          {formatReminderDate(
+                            locale,
+                            reminder.dueDate,
+                            labels.vehicleDetail.remindersNoDueDate
+                          )}
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </>
