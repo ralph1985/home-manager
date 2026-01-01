@@ -18,6 +18,7 @@ model Home {
   waterSupplies WaterSupplyPoint[]
   gasBills     GasBill[]
   gasSupplies  GasSupplyPoint[]
+  gasBoiler    GasBoiler?
 }
 
 model Provider {
@@ -195,6 +196,38 @@ model GasSupplyPoint {
   bills           GasBill[]
 
   @@unique([cups])
+}
+
+model GasBoiler {
+  id                         Int      @id @default(autoincrement())
+  homeId                     Int      @unique
+  equipmentType              String?
+  modelName                  String?
+  officialServiceCompany     String?
+  commissioningDate          DateTime?
+  lastAnnualReviewDate       DateTime?
+  maintenancePlan            String?
+  maintenanceContractNumber  String?
+  maintenanceContractStart   DateTime?
+  maintenanceContractEnd     DateTime?
+  home                       Home     @relation(fields: [homeId], references: [id])
+  maintenanceEvents          GasBoilerMaintenanceEvent[]
+}
+
+model GasBoilerMaintenanceEvent {
+  id            Int       @id @default(autoincrement())
+  boilerId      Int
+  eventDate     DateTime?
+  periodLabel   String?
+  title         String
+  provider      String?
+  amount        Decimal?
+  currency      String?
+  paymentMethod String?
+  notes         String?
+  coverageNotes String?
+  expiresOn     DateTime?
+  boiler        GasBoiler @relation(fields: [boilerId], references: [id])
 }
 
 model GasBill {
