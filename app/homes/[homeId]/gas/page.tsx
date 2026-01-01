@@ -44,6 +44,9 @@ export default async function GasPage({ params }: GasPageProps) {
             <PillLink href={`/homes/${home.id}`} variant="outline" size="xsWide">
               {labels.common.backToPanel}
             </PillLink>
+            <PillLink href={`/homes/${home.id}/gas/boiler`} variant="outline" size="xsWide">
+              {labels.gas.boilerActionLabel}
+            </PillLink>
             <PillLink href={`/homes/${home.id}/gas/comparison`} variant="solid" size="xsWide">
               {labels.gas.comparison.actionLabel}
             </PillLink>
