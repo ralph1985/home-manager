@@ -50,30 +50,30 @@ export default function ConsumptionChart({
     title: {
       text: title,
       align: "left",
-      style: { fontSize: "20px", fontWeight: "600", color: "#0f172a" },
+      style: { fontSize: "20px", fontWeight: "600", color: "var(--text-strong)" },
     },
     subtitle: subtitle
       ? {
           text: subtitle,
           align: "left",
-          style: { fontSize: "12px", color: "#64748b" },
+          style: { fontSize: "12px", color: "var(--text-subtle)" },
         }
       : undefined,
     xAxis: {
       type: "datetime",
       tickPixelInterval: 120,
-      labels: { style: { color: "#64748b" } },
+      labels: { style: { color: "var(--text-subtle)" } },
     },
     yAxis: yAxisTitles.map((title, index) => ({
-      title: { text: title, style: { color: "#0f172a" } },
-      labels: { style: { color: "#64748b" } },
+      title: { text: title, style: { color: "var(--text-strong)" } },
+      labels: { style: { color: "var(--text-subtle)" } },
       opposite: index > 0,
       offset: index === 2 ? 60 : undefined,
     })),
     legend: {
       align: "left",
       verticalAlign: "top",
-      itemStyle: { color: "#0f172a", fontWeight: "600" },
+      itemStyle: { color: "var(--text-strong)", fontWeight: "600" },
     },
     tooltip: {
       shared: true,

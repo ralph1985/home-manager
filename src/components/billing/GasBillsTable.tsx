@@ -1,8 +1,10 @@
 "use client";
 
 import BillsTable from "@/components/billing/BillsTable";
+import { formatCurrency } from "@/components/billing/billingFormatters";
 import ConsumptionChart from "@/components/billing/ConsumptionChart";
 import { formatCountLabel, type Labels } from "@/infrastructure/ui/labels";
+import { parseDate } from "@/components/tables/tableUtils";
 
 type GasBillRow = {
   id: number;
@@ -109,18 +111,47 @@ export default function GasBillsTable({ labels, title, emptyMessage, bills }: Ga
               : []),
           ];
 
+          const msPerDay = 1000 * 60 * 60 * 24;
+          const totalDays = rows.reduce((total, row) => {
+            if (!row.periodStart || !row.periodEnd) return total;
+            const start = parseDate(row.periodStart).getTime();
+            const end = parseDate(row.periodEnd).getTime();
+            if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start) return total;
+            return total + Math.max(1, Math.round((end - start) / msPerDay));
+          }, 0);
+          const totalAmount = rows.reduce((total, row) => {
+            const raw =
+              row.totalAmountValue != null
+                ? row.totalAmountValue
+                : Number(row.totalAmount.toString());
+            return Number.isFinite(raw) ? total + raw : total;
+          }, 0);
+          const dailyAverage = totalDays > 0 ? totalAmount / totalDays : null;
+
           return (
-            <ConsumptionChart
-              title={labels.gas.chartTitle}
-              subtitle={labels.gas.chartSubtitle}
-              emptyMessage={labels.gas.chartEmpty}
-              series={series}
-              yAxisTitles={[
-                labels.gas.chartAxisKwh,
-                labels.gas.chartAxisM3,
-                labels.gas.chartAxisAmount,
-              ]}
-            />
+            <div className="mt-6 space-y-4">
+              <ConsumptionChart
+                title={labels.gas.chartTitle}
+                subtitle={labels.gas.chartSubtitle}
+                emptyMessage={labels.gas.chartEmpty}
+                series={series}
+                yAxisTitles={[
+                  labels.gas.chartAxisKwh,
+                  labels.gas.chartAxisM3,
+                  labels.gas.chartAxisAmount,
+                ]}
+              />
+              {dailyAverage != null ? (
+                <div className="hm-panel flex flex-wrap items-center justify-between gap-3 px-6 py-4 text-sm">
+                  <span className="text-[color:var(--text-subtle)]">
+                    {labels.gas.dailyAverageLabel}
+                  </span>
+                  <span className="text-base font-semibold text-[color:var(--text-strong)]">
+                    {formatCurrency(dailyAverage)}
+                  </span>
+                </div>
+              ) : null}
+            </div>
           );
         }}
       />

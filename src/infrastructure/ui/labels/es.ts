@@ -273,6 +273,7 @@ export const labels = {
     chartAxisKwh: "kWh",
     chartAxisM3: "m³",
     chartAxisAmount: "€",
+    dailyAverageLabel: "Gasto medio por día (facturas filtradas)",
     comparison: {
       title: "Comparativa anual",
       description: "Importes, consumo y coste medio por kWh mes a mes.",
