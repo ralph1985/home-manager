@@ -58,7 +58,7 @@ No hay framework de pruebas aún. Cuando lo definas:
 
 No hay historial de commits. Establece convenciones pronto:
 
-- Asuntos breves e imperativos (e.g., "Add initial project skeleton").
+- Asuntos breves, imperativos y con Conventional Commits (e.g., "chore: configure turbopack root").
 - Cuerpo corto si el cambio es relevante.
 - En PRs: descripción clara, issues enlazados y pasos de validación.
 - Hooks: Husky con `pre-commit` (lint, typecheck, format) y `commit-msg` (Conventional Commits).
