@@ -229,6 +229,8 @@ export const labels = {
     chartSeriesAmount: "Importe (€)",
     chartAxisM3: "m³",
     chartAxisAmount: "€",
+    totalConsumptionLabel: "Consumo total (facturas filtradas)",
+    dailyConsumptionLabel: "Consumo medio por día (facturas filtradas)",
     dailyAverageLabel: "Gasto medio por día (facturas filtradas)",
     comparison: {
       title: "Comparativa anual",
@@ -612,5 +614,6 @@ export const labels = {
     m3: "m³",
     km: "km",
     eur: "€",
+    liters: "L",
   },
 } as const;

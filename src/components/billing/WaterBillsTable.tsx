@@ -32,6 +32,10 @@ type WaterBillsTableProps = {
   bills: WaterBillRow[];
 };
 
+const volumeFormatter = new Intl.NumberFormat("es-ES", {
+  maximumFractionDigits: 0,
+});
+
 export default function WaterBillsTable({
   labels,
   title,
@@ -107,7 +111,24 @@ export default function WaterBillsTable({
               : []),
           ];
 
-          const { dailyAverage } = calculateDailyAverage(rows);
+          const { dailyAverage, totalDays } = calculateDailyAverage(rows);
+          const totalConsumption = rows.reduce((total, row) => {
+            if (row.consumptionM3 == null) return total;
+            return total + row.consumptionM3;
+          }, 0);
+          const hasConsumption = rows.some((row) => row.consumptionM3 != null);
+          const totalConsumptionLiters = totalConsumption * 1000;
+          const totalConsumptionLabel = hasConsumption
+            ? `${volumeFormatter.format(totalConsumptionLiters)} ${labels.units.liters}`
+            : null;
+          const dailyConsumptionLiters =
+            totalDays > 0 && hasConsumption ? totalConsumptionLiters / totalDays : null;
+          const dailyConsumptionLabel =
+            dailyConsumptionLiters != null
+              ? `${volumeFormatter.format(dailyConsumptionLiters)} ${labels.units.liters}`
+              : null;
+          const showSummary =
+            totalConsumptionLabel || dailyAverage != null || dailyConsumptionLabel != null;
 
           return (
             <div className="mt-6 space-y-4">
@@ -118,14 +139,38 @@ export default function WaterBillsTable({
                 series={series}
                 yAxisTitles={[labels.water.chartAxisM3, labels.water.chartAxisAmount]}
               />
-              {dailyAverage != null ? (
-                <div className="hm-panel flex flex-wrap items-center justify-between gap-3 px-6 py-4 text-sm">
-                  <span className="text-[color:var(--text-subtle)]">
-                    {labels.water.dailyAverageLabel}
-                  </span>
-                  <span className="text-base font-semibold text-[color:var(--text-strong)]">
-                    {formatCurrency(dailyAverage)}
-                  </span>
+              {showSummary ? (
+                <div className="hm-panel flex flex-wrap items-center justify-between gap-6 px-6 py-4 text-sm">
+                  {totalConsumptionLabel ? (
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[color:var(--text-subtle)]">
+                        {labels.water.totalConsumptionLabel}
+                      </span>
+                      <span className="text-base font-semibold text-[color:var(--text-strong)]">
+                        {totalConsumptionLabel}
+                      </span>
+                    </div>
+                  ) : null}
+                  {dailyConsumptionLabel ? (
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[color:var(--text-subtle)]">
+                        {labels.water.dailyConsumptionLabel}
+                      </span>
+                      <span className="text-base font-semibold text-[color:var(--text-strong)]">
+                        {dailyConsumptionLabel}
+                      </span>
+                    </div>
+                  ) : null}
+                  {dailyAverage != null ? (
+                    <div className="flex flex-col gap-1">
+                      <span className="text-[color:var(--text-subtle)]">
+                        {labels.water.dailyAverageLabel}
+                      </span>
+                      <span className="text-base font-semibold text-[color:var(--text-strong)]">
+                        {formatCurrency(dailyAverage)}
+                      </span>
+                    </div>
+                  ) : null}
                 </div>
               ) : null}
             </div>

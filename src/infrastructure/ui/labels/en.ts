@@ -229,6 +229,8 @@ export const labels = {
     chartSeriesAmount: "Amount (€)",
     chartAxisM3: "m³",
     chartAxisAmount: "€",
+    totalConsumptionLabel: "Total consumption (filtered bills)",
+    dailyConsumptionLabel: "Average daily consumption (filtered bills)",
     dailyAverageLabel: "Average cost per day (filtered bills)",
     comparison: {
       title: "Yearly comparison",
@@ -612,5 +614,6 @@ export const labels = {
     m3: "m³",
     km: "km",
     eur: "€",
+    liters: "L",
   },
 } as const;
