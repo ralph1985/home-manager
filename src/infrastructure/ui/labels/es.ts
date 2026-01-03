@@ -186,6 +186,7 @@ export const labels = {
     chartSeriesAmount: "Importe (€)",
     chartAxisKwh: "kWh",
     chartAxisAmount: "€",
+    dailyAverageLabel: "Gasto medio por día (facturas filtradas)",
     comparison: {
       title: "Comparativa anual",
       description: "Importes, consumo y coste medio por kWh mes a mes.",
@@ -228,6 +229,7 @@ export const labels = {
     chartSeriesAmount: "Importe (€)",
     chartAxisM3: "m³",
     chartAxisAmount: "€",
+    dailyAverageLabel: "Gasto medio por día (facturas filtradas)",
     comparison: {
       title: "Comparativa anual",
       description: "Importes, consumo y coste medio por m³ mes a mes.",

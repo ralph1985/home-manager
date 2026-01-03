@@ -186,6 +186,7 @@ export const labels = {
     chartSeriesAmount: "Amount (€)",
     chartAxisKwh: "kWh",
     chartAxisAmount: "€",
+    dailyAverageLabel: "Average cost per day (filtered bills)",
     comparison: {
       title: "Yearly comparison",
       description: "Monthly amounts, consumption, and average €/kWh.",
@@ -228,6 +229,7 @@ export const labels = {
     chartSeriesAmount: "Amount (€)",
     chartAxisM3: "m³",
     chartAxisAmount: "€",
+    dailyAverageLabel: "Average cost per day (filtered bills)",
     comparison: {
       title: "Yearly comparison",
       description: "Monthly amounts, consumption, and average €/m³.",

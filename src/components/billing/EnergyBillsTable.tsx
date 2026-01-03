@@ -1,7 +1,9 @@
 "use client";
 
 import BillsTable from "@/components/billing/BillsTable";
+import { formatCurrency } from "@/components/billing/billingFormatters";
 import ConsumptionChart from "@/components/billing/ConsumptionChart";
+import { calculateDailyAverage } from "@/components/billing/dailyAverage";
 import { formatCountLabel, type Labels } from "@/infrastructure/ui/labels";
 
 type EnergyBillRow = {
@@ -97,14 +99,28 @@ export default function EnergyBillsTable({
               : []),
           ];
 
+          const { dailyAverage } = calculateDailyAverage(rows);
+
           return (
-            <ConsumptionChart
-              title={labels.energy.chartTitle}
-              subtitle={labels.energy.chartSubtitle}
-              emptyMessage={labels.energy.chartEmpty}
-              series={series}
-              yAxisTitles={[labels.energy.chartAxisKwh, labels.energy.chartAxisAmount]}
-            />
+            <div className="mt-6 space-y-4">
+              <ConsumptionChart
+                title={labels.energy.chartTitle}
+                subtitle={labels.energy.chartSubtitle}
+                emptyMessage={labels.energy.chartEmpty}
+                series={series}
+                yAxisTitles={[labels.energy.chartAxisKwh, labels.energy.chartAxisAmount]}
+              />
+              {dailyAverage != null ? (
+                <div className="hm-panel flex flex-wrap items-center justify-between gap-3 px-6 py-4 text-sm">
+                  <span className="text-[color:var(--text-subtle)]">
+                    {labels.energy.dailyAverageLabel}
+                  </span>
+                  <span className="text-base font-semibold text-[color:var(--text-strong)]">
+                    {formatCurrency(dailyAverage)}
+                  </span>
+                </div>
+              ) : null}
+            </div>
           );
         }}
       />
