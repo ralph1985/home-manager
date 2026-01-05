@@ -1,4 +1,5 @@
 import PillLink from "@/components/PillLink";
+import Link from "next/link";
 
 type EntityCardAction = {
   label: string;
@@ -18,6 +19,7 @@ type EntityCardProps = {
   icon: string;
   stat?: EntityCardStat;
   actions?: EntityCardAction[];
+  href?: string;
 };
 
 const actionVariants: Record<
@@ -35,53 +37,79 @@ export default function EntityCard({
   icon,
   stat,
   actions = [],
+  href,
 }: EntityCardProps) {
-  return (
-    <li className="hm-panel group flex flex-col justify-between p-6 transition hover:-translate-y-1">
-      <div>
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-lg font-semibold text-white">
-            {icon}
-          </div>
-          <div className="text-right">
-            <span className="rounded-full bg-slate-900/5 px-3 py-1 text-xs font-semibold text-[color:var(--text-subtle)]">
-              {badge}
-            </span>
-            {stat ? (
-              <div className="mt-3">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
-                  {stat.label}
-                </p>
-                <p className="mt-2 text-lg font-semibold text-[color:var(--text-strong)]">
-                  {stat.value}
-                </p>
-              </div>
-            ) : null}
-          </div>
+  const isLinked = Boolean(href) && actions.length === 0;
+  const containerClassName = [
+    "hm-panel group flex flex-col justify-between transition hover:-translate-y-1",
+    isLinked ? "p-0" : "p-6",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const header = (
+    <div>
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-lg font-semibold text-white">
+          {icon}
         </div>
-        <h3 className="mt-6 text-2xl font-semibold text-[color:var(--text-strong)]">{title}</h3>
-        {description ? (
-          <p className="mt-2 text-sm text-[color:var(--text-muted)]">{description}</p>
-        ) : null}
+        <div className="text-right">
+          <span className="rounded-full bg-slate-900/5 px-3 py-1 text-xs font-semibold text-[color:var(--text-subtle)]">
+            {badge}
+          </span>
+          {stat ? (
+            <div className="mt-3">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
+                {stat.label}
+              </p>
+              <p className="mt-2 text-lg font-semibold text-[color:var(--text-strong)]">
+                {stat.value}
+              </p>
+            </div>
+          ) : null}
+        </div>
       </div>
-      {actions.length > 0 ? (
-        <div className="mt-6 flex flex-wrap items-center gap-3">
-          {actions.map((action) => {
-            const variant = action.variant ?? "primary";
-
-            return (
-              <PillLink
-                key={`${action.href}-${action.label}`}
-                variant={actionVariants[variant]}
-                size="sm"
-                href={action.href}
-              >
-                {action.label}
-              </PillLink>
-            );
-          })}
-        </div>
+      <h3 className="mt-6 text-2xl font-semibold text-[color:var(--text-strong)]">{title}</h3>
+      {description ? (
+        <p className="mt-2 text-sm text-[color:var(--text-muted)]">{description}</p>
       ) : null}
+    </div>
+  );
+  const actionsNode =
+    actions.length > 0 ? (
+      <div className="mt-6 flex flex-wrap items-center gap-3">
+        {actions.map((action) => {
+          const variant = action.variant ?? "primary";
+
+          return (
+            <PillLink
+              key={`${action.href}-${action.label}`}
+              variant={actionVariants[variant]}
+              size="sm"
+              href={action.href}
+            >
+              {action.label}
+            </PillLink>
+          );
+        })}
+      </div>
+    ) : null;
+
+  return (
+    <li className={containerClassName}>
+      {isLinked && href ? (
+        <Link
+          href={href}
+          className="flex h-full flex-col justify-between p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/30"
+        >
+          {header}
+          {actionsNode}
+        </Link>
+      ) : (
+        <>
+          {header}
+          {actionsNode}
+        </>
+      )}
     </li>
   );
 }

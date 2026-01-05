@@ -37,14 +37,7 @@ export default async function HomesPage() {
               title={home.name}
               description={labels.homes.cardDescription}
               icon={home.name.slice(0, 1).toUpperCase()}
-              actions={[
-                { label: labels.common.openPanel, href: `/homes/${home.id}`, variant: "primary" },
-                {
-                  label: labels.common.viewBills,
-                  href: `/homes/${home.id}/energy`,
-                  variant: "secondary",
-                },
-              ]}
+              href={`/homes/${home.id}`}
             />
           ))}
         </ul>
