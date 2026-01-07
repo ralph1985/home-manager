@@ -26,6 +26,10 @@ export type VehiclePurchaseDetail = Prisma.VehiclePurchaseGetPayload<{
   include: { options: true };
 }>;
 
+export type VehicleInsuranceDetail = Prisma.VehicleInsuranceGetPayload<{
+  include: { vehicle: true };
+}>;
+
 export async function listVehicles() {
   return prisma.vehicle.findMany({
     include: {
@@ -61,5 +65,12 @@ export async function getVehiclePurchaseByVehicleId(vehicleId: number) {
   return prisma.vehiclePurchase.findUnique({
     where: { vehicleId },
     include: { options: true },
+  });
+}
+
+export async function getVehicleInsuranceByVehicleId(vehicleId: number) {
+  return prisma.vehicleInsurance.findUnique({
+    where: { vehicleId },
+    include: { vehicle: true },
   });
 }

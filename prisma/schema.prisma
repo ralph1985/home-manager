@@ -309,6 +309,7 @@ model Vehicle {
   notes        String?
   ticktickProjectId String?
   purchase     VehiclePurchase?
+  insurance    VehicleInsurance?
   maintenances VehicleMaintenance[]
 
   @@unique([licensePlate])
@@ -370,6 +371,29 @@ model VehiclePurchaseOption {
   basePrice   Decimal
   pvpPrice    Decimal
   purchase    VehiclePurchase @relation(fields: [purchaseId], references: [id])
+}
+
+model VehicleInsurance {
+  id                 Int       @id @default(autoincrement())
+  vehicleId          Int       @unique
+  policyNumber       String
+  policySupplement   String?
+  policyType         String?
+  issueDate          DateTime?
+  effectiveDate      DateTime
+  expiryDate         DateTime
+  duration           String?
+  revaluation        String?
+  premiumTotal       Decimal?
+  paymentMethod      String?
+  paymentFrequency   String?
+  ownDamageDeductible Decimal?
+  signatureStatus    String?
+  documentUrl        String?
+  details            Json?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  vehicle            Vehicle   @relation(fields: [vehicleId], references: [id])
 }
 
 model VehicleMaintenance {

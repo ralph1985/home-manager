@@ -1,5 +1,6 @@
 import {
   getVehicleById,
+  getVehicleInsuranceByVehicleId,
   getVehicleMaintenanceById,
   getVehiclePurchaseByVehicleId,
   listVehicleMaintenances,
@@ -44,4 +45,12 @@ export async function getVehiclePurchaseUseCase(vehicleId: number) {
   }
 
   return getVehiclePurchaseByVehicleId(vehicleId);
+}
+
+export async function getVehicleInsuranceUseCase(vehicleId: number) {
+  if (!Number.isInteger(vehicleId) || vehicleId <= 0) {
+    return null;
+  }
+
+  return getVehicleInsuranceByVehicleId(vehicleId);
 }

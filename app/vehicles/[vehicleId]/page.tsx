@@ -11,6 +11,7 @@ import { getLabels } from "@/infrastructure/ui/labels";
 import { getServerLocale } from "@/infrastructure/ui/labels/server";
 import { listProjectReminders } from "@/usecases/ticktickReminders";
 import {
+  getVehicleInsuranceUseCase,
   getVehiclePurchaseUseCase,
   getVehicleUseCase,
   listVehicleMaintenancesUseCase,
@@ -23,6 +24,15 @@ type VehicleDetailPageProps = {
 };
 
 const kmFormatter = new Intl.NumberFormat("es-ES");
+
+const getInsurerName = (details: unknown) => {
+  if (!details || typeof details !== "object" || Array.isArray(details)) {
+    return null;
+  }
+
+  const insurer = (details as { insurer?: { name?: string } }).insurer;
+  return typeof insurer?.name === "string" ? insurer.name : null;
+};
 
 export default async function VehicleDetailPage({ params }: VehicleDetailPageProps) {
   const locale = await getServerLocale();
@@ -40,14 +50,16 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
     notFound();
   }
 
-  const [maintenances, remindersResult, purchase] = await Promise.all([
+  const [maintenances, remindersResult, purchase, insurance] = await Promise.all([
     listVehicleMaintenancesUseCase(vehicleId),
     listProjectReminders(vehicle.ticktickProjectId),
     getVehiclePurchaseUseCase(vehicleId),
+    getVehicleInsuranceUseCase(vehicleId),
   ]);
   const latestMaintenance = maintenances[0];
 
   const vehicleTitle = vehicle.name ?? `${vehicle.brand} ${vehicle.model}`;
+  const insurerName = getInsurerName(insurance?.details);
 
   return (
     <PageShell>
@@ -136,6 +148,66 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
             },
           ]}
         />
+        {insurance ? (
+          <ContractPanel
+            title={labels.vehicleDetail.insuranceTitle}
+            actionLabel={labels.vehicleDetail.insuranceActionLabel}
+            actionHref={`/vehicles/${vehicle.id}/insurance`}
+            rows={[
+              {
+                label: labels.vehicleDetail.insuranceLabels.insurer,
+                value: insurerName ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.insuranceLabels.policyNumber,
+                value: insurance.policyNumber ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.insuranceLabels.policyType,
+                value: insurance.policyType ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.insuranceLabels.effectiveDate,
+                value: formatDate(insurance.effectiveDate),
+              },
+              {
+                label: labels.vehicleDetail.insuranceLabels.expiryDate,
+                value: formatDate(insurance.expiryDate),
+              },
+              {
+                label: labels.vehicleDetail.insuranceLabels.premiumTotal,
+                value:
+                  insurance.premiumTotal != null
+                    ? formatCurrency(insurance.premiumTotal)
+                    : labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.insuranceLabels.paymentFrequency,
+                value: insurance.paymentFrequency ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.insuranceLabels.deductible,
+                value:
+                  insurance.ownDamageDeductible != null
+                    ? formatCurrency(insurance.ownDamageDeductible)
+                    : labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.insuranceLabels.signatureStatus,
+                value: insurance.signatureStatus ?? labels.common.emptyValue,
+              },
+            ]}
+          />
+        ) : (
+          <div className="hm-panel p-6">
+            <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">
+              {labels.vehicleDetail.insuranceTitle}
+            </h2>
+            <p className="mt-3 text-sm text-[color:var(--text-muted)]">
+              {labels.vehicleDetail.insuranceEmpty}
+            </p>
+          </div>
+        )}
       </section>
 
       {vehicle.notes ? (
