@@ -419,24 +419,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
             </p>
           </CollapsiblePanel>
         )}
-      </section>
 
-      {vehicle.notes ? (
-        <section className="mt-6">
-          <CollapsiblePanel title={labels.vehicleDetail.notesTitle}>
-            <p className="mt-3 text-sm text-[color:var(--text-muted)]">{vehicle.notes}</p>
-          </CollapsiblePanel>
-        </section>
-      ) : null}
-
-      <VehicleRemindersPanel
-        labels={labels}
-        locale={locale}
-        reminders={remindersResult.reminders}
-        status={remindersResult.status}
-      />
-
-      <section className="mt-12">
         <CollapsiblePanel title={labels.vehicleDetail.maintenanceHistoryTitle}>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm text-[color:var(--text-muted)]">
             <span>{formatCountLabel(maintenances.length, labels.maintenanceList.countLabel)}</span>
@@ -454,6 +437,22 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
           ) : null}
         </CollapsiblePanel>
       </section>
+
+      {vehicle.notes ? (
+        <section className="mt-6">
+          <CollapsiblePanel title={labels.vehicleDetail.notesTitle}>
+            <p className="mt-3 text-sm text-[color:var(--text-muted)]">{vehicle.notes}</p>
+          </CollapsiblePanel>
+        </section>
+      ) : null}
+
+      <VehicleRemindersPanel
+        labels={labels}
+        locale={locale}
+        reminders={remindersResult.reminders}
+        status={remindersResult.status}
+      />
+
     </PageShell>
   );
 }
