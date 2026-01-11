@@ -485,6 +485,7 @@ export const labels = {
     insuranceActionLabel: "Ver seguro",
     notesTitle: "Notas",
     maintenanceHistoryTitle: "Historial de mantenimientos",
+    maintenanceHistoryActionLabel: "Ver mantenimientos",
     emptyMaintenances: "Todavía no hay mantenimientos registrados.",
     purchaseActionLabel: "Ver más detalles",
     remindersEyebrow: "TickTick",
@@ -721,6 +722,11 @@ export const labels = {
       optionBasePrice: "Base",
       optionPvpPrice: "PVP",
     },
+  },
+  vehicleMaintenanceHistory: {
+    eyebrow: "Vehículo",
+    title: "Historial de mantenimientos",
+    actionBack: "Volver al vehículo",
   },
   maintenanceDetail: {
     eyebrow: "Mantenimiento",

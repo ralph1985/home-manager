@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { formatCurrency, formatDate } from "@/components/billing/billingFormatters";
@@ -6,9 +7,8 @@ import CollapsiblePanel from "@/components/layout/CollapsiblePanel";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
-import VehicleMaintenanceList from "@/components/vehicles/VehicleMaintenanceList";
 import VehicleRemindersPanel from "@/components/vehicles/VehicleRemindersPanel";
-import { getLabels } from "@/infrastructure/ui/labels";
+import { formatCountLabel, getLabels } from "@/infrastructure/ui/labels";
 import { getServerLocale } from "@/infrastructure/ui/labels/server";
 import { listProjectReminders } from "@/usecases/ticktickReminders";
 import {
@@ -436,20 +436,24 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
         status={remindersResult.status}
       />
 
-      <VehicleMaintenanceList
-        title={labels.vehicleDetail.maintenanceHistoryTitle}
-        emptyMessage={labels.vehicleDetail.emptyMaintenances}
-        maintenances={maintenances.map((maintenance) => ({
-          id: maintenance.id,
-          title: maintenance.title,
-          serviceDate: maintenance.serviceDate.toISOString(),
-          odometerKm: maintenance.odometerKm,
-          cost: maintenance.cost != null ? maintenance.cost.toString() : undefined,
-          workshopName: maintenance.workshop?.name,
-          description: maintenance.description,
-        }))}
-        detailHref={(maintenanceId) => `/vehicles/${vehicle.id}/maintenances/${maintenanceId}`}
-      />
+      <section className="mt-12">
+        <CollapsiblePanel title={labels.vehicleDetail.maintenanceHistoryTitle}>
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm text-[color:var(--text-muted)]">
+            <span>{formatCountLabel(maintenances.length, labels.maintenanceList.countLabel)}</span>
+            <Link
+              className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-subtle)] transition hover:text-[color:var(--text-default)]"
+              href={`/vehicles/${vehicle.id}/maintenances`}
+            >
+              {labels.vehicleDetail.maintenanceHistoryActionLabel}
+            </Link>
+          </div>
+          {maintenances.length === 0 ? (
+            <p className="mt-3 text-sm text-[color:var(--text-muted)]">
+              {labels.vehicleDetail.emptyMaintenances}
+            </p>
+          ) : null}
+        </CollapsiblePanel>
+      </section>
     </PageShell>
   );
 }

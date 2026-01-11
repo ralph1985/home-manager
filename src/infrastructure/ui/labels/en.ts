@@ -485,6 +485,7 @@ export const labels = {
     insuranceActionLabel: "View insurance",
     notesTitle: "Notes",
     maintenanceHistoryTitle: "Maintenance history",
+    maintenanceHistoryActionLabel: "View maintenances",
     emptyMaintenances: "No maintenance records yet.",
     purchaseActionLabel: "See more details",
     remindersEyebrow: "TickTick",
@@ -721,6 +722,11 @@ export const labels = {
       optionBasePrice: "Base",
       optionPvpPrice: "MSRP",
     },
+  },
+  vehicleMaintenanceHistory: {
+    eyebrow: "Vehicle",
+    title: "Maintenance history",
+    actionBack: "Back to vehicle",
   },
   maintenanceDetail: {
     eyebrow: "Maintenance",
