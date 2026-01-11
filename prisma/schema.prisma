@@ -341,6 +341,7 @@ model VehicleMaintenancePlanItem {
   notes           String?
   createdAt       DateTime @default(now())
   plan            VehicleMaintenancePlan @relation(fields: [planId], references: [id])
+  maintenances    VehicleMaintenance[]
 }
 
 model VehicleSpecs {
@@ -478,6 +479,7 @@ model VehicleMaintenance {
   id          Int      @id @default(autoincrement())
   vehicleId   Int
   workshopId  Int?
+  planItemId  Int?
   title       String
   description String?
   serviceDate DateTime
@@ -486,6 +488,7 @@ model VehicleMaintenance {
   createdAt   DateTime @default(now())
   vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
   workshop    Workshop? @relation(fields: [workshopId], references: [id])
+  planItem    VehicleMaintenancePlanItem? @relation(fields: [planItemId], references: [id])
 }
 
 model Workshop {

@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 
 import CollapsiblePanel from "@/components/layout/CollapsiblePanel";
 import PageShell from "@/components/layout/PageShell";
@@ -6,7 +6,10 @@ import SectionHeader from "@/components/layout/SectionHeader";
 import VehicleMaintenanceList from "@/components/vehicles/VehicleMaintenanceList";
 import { getLabels } from "@/infrastructure/ui/labels";
 import { getServerLocale } from "@/infrastructure/ui/labels/server";
-import { getVehicleMaintenancePlanUseCase } from "@/usecases/vehicleMaintenancePlan";
+import {
+  completeVehicleMaintenancePlanItemUseCase,
+  getVehicleMaintenancePlanUseCase,
+} from "@/usecases/vehicleMaintenancePlan";
 import { getVehicleUseCase, listVehicleMaintenancesUseCase } from "@/usecases/vehicles";
 
 export const runtime = "nodejs";
@@ -41,6 +44,8 @@ export default async function VehicleMaintenancesPage({ params }: VehicleMainten
   const dateFormatter = new Intl.DateTimeFormat(locale === "es" ? "es-ES" : "en-US", {
     dateStyle: "medium",
   });
+  const today = new Date();
+  const formatInputDate = (value: Date) => value.toISOString().slice(0, 10);
   const formatKm = (value: number) => `${numberFormatter.format(value)} ${labels.units.km}`;
   const formatKmRange = (min: number | null, max: number | null) => {
     if (min != null && max != null) {
@@ -51,6 +56,31 @@ export default async function VehicleMaintenancesPage({ params }: VehicleMainten
     }
     return labels.common.emptyValue;
   };
+
+  async function markPlanItemDone(formData: FormData) {
+    "use server";
+
+    const planItemId = Number(formData.get("planItemId"));
+    const serviceDateValue = formData.get("serviceDate");
+    const odometerValue = formData.get("odometerKm");
+    const serviceDate =
+      typeof serviceDateValue === "string" && serviceDateValue
+        ? new Date(serviceDateValue)
+        : new Date();
+    const odometerKm =
+      typeof odometerValue === "string" && odometerValue
+        ? Number.parseInt(odometerValue, 10)
+        : null;
+
+    await completeVehicleMaintenancePlanItemUseCase({
+      vehicleId,
+      planItemId,
+      serviceDate,
+      odometerKm: Number.isNaN(odometerKm ?? Number.NaN) ? null : odometerKm,
+    });
+
+    redirect(`/vehicles/${vehicleId}/maintenances`);
+  }
 
   return (
     <PageShell>
@@ -134,6 +164,35 @@ export default async function VehicleMaintenancesPage({ params }: VehicleMainten
                       </p>
                     </div>
                   ) : null}
+
+                  <form className="mt-4 flex flex-wrap items-end gap-3" action={markPlanItemDone}>
+                    <input type="hidden" name="planItemId" value={maintenance.id} />
+                    <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
+                      {labels.vehicleMaintenanceHistory.serviceDateLabel}
+                      <input
+                        className="mt-1 rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 text-sm text-[color:var(--text-default)]"
+                        type="date"
+                        name="serviceDate"
+                        defaultValue={formatInputDate(today)}
+                      />
+                    </label>
+                    <label className="flex flex-col gap-1 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-faint)]">
+                      {labels.vehicleMaintenanceHistory.odometerLabel}
+                      <input
+                        className="mt-1 w-40 rounded-xl border border-[var(--surface-border)] bg-[var(--surface)] px-3 py-2 text-sm text-[color:var(--text-default)]"
+                        type="number"
+                        name="odometerKm"
+                        min={0}
+                        placeholder="0"
+                      />
+                    </label>
+                    <button
+                      className="rounded-full border border-[var(--surface-border)] px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--text-subtle)] transition hover:text-[color:var(--text-strong)]"
+                      type="submit"
+                    >
+                      {labels.vehicleMaintenanceHistory.markDoneLabel}
+                    </button>
+                  </form>
                 </li>
               ))}
             </ul>

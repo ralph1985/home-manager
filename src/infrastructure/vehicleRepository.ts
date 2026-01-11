@@ -36,6 +36,10 @@ export type VehicleMaintenancePlanDetail = Prisma.VehicleMaintenancePlanGetPaylo
   include: { items: true };
 }>;
 
+export type VehicleMaintenancePlanCompletion = Prisma.VehicleMaintenanceGetPayload<{
+  select: { planItemId: true; serviceDate: true; odometerKm: true };
+}>;
+
 export async function listVehicles() {
   return prisma.vehicle.findMany({
     include: {
@@ -90,6 +94,50 @@ export async function getVehicleMaintenancePlanByVehicleId(vehicleId: number) {
     where: { vehicleId },
     include: {
       items: { orderBy: { sortOrder: "asc" } },
+    },
+  });
+}
+
+export async function getVehicleMaintenancePlanItem(vehicleId: number, planItemId: number) {
+  return prisma.vehicleMaintenancePlanItem.findFirst({
+    where: {
+      id: planItemId,
+      plan: { vehicleId },
+    },
+  });
+}
+
+export async function listVehicleMaintenancePlanCompletions(vehicleId: number) {
+  return prisma.vehicleMaintenance.findMany({
+    where: { vehicleId, planItemId: { not: null } },
+    select: { planItemId: true, serviceDate: true, odometerKm: true },
+    orderBy: [{ serviceDate: "desc" }, { id: "desc" }],
+  });
+}
+
+export async function createVehicleMaintenanceFromPlan({
+  vehicleId,
+  planItemId,
+  title,
+  description,
+  serviceDate,
+  odometerKm,
+}: {
+  vehicleId: number;
+  planItemId: number;
+  title: string;
+  description: string | null;
+  serviceDate: Date;
+  odometerKm: number | null;
+}) {
+  return prisma.vehicleMaintenance.create({
+    data: {
+      vehicleId,
+      planItemId,
+      title,
+      description,
+      serviceDate,
+      odometerKm,
     },
   });
 }

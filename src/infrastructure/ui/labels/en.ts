@@ -735,6 +735,9 @@ export const labels = {
     tasksLabel: "Includes",
     notesLabel: "Notes",
     estimatedLabel: "estimated",
+    serviceDateLabel: "Date",
+    odometerLabel: "KM",
+    markDoneLabel: "Mark as done",
   },
   maintenanceDetail: {
     eyebrow: "Maintenance",
