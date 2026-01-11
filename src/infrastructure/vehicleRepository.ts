@@ -11,6 +11,8 @@ export type VehicleListItem = Prisma.VehicleGetPayload<{
 export type VehicleDetail = Prisma.VehicleGetPayload<{
   include: {
     _count: { select: { maintenances: true } };
+    specs: true;
+    registrationDocument: true;
   };
 }>;
 
@@ -42,7 +44,11 @@ export async function listVehicles() {
 export async function getVehicleById(vehicleId: number) {
   return prisma.vehicle.findUnique({
     where: { id: vehicleId },
-    include: { _count: { select: { maintenances: true } } },
+    include: {
+      _count: { select: { maintenances: true } },
+      specs: true,
+      registrationDocument: true,
+    },
   });
 }
 

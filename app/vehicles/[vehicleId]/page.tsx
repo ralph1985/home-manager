@@ -58,6 +58,24 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
   ]);
   const latestMaintenance = maintenances[0];
 
+  const specs = vehicle.specs;
+  const registration = vehicle.registrationDocument;
+  const numberFormatter = new Intl.NumberFormat(locale === "es" ? "es-ES" : "en-US", {
+    maximumFractionDigits: 2,
+  });
+  const formatNumber = (value: number | { toString(): string }) =>
+    numberFormatter.format(Number(value.toString()));
+  const formatWithUnit = (
+    value: number | { toString(): string } | null | undefined,
+    unit: string
+  ) => (value == null ? labels.common.emptyValue : `${formatNumber(value)} ${unit}`);
+  const formatBoolean = (value: boolean | null | undefined) =>
+    value == null
+      ? labels.common.emptyValue
+      : value
+        ? labels.common.yesLabel
+        : labels.common.noLabel;
+
   const vehicleTitle = vehicle.name ?? `${vehicle.brand} ${vehicle.model}`;
   const insurerName = getInsurerName(insurance?.details);
 
@@ -148,6 +166,196 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
             },
           ]}
         />
+        {specs ? (
+          <ContractPanel
+            title={labels.vehicleDetail.specsTitle}
+            rows={[
+              {
+                label: labels.vehicleDetail.specsLabels.type,
+                value: specs.type ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.fuel,
+                value: specs.fuelType ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.engineDisplacement,
+                value: formatWithUnit(specs.engineDisplacementCc, labels.units.cc),
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.powerNet,
+                value: formatWithUnit(specs.powerNetKw, labels.units.kw),
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.emissionsCo2,
+                value: formatWithUnit(specs.emissionsCo2Gkm, labels.units.gkm),
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.emissionsStandard,
+                value: specs.emissionsStandard ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.seats,
+                value: specs.seats != null ? formatNumber(specs.seats) : labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.color,
+                value: specs.color ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.service,
+                value: specs.service ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.maxMass,
+                value: formatWithUnit(specs.maxMassKg, labels.units.kg),
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.maxLoad,
+                value: formatWithUnit(specs.maxLoadKg, labels.units.kg),
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.massInService,
+                value: formatWithUnit(specs.massInServiceKg, labels.units.kg),
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.powerWeightRatio,
+                value:
+                  specs.powerWeightRatio != null
+                    ? formatNumber(specs.powerWeightRatio)
+                    : labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.homologationCode,
+                value: specs.homologationCode ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.homologationCodeBase,
+                value: specs.homologationCodeBase ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.baseBrand,
+                value: specs.baseBrand ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.baseType,
+                value: specs.baseType ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.variant,
+                value: specs.variant ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.version,
+                value: specs.version ?? labels.common.emptyValue,
+              },
+            ]}
+          />
+        ) : null}
+        {registration ? (
+          <ContractPanel
+            title={labels.vehicleDetail.registrationTitle}
+            rows={[
+              {
+                label: labels.vehicleDetail.registrationLabels.documentType,
+                value: registration.documentType ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.documentReference,
+                value: registration.documentReference ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.caseFileNumber,
+                value: registration.caseFileNumber ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.issueDate,
+                value: registration.issueDate
+                  ? formatDate(registration.issueDate)
+                  : labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.documentDate,
+                value: registration.documentDate
+                  ? formatDate(registration.documentDate)
+                  : labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.validUntil,
+                value: registration.validUntil
+                  ? formatDate(registration.validUntil)
+                  : labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.verificationCode,
+                value: registration.verificationCode ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.verificationLink,
+                value: registration.verificationUrl ? (
+                  <a
+                    className="text-sm font-semibold text-[color:var(--text-accent)] underline"
+                    href={registration.verificationUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {labels.common.open}
+                  </a>
+                ) : (
+                  labels.common.emptyValue
+                ),
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.issuingAuthority,
+                value: registration.issuingAuthority ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.issuingMinistry,
+                value: registration.issuingMinistry ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.documentModel,
+                value: registration.documentModel ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.registrationOffice,
+                value: registration.registrationOffice ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.originCode,
+                value: registration.originCode ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.additionalCode,
+                value: registration.additionalCode ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.documentHash,
+                value: registration.documentHash ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.holderName,
+                value: registration.holderName ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.holderIsRenting,
+                value: formatBoolean(registration.holderIsRenting),
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.validityDays,
+                value: formatWithUnit(registration.validityDays, labels.units.days),
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.requiresValidInspection,
+                value: formatBoolean(registration.requiresValidInspection),
+              },
+              {
+                label: labels.vehicleDetail.registrationLabels.invalidForAdministrativeProcedures,
+                value: formatBoolean(registration.invalidForAdministrativeProcedures),
+              },
+            ]}
+          />
+        ) : null}
         {insurance ? (
           <ContractPanel
             title={labels.vehicleDetail.insuranceTitle}
