@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { formatCurrency, formatDate } from "@/components/billing/billingFormatters";
 import ContractPanel from "@/components/billing/ContractPanel";
+import CollapsiblePanel from "@/components/layout/CollapsiblePanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { parseMaintenanceDescription } from "@/components/vehicles/maintenanceDescription";
@@ -49,6 +50,7 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
       <section className="mt-12 grid gap-6 md:grid-cols-2">
         <ContractPanel
           title={labels.maintenanceDetail.detailTitle}
+          collapsible
           rows={[
             {
               label: labels.maintenanceDetail.labels.date,
@@ -76,6 +78,7 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
         />
         <ContractPanel
           title={labels.maintenanceDetail.vehicleTitle}
+          collapsible
           rows={[
             { label: labels.vehicleDetail.labels.brand, value: maintenance.vehicle.brand },
             { label: labels.vehicleDetail.labels.model, value: maintenance.vehicle.model },
@@ -92,11 +95,7 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
       </section>
 
       <section className="mt-6">
-        <div className="hm-panel p-6">
-          <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">
-            {labels.maintenanceDetail.workDetailTitle}
-          </h2>
-
+        <CollapsiblePanel title={labels.maintenanceDetail.workDetailTitle}>
           {details.general.length > 0 ? (
             <div className="mt-4 text-sm text-[color:var(--text-muted)]">
               {details.general.map((line) => (
@@ -198,7 +197,7 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
               {labels.common.noAdditionalDetails}
             </p>
           ) : null}
-        </div>
+        </CollapsiblePanel>
       </section>
     </PageShell>
   );

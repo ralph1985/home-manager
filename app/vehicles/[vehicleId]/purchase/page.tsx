@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { formatCurrency, formatDate } from "@/components/billing/billingFormatters";
 import ContractPanel from "@/components/billing/ContractPanel";
+import CollapsiblePanel from "@/components/layout/CollapsiblePanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { getLabels } from "@/infrastructure/ui/labels";
@@ -47,15 +48,18 @@ export default async function VehiclePurchasePage({ params }: VehiclePurchasePag
 
       {!purchase ? (
         <section className="mt-12">
-          <div className="hm-panel p-6 text-sm text-[color:var(--text-muted)]">
-            {labels.vehiclePurchase.emptyState}
-          </div>
+          <CollapsiblePanel title={labels.vehiclePurchase.title}>
+            <p className="mt-3 text-sm text-[color:var(--text-muted)]">
+              {labels.vehiclePurchase.emptyState}
+            </p>
+          </CollapsiblePanel>
         </section>
       ) : (
         <>
           <section className="mt-12 grid gap-6 md:grid-cols-2">
             <ContractPanel
               title={labels.vehiclePurchase.offerTitle}
+              collapsible
               rows={[
                 {
                   label: labels.vehiclePurchase.labels.issueDate,
@@ -79,6 +83,7 @@ export default async function VehiclePurchasePage({ params }: VehiclePurchasePag
             />
             <ContractPanel
               title={labels.vehiclePurchase.dealerTitle}
+              collapsible
               rows={[
                 {
                   label: labels.vehiclePurchase.labels.dealerName,
@@ -100,6 +105,7 @@ export default async function VehiclePurchasePage({ params }: VehiclePurchasePag
             />
             <ContractPanel
               title={labels.vehiclePurchase.advisorTitle}
+              collapsible
               rows={[
                 {
                   label: labels.vehiclePurchase.labels.advisorName,
@@ -117,6 +123,7 @@ export default async function VehiclePurchasePage({ params }: VehiclePurchasePag
             />
             <ContractPanel
               title={labels.vehiclePurchase.customerTitle}
+              collapsible
               rows={[
                 {
                   label: labels.vehiclePurchase.labels.customerFirstName,
@@ -138,6 +145,7 @@ export default async function VehiclePurchasePage({ params }: VehiclePurchasePag
             />
             <ContractPanel
               title={labels.vehiclePurchase.vehicleTitle}
+              collapsible
               rows={[
                 {
                   label: labels.vehiclePurchase.labels.vehicleModel,
@@ -180,6 +188,7 @@ export default async function VehiclePurchasePage({ params }: VehiclePurchasePag
             />
             <ContractPanel
               title={labels.vehiclePurchase.economicDetailTitle}
+              collapsible
               rows={[
                 {
                   label: labels.vehiclePurchase.labels.optionsTotalBase,
@@ -263,10 +272,7 @@ export default async function VehiclePurchasePage({ params }: VehiclePurchasePag
           </section>
 
           <section className="mt-6 grid gap-6 lg:grid-cols-[2fr_1fr]">
-            <div className="hm-panel p-6">
-              <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">
-                {labels.vehiclePurchase.optionsTitle}
-              </h2>
+            <CollapsiblePanel title={labels.vehiclePurchase.optionsTitle}>
               {purchase.options.length === 0 ? (
                 <p className="mt-4 text-sm text-[color:var(--text-muted)]">
                   {labels.vehiclePurchase.optionsEmpty}
@@ -299,9 +305,10 @@ export default async function VehiclePurchasePage({ params }: VehiclePurchasePag
                   </table>
                 </div>
               )}
-            </div>
+            </CollapsiblePanel>
             <ContractPanel
               title={labels.vehiclePurchase.summaryTitle}
+              collapsible
               rows={[
                 {
                   label: labels.vehiclePurchase.labels.vehicleSubtotalBase,

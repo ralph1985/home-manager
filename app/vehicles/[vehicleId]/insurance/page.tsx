@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { formatCurrency, formatDate } from "@/components/billing/billingFormatters";
 import ContractPanel from "@/components/billing/ContractPanel";
+import CollapsiblePanel from "@/components/layout/CollapsiblePanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
 import { getLabels } from "@/infrastructure/ui/labels";
@@ -145,19 +146,17 @@ export default async function VehicleInsurancePage({ params }: VehicleInsuranceP
 
       {!insurance ? (
         <section className="mt-12">
-          <div className="hm-panel p-6">
-            <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">
-              {labels.vehicleInsurance.title}
-            </h2>
+          <CollapsiblePanel title={labels.vehicleInsurance.title}>
             <p className="mt-3 text-sm text-[color:var(--text-muted)]">
               {labels.vehicleInsurance.emptyState}
             </p>
-          </div>
+          </CollapsiblePanel>
         </section>
       ) : (
         <section className="mt-12 grid gap-6 md:grid-cols-2">
           <ContractPanel
             title={labels.vehicleInsurance.sections.policy}
+            collapsible
             rows={[
               {
                 label: labels.vehicleInsurance.labels.policyNumber,
@@ -198,6 +197,7 @@ export default async function VehicleInsurancePage({ params }: VehicleInsuranceP
 
           <ContractPanel
             title={labels.vehicleInsurance.sections.insurer}
+            collapsible
             rows={[
               {
                 label: labels.vehicleInsurance.labels.insurerName,
@@ -216,6 +216,7 @@ export default async function VehicleInsurancePage({ params }: VehicleInsuranceP
 
           <ContractPanel
             title={labels.vehicleInsurance.sections.policyHolder}
+            collapsible
             rows={[
               {
                 label: labels.vehicleInsurance.labels.holderName,
@@ -269,6 +270,7 @@ export default async function VehicleInsurancePage({ params }: VehicleInsuranceP
 
           <ContractPanel
             title={labels.vehicleInsurance.sections.vehicle}
+            collapsible
             rows={[
               {
                 label: labels.vehicleInsurance.labels.vehicleModel,
@@ -303,6 +305,7 @@ export default async function VehicleInsurancePage({ params }: VehicleInsuranceP
 
           <ContractPanel
             title={labels.vehicleInsurance.sections.coverages}
+            collapsible
             rows={[
               {
                 label: labels.vehicleInsurance.labels.coverageMandatoryLiability,
@@ -369,6 +372,7 @@ export default async function VehicleInsurancePage({ params }: VehicleInsuranceP
 
           <ContractPanel
             title={labels.vehicleInsurance.sections.compensation}
+            collapsible
             rows={[
               {
                 label: labels.vehicleInsurance.labels.compensationFirstTwoYears,
@@ -387,6 +391,7 @@ export default async function VehicleInsurancePage({ params }: VehicleInsuranceP
 
           <ContractPanel
             title={labels.vehicleInsurance.sections.premium}
+            collapsible
             rows={[
               {
                 label: labels.vehicleInsurance.labels.premiumNet,
@@ -430,6 +435,7 @@ export default async function VehicleInsurancePage({ params }: VehicleInsuranceP
 
           <ContractPanel
             title={labels.vehicleInsurance.sections.signature}
+            collapsible
             rows={[
               {
                 label: labels.vehicleInsurance.labels.signaturePlatform,
@@ -457,6 +463,7 @@ export default async function VehicleInsurancePage({ params }: VehicleInsuranceP
 
           <ContractPanel
             title={labels.vehicleInsurance.sections.documents}
+            collapsible
             rows={[
               {
                 label: labels.vehicleInsurance.labels.documentLink,

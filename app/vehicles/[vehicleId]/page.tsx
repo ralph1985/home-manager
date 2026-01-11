@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 
 import { formatCurrency, formatDate } from "@/components/billing/billingFormatters";
 import ContractPanel from "@/components/billing/ContractPanel";
+import CollapsiblePanel from "@/components/layout/CollapsiblePanel";
 import InfoPanel from "@/components/layout/InfoPanel";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/layout/SectionHeader";
@@ -100,6 +101,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
           title={labels.vehicleDetail.sheetTitle}
           actionLabel={purchase ? labels.vehicleDetail.purchaseActionLabel : undefined}
           actionHref={purchase ? `/vehicles/${vehicle.id}/purchase` : undefined}
+          collapsible
           rows={[
             { label: labels.vehicleDetail.labels.brand, value: vehicle.brand },
             { label: labels.vehicleDetail.labels.model, value: vehicle.model },
@@ -138,6 +140,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
         />
         <ContractPanel
           title={labels.vehicleDetail.summaryTitle}
+          collapsible
           rows={[
             { label: labels.vehicleDetail.labels.maintenances, value: vehicle._count.maintenances },
             {
@@ -169,6 +172,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
         {specs ? (
           <ContractPanel
             title={labels.vehicleDetail.specsTitle}
+            collapsible
             rows={[
               {
                 label: labels.vehicleDetail.specsLabels.type,
@@ -255,6 +259,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
         {registration ? (
           <ContractPanel
             title={labels.vehicleDetail.registrationTitle}
+            collapsible
             rows={[
               {
                 label: labels.vehicleDetail.registrationLabels.documentType,
@@ -361,6 +366,7 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
             title={labels.vehicleDetail.insuranceTitle}
             actionLabel={labels.vehicleDetail.insuranceActionLabel}
             actionHref={`/vehicles/${vehicle.id}/insurance`}
+            collapsible
             rows={[
               {
                 label: labels.vehicleDetail.insuranceLabels.insurer,
@@ -407,25 +413,19 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
             ]}
           />
         ) : (
-          <div className="hm-panel p-6">
-            <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">
-              {labels.vehicleDetail.insuranceTitle}
-            </h2>
+          <CollapsiblePanel title={labels.vehicleDetail.insuranceTitle}>
             <p className="mt-3 text-sm text-[color:var(--text-muted)]">
               {labels.vehicleDetail.insuranceEmpty}
             </p>
-          </div>
+          </CollapsiblePanel>
         )}
       </section>
 
       {vehicle.notes ? (
         <section className="mt-6">
-          <div className="hm-panel p-6">
-            <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">
-              {labels.vehicleDetail.notesTitle}
-            </h2>
+          <CollapsiblePanel title={labels.vehicleDetail.notesTitle}>
             <p className="mt-3 text-sm text-[color:var(--text-muted)]">{vehicle.notes}</p>
-          </div>
+          </CollapsiblePanel>
         </section>
       ) : null}
 
