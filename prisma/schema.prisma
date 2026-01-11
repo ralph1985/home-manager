@@ -309,11 +309,64 @@ model Vehicle {
   notes        String?
   ticktickProjectId String?
   purchase     VehiclePurchase?
+  specs        VehicleSpecs?
+  registrationDocument VehicleRegistrationDocument?
   insurance    VehicleInsurance?
   maintenances VehicleMaintenance[]
 
   @@unique([licensePlate])
   @@unique([vin])
+}
+
+model VehicleSpecs {
+  id                   Int      @id @default(autoincrement())
+  vehicleId            Int      @unique
+  type                 String?
+  color                String?
+  seats                Int?
+  service              String?
+  fuelType             String?
+  engineDisplacementCc Int?
+  powerNetKw           Int?
+  emissionsCo2Gkm      Int?
+  emissionsStandard    String?
+  baseBrand            String?
+  baseType             String?
+  variant              String?
+  version              String?
+  homologationCode     String?
+  homologationCodeBase String?
+  maxMassKg            Int?
+  maxLoadKg            Int?
+  massInServiceKg      Int?
+  powerWeightRatio     Decimal?
+  vehicle              Vehicle  @relation(fields: [vehicleId], references: [id])
+}
+
+model VehicleRegistrationDocument {
+  id                          Int      @id @default(autoincrement())
+  vehicleId                   Int      @unique
+  documentType                String
+  documentReference           String?
+  caseFileNumber              String?
+  issueDate                   DateTime?
+  documentDate                DateTime?
+  validUntil                  DateTime?
+  verificationCode            String?
+  verificationUrl             String?
+  issuingAuthority            String?
+  issuingMinistry             String?
+  documentModel               String?
+  registrationOffice          String?
+  originCode                  String?
+  additionalCode              String?
+  documentHash                String?
+  holderName                  String?
+  holderIsRenting             Boolean?
+  validityDays                Int?
+  requiresValidInspection     Boolean?
+  invalidForAdministrativeProcedures Boolean?
+  vehicle                     Vehicle  @relation(fields: [vehicleId], references: [id])
 }
 
 model VehiclePurchase {
