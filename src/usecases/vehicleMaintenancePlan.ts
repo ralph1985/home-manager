@@ -98,8 +98,14 @@ export async function getVehicleMaintenancePlanUseCase(vehicleId: number) {
         title: item.title,
         dueDate: addMonths(baseDate, item.intervalMonths),
         dueDateEstimated: false,
-        dueKmMin: baseKm != null && item.intervalKmMin != null ? baseKm + item.intervalKmMin : item.intervalKmMin,
-        dueKmMax: baseKm != null && item.intervalKmMax != null ? baseKm + item.intervalKmMax : item.intervalKmMax,
+        dueKmMin:
+          baseKm != null && item.intervalKmMin != null
+            ? baseKm + item.intervalKmMin
+            : item.intervalKmMin,
+        dueKmMax:
+          baseKm != null && item.intervalKmMax != null
+            ? baseKm + item.intervalKmMax
+            : item.intervalKmMax,
         actions: item.actions,
         notes: item.notes,
         lastCompletedAt: completion?.serviceDate ?? null,
@@ -115,7 +121,10 @@ export async function getVehicleMaintenancePlanUseCase(vehicleId: number) {
         dueDate: addMonths(baseDate, monthsFromKm),
         dueDateEstimated: true,
         dueKmMin: baseKm != null ? baseKm + item.intervalKmMin : item.intervalKmMin,
-        dueKmMax: baseKm != null && item.intervalKmMax != null ? baseKm + item.intervalKmMax : item.intervalKmMax,
+        dueKmMax:
+          baseKm != null && item.intervalKmMax != null
+            ? baseKm + item.intervalKmMax
+            : item.intervalKmMax,
         actions: item.actions,
         notes: item.notes,
         lastCompletedAt: completion?.serviceDate ?? null,
