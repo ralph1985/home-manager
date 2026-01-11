@@ -452,7 +452,6 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
         reminders={remindersResult.reminders}
         status={remindersResult.status}
       />
-
     </PageShell>
   );
 }
