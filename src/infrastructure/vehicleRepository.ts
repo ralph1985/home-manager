@@ -32,6 +32,10 @@ export type VehicleInsuranceDetail = Prisma.VehicleInsuranceGetPayload<{
   include: { vehicle: true };
 }>;
 
+export type VehicleMaintenancePlanDetail = Prisma.VehicleMaintenancePlanGetPayload<{
+  include: { items: true };
+}>;
+
 export async function listVehicles() {
   return prisma.vehicle.findMany({
     include: {
@@ -78,5 +82,14 @@ export async function getVehicleInsuranceByVehicleId(vehicleId: number) {
   return prisma.vehicleInsurance.findUnique({
     where: { vehicleId },
     include: { vehicle: true },
+  });
+}
+
+export async function getVehicleMaintenancePlanByVehicleId(vehicleId: number) {
+  return prisma.vehicleMaintenancePlan.findUnique({
+    where: { vehicleId },
+    include: {
+      items: { orderBy: { sortOrder: "asc" } },
+    },
   });
 }

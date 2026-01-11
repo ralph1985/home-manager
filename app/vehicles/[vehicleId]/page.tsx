@@ -89,10 +89,12 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
         actionLabel={labels.common.backToList}
         actionHref="/vehicles"
         actionNode={
-          <InfoPanel
-            label={labels.vehicles.statLabel}
-            value={vehicle._count.maintenances.toString()}
-          />
+          <Link href={`/vehicles/${vehicle.id}/maintenances`}>
+            <InfoPanel
+              label={labels.vehicles.statLabel}
+              value={vehicle._count.maintenances.toString()}
+            />
+          </Link>
         }
       />
 

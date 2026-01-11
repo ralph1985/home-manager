@@ -313,9 +313,34 @@ model Vehicle {
   registrationDocument VehicleRegistrationDocument?
   insurance    VehicleInsurance?
   maintenances VehicleMaintenance[]
+  maintenancePlan VehicleMaintenancePlan?
 
   @@unique([licensePlate])
   @@unique([vin])
+}
+
+model VehicleMaintenancePlan {
+  id        Int      @id @default(autoincrement())
+  vehicleId Int      @unique
+  startDate DateTime
+  kmPerYear Int      @default(25000)
+  createdAt DateTime @default(now())
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id])
+  items     VehicleMaintenancePlanItem[]
+}
+
+model VehicleMaintenancePlanItem {
+  id              Int      @id @default(autoincrement())
+  planId          Int
+  title           String
+  intervalKmMin   Int?
+  intervalKmMax   Int?
+  intervalMonths  Int?
+  sortOrder       Int
+  actions         Json?
+  notes           String?
+  createdAt       DateTime @default(now())
+  plan            VehicleMaintenancePlan @relation(fields: [planId], references: [id])
 }
 
 model VehicleSpecs {
