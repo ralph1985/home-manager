@@ -65,8 +65,8 @@ export default async function HomeInsurancePage({ params }: HomeInsurancePagePro
   };
 
   const formatRiskAddress = (policy: HomeInsurancePolicy) => {
-    const parts = [policy.riskAddressLine, policy.riskPostalCode, policy.riskCity].filter(
-      (value) => Boolean(value),
+    const parts = [policy.riskAddressLine, policy.riskPostalCode, policy.riskCity].filter((value) =>
+      Boolean(value)
     );
     return parts.length > 0 ? parts.join(" - ") : labels.common.emptyValue;
   };

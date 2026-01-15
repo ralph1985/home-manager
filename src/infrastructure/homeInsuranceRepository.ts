@@ -12,9 +12,7 @@ const toNumber = (value: { toString(): string } | null) =>
 const normalizeDetails = (details: Prisma.JsonValue | null): HomeInsuranceDetails | null =>
   isRecord(details) ? (details as HomeInsuranceDetails) : null;
 
-const mapHomeInsurancePolicy = (
-  policy: PrismaHomeInsurancePolicy,
-): HomeInsurancePolicy => ({
+const mapHomeInsurancePolicy = (policy: PrismaHomeInsurancePolicy): HomeInsurancePolicy => ({
   ...policy,
   revaluationPct: toNumber(policy.revaluationPct),
   premiumTotal: toNumber(policy.premiumTotal),
