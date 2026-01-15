@@ -10,15 +10,16 @@ datasource db {
 }
 
 model Home {
-  id           Int               @id @default(autoincrement())
-  name         String
-  bills        ElectricityBill[]
-  supplies     SupplyPoint[]
-  waterBills   WaterBill[]
-  waterSupplies WaterSupplyPoint[]
-  gasBills     GasBill[]
-  gasSupplies  GasSupplyPoint[]
-  gasBoiler    GasBoiler?
+  id                    Int                 @id @default(autoincrement())
+  name                  String
+  bills                 ElectricityBill[]
+  supplies              SupplyPoint[]
+  waterBills            WaterBill[]
+  waterSupplies         WaterSupplyPoint[]
+  gasBills              GasBill[]
+  gasSupplies           GasSupplyPoint[]
+  gasBoiler             GasBoiler?
+  homeInsurancePolicies HomeInsurancePolicy[]
 }
 
 model Provider {
@@ -473,6 +474,36 @@ model VehicleInsurance {
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   vehicle            Vehicle   @relation(fields: [vehicleId], references: [id])
+}
+
+model HomeInsurancePolicy {
+  id               Int      @id @default(autoincrement())
+  homeId           Int
+  insurer          String
+  product          String
+  policyNumber     String
+  documentStatus   String
+  issueDate        DateTime?
+  effectiveDate    DateTime
+  expiryDate       DateTime
+  receiptStart     DateTime?
+  receiptEnd       DateTime?
+  revaluationPct   Decimal?
+  premiumTotal     Decimal?
+  paymentMethod    String?
+  paymentFrequency String?
+  documentUrl      String?
+  riskAddressLine  String?
+  riskPostalCode   String?
+  riskCity         String?
+  details          Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  home             Home     @relation(fields: [homeId], references: [id])
+
+  @@index([homeId])
+  @@index([expiryDate])
+  @@unique([homeId, policyNumber, effectiveDate])
 }
 
 model VehicleMaintenance {

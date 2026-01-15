@@ -11,6 +11,7 @@
 ## Vivienda
 
 - `/homes/[homeId]` — panel de detalle de vivienda.
+- `/homes/[homeId]/insurance` — pólizas de seguro del hogar.
 
 ## Energia (luz)
 

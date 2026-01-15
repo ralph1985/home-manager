@@ -17,6 +17,7 @@ El esquema vive en `prisma/schema.prisma` y se versiona junto a las migraciones.
 - `GasCostCategory` categorías de coste de gas.
 - `GasBillCostLine` desglose de costes de gas.
 - `WaterBill` facturas de agua.
+- `HomeInsurancePolicy` pólizas de seguro del hogar (histórico por vivienda).
 - `Vehicle` vehículos (incluye `ticktickProjectId` opcional para recordatorios).
 - `VehicleSpecs` ficha técnica del vehículo (tipo, motor, masas y homologación).
 - `VehicleRegistrationDocument` documento de circulación/registro (datos administrativos y validez).

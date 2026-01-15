@@ -48,6 +48,7 @@ export default async function HomeDetailPage({ params }: { params: Promise<{ hom
       title: labels.homeDetail.tiles.insurance.title,
       description: labels.homeDetail.tiles.insurance.description,
       action: labels.homeDetail.tiles.insurance.action,
+      href: "/insurance",
     },
   ];
 
