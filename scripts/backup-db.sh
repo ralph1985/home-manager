@@ -26,7 +26,7 @@ echo "Backup created: $BACKUP_FILE"
 if [ "${SKIP_ONEDRIVE_SYNC:-0}" -ne 1 ]; then
   SYNC_DIR="${ONEDRIVE_SYNC_DIR:-$ROOT_DIR/../onedrive-file-sync}"
   if [ -x "$SYNC_DIR/run.sh" ]; then
-    REMOTE_DIR="${ONEDRIVE_REMOTE_DIR:-backups/home-manager}"
+    REMOTE_DIR="${ONEDRIVE_REMOTE_DIR:-backups/home-manager/backups}"
     REMOTE_PATH="$REMOTE_DIR/$(basename "$BACKUP_FILE")"
     "$SYNC_DIR/run.sh" --local "$BACKUP_FILE" --remote "$REMOTE_PATH"
   else
