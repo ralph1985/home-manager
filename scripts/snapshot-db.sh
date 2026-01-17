@@ -31,3 +31,14 @@ SNAPSHOT_FILE="$SNAPSHOT_DIR/dev-$TIMESTAMP$LABEL.sql"
 sqlite3 "$DB_PATH" ".dump" > "$SNAPSHOT_FILE"
 
 echo "Snapshot created: $SNAPSHOT_FILE"
+
+if [ "${SKIP_ONEDRIVE_SYNC:-0}" -ne 1 ]; then
+  SYNC_DIR="${ONEDRIVE_SYNC_DIR:-$ROOT_DIR/../onedrive-file-sync}"
+  if [ -x "$SYNC_DIR/run.sh" ]; then
+    REMOTE_DIR="${ONEDRIVE_REMOTE_DIR:-backups/home-manager/snapshots}"
+    REMOTE_PATH="$REMOTE_DIR/$(basename "$SNAPSHOT_FILE")"
+    "$SYNC_DIR/run.sh" --local "$SNAPSHOT_FILE" --remote "$REMOTE_PATH"
+  else
+    echo "OneDrive sync skipped: $SYNC_DIR/run.sh not found or not executable." >&2
+  fi
+fi
