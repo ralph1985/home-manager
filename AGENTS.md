@@ -90,6 +90,11 @@ Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
 - Antes de cualquier cambio en la base de datos o en el schema, ejecutar `npm run backup:db`.
 - Para auditar cambios, generar snapshots antes y después con `npm run snapshot:db -- etiqueta` (guarda dumps en `data/snapshots/`).
 - El backup y los snapshots ejecutan el sync a OneDrive si `projects/onedrive-file-sync/run.sh` está disponible (puedes desactivarlo con `SKIP_ONEDRIVE_SYNC=1`). Backups se suben a `backups/home-manager/backups/` y snapshots a `backups/home-manager/snapshots/`.
+- Si el sync falla (por ejemplo, sin red) se verá un error tipo `fetch failed`. En ese caso, avisa al usuario de que debe ejecutar el sync manual y pásale el comando con rutas:
+  ```bash
+  projects/onedrive-file-sync/run.sh --local "<ruta_local>" --remote "backups/home-manager/<carpeta>/<archivo>"
+  ```
+- Tras cambios en `prisma/schema.prisma`, recuerda ejecutar `npx prisma generate` para regenerar el cliente antes de levantar la app.
 - Para revisar/importar PDFs de facturas (electricidad) hay un script base en `scripts/update-electricity-from-pdfs.mjs`:
   - Inspección sin tocar DB: `npm run pdf:electricity:dry -- "<ruta|carpeta>"`
   - Con OCR (tesseract/ocrmypdf): `npm run pdf:electricity:ocr -- "<ruta|carpeta>"`
