@@ -177,6 +177,25 @@ export default async function VehicleDetailPage({ params }: VehicleDetailPagePro
             collapsible
             rows={[
               {
+                label: labels.vehicleDetail.specsLabels.tireSpec,
+                value: specs.tireSpec ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.tireSize,
+                value: specs.tireSize ?? labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.tireLoadIndex,
+                value:
+                  specs.tireLoadIndex != null
+                    ? formatNumber(specs.tireLoadIndex)
+                    : labels.common.emptyValue,
+              },
+              {
+                label: labels.vehicleDetail.specsLabels.tireSpeedIndex,
+                value: specs.tireSpeedIndex ?? labels.common.emptyValue,
+              },
+              {
                 label: labels.vehicleDetail.specsLabels.type,
                 value: specs.type ?? labels.common.emptyValue,
               },

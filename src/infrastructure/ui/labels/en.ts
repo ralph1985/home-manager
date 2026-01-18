@@ -580,6 +580,10 @@ export const labels = {
       purchaseDealer: "Dealer",
     },
     specsLabels: {
+      tireSpec: "Tire (full)",
+      tireSize: "Tire size",
+      tireLoadIndex: "Load index",
+      tireSpeedIndex: "Speed rating",
       type: "Type",
       fuel: "Fuel",
       engineDisplacement: "Displacement",

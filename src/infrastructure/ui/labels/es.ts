@@ -580,6 +580,10 @@ export const labels = {
       purchaseDealer: "Concesionario",
     },
     specsLabels: {
+      tireSpec: "Neumático (completo)",
+      tireSize: "Neumático (medida)",
+      tireLoadIndex: "Índice de carga",
+      tireSpeedIndex: "Código de velocidad",
       type: "Tipo",
       fuel: "Combustible",
       engineDisplacement: "Cilindrada",
