@@ -357,6 +357,10 @@ model VehicleSpecs {
   powerNetKw           Int?
   emissionsCo2Gkm      Int?
   emissionsStandard    String?
+  tireSize             String?
+  tireLoadIndex        Int?
+  tireSpeedIndex       String?
+  tireSpec             String?
   baseBrand            String?
   baseType             String?
   variant              String?
