@@ -94,6 +94,7 @@ Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
   ```bash
   projects/onedrive-file-sync/run.sh --local "<ruta_local>" --remote "backups/home-manager/<carpeta>/<archivo>"
   ```
+- Si una copia de la base de datos o un snapshot no se sube a OneDrive, avisa al usuario sin esperar a que lo pregunte.
 - Tras cambios en `prisma/schema.prisma`, recuerda ejecutar `npx prisma generate` para regenerar el cliente antes de levantar la app.
 - Para revisar/importar PDFs de facturas (electricidad) hay un script base en `scripts/update-electricity-from-pdfs.mjs`:
   - Inspección sin tocar DB: `npm run pdf:electricity:dry -- "<ruta|carpeta>"`
