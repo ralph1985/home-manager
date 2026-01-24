@@ -72,6 +72,7 @@ Avanza paso a paso y explica siempre qué se ha hecho y por qué, para facilitar
 Como quiero aprender TypeScript, acompaña cada cambio con una explicación breve (1-2 frases) del porqué y señala tipos clave (interfaces, unions, nullables) cuando aparezcan.
 Como quiero aprender Clean Architecture, explica siempre las decisiones indicando la capa afectada (dominio, casos de uso, interfaces, infraestructura) y el motivo.
 Revisa de vez en cuando `docs/todo.md` y recuérdame las tareas pendientes cuando corresponda.
+Si se necesita hacer backup o snapshot de la base de datos, puedes ejecutar los scripts directamente. Si falla el sync, indícame el comando manual con `../onedrive-file-sync/run.sh`.
 
 ## Security & Configuration Tips
 
@@ -89,10 +90,10 @@ Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
 - Copia de seguridad: ejecutar `npm run backup:db` de forma periódica (genera archivos en `data/backups/`).
 - Antes de cualquier cambio en la base de datos o en el schema, ejecutar `npm run backup:db`.
 - Para auditar cambios, generar snapshots antes y después con `npm run snapshot:db -- etiqueta` (guarda dumps en `data/snapshots/`).
-- El backup y los snapshots ejecutan el sync a OneDrive si `projects/onedrive-file-sync/run.sh` está disponible (puedes desactivarlo con `SKIP_ONEDRIVE_SYNC=1`). Backups se suben a `backups/home-manager/backups/` y snapshots a `backups/home-manager/snapshots/`.
+- El backup y los snapshots ejecutan el sync a OneDrive si `../onedrive-file-sync/run.sh` está disponible (puedes desactivarlo con `SKIP_ONEDRIVE_SYNC=1`). Backups se suben a `backups/home-manager/backups/` y snapshots a `backups/home-manager/snapshots/`.
 - Si el sync falla (por ejemplo, sin red) se verá un error tipo `fetch failed`. En ese caso, avisa al usuario de que debe ejecutar el sync manual y pásale el comando con rutas:
   ```bash
-  projects/onedrive-file-sync/run.sh --local "<ruta_local>" --remote "backups/home-manager/<carpeta>/<archivo>"
+  ../onedrive-file-sync/run.sh --local "<ruta_local>" --remote "backups/home-manager/<carpeta>/<archivo>"
   ```
 - Si una copia de la base de datos o un snapshot no se sube a OneDrive, avisa al usuario sin esperar a que lo pregunte.
 - Tras cambios en `prisma/schema.prisma`, recuerda ejecutar `npx prisma generate` para regenerar el cliente antes de levantar la app.
