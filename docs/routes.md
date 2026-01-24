@@ -27,6 +27,7 @@
 
 - `/homes/[homeId]/gas` — listado de facturas de gas.
 - `/homes/[homeId]/gas/boiler` — ficha de caldera de la vivienda.
+- `/homes/[homeId]/gas/readings` — lecturas del contador de gas.
 - `/homes/[homeId]/gas/[billId]` — detalle de factura de gas.
 
 ## Vehiculos
