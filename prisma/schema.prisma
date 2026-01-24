@@ -19,6 +19,7 @@ model Home {
   gasBills              GasBill[]
   gasSupplies           GasSupplyPoint[]
   gasBoiler             GasBoiler?
+  gasReadings           GasReading[]
   homeInsurancePolicies HomeInsurancePolicy[]
 }
 
@@ -195,6 +196,7 @@ model GasSupplyPoint {
   country         String?
   home            Home      @relation(fields: [homeId], references: [id])
   bills           GasBill[]
+  readings        GasReading[]
 
   @@unique([cups])
 }
@@ -274,6 +276,7 @@ model GasBill {
   provider           GasProvider @relation(fields: [providerId], references: [id])
   supplyPoint        GasSupplyPoint? @relation(fields: [supplyPointId], references: [id])
   costLines          GasBillCostLine[]
+  readings           GasReading[]
 }
 
 model GasCostCategory {
@@ -297,6 +300,25 @@ model GasBillCostLine {
   category    GasCostCategory @relation(fields: [categoryId], references: [id])
 
   @@unique([billId, categoryId, periodStart, periodEnd])
+}
+
+model GasReading {
+  id             Int       @id @default(autoincrement())
+  homeId         Int
+  supplyPointId  Int?
+  billId         Int?
+  readingDate    DateTime
+  readingM3      Decimal
+  notes          String?
+  isEstimated    Boolean   @default(false)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  home           Home      @relation(fields: [homeId], references: [id])
+  supplyPoint    GasSupplyPoint? @relation(fields: [supplyPointId], references: [id])
+  bill           GasBill?  @relation(fields: [billId], references: [id])
+
+  @@index([homeId, readingDate])
+  @@index([billId])
 }
 
 model Vehicle {
