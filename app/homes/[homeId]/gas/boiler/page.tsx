@@ -36,9 +36,8 @@ export default async function GasBoilerPage({ params }: GasBoilerPageProps) {
     value ? formatDate(value) : labels.common.emptyValue;
   const formatEventDate = (value?: Date | null, periodLabel?: string | null) =>
     periodLabel ? periodLabel : value ? formatDate(value) : labels.common.emptyValue;
-  const formatInspectionStatus = (
-    status: "upToDate" | "dueSoon" | "overdue" | "unknown"
-  ) => labels.gasBoiler.inspection.statuses[status];
+  const formatInspectionStatus = (status: "upToDate" | "dueSoon" | "overdue" | "unknown") =>
+    labels.gasBoiler.inspection.statuses[status];
   const formatInspectionDays = (daysUntilDue?: number | null) => {
     if (daysUntilDue == null) {
       return labels.common.emptyValue;
