@@ -36,6 +36,27 @@ export default async function GasBoilerPage({ params }: GasBoilerPageProps) {
     value ? formatDate(value) : labels.common.emptyValue;
   const formatEventDate = (value?: Date | null, periodLabel?: string | null) =>
     periodLabel ? periodLabel : value ? formatDate(value) : labels.common.emptyValue;
+  const formatInspectionStatus = (
+    status: "upToDate" | "dueSoon" | "overdue" | "unknown"
+  ) => labels.gasBoiler.inspection.statuses[status];
+  const formatInspectionDays = (daysUntilDue?: number | null) => {
+    if (daysUntilDue == null) {
+      return labels.common.emptyValue;
+    }
+
+    if (daysUntilDue < 0) {
+      return labels.gasBoiler.inspection.overdueByLabel.replace(
+        "{days}",
+        String(Math.abs(daysUntilDue))
+      );
+    }
+
+    if (daysUntilDue === 0) {
+      return labels.gasBoiler.inspection.dueTodayLabel;
+    }
+
+    return labels.gasBoiler.inspection.daysUntilLabel.replace("{days}", String(daysUntilDue));
+  };
 
   const installation =
     boiler && (boiler.equipmentType || boiler.modelName)
@@ -96,6 +117,31 @@ export default async function GasBoilerPage({ params }: GasBoilerPageProps) {
               },
             ]}
           />
+          <ContractPanel
+            title={labels.gasBoiler.inspection.title}
+            rows={[
+              {
+                label: labels.gasBoiler.inspection.labels.lastMandatoryInspection,
+                value: formatDateValue(boiler.mandatoryInspection.lastInspectionDate),
+              },
+              {
+                label: labels.gasBoiler.inspection.labels.nextMandatoryInspection,
+                value: formatDateValue(boiler.mandatoryInspection.nextInspectionDate),
+              },
+              {
+                label: labels.gasBoiler.inspection.labels.intervalYears,
+                value: String(boiler.mandatoryInspection.intervalYears),
+              },
+              {
+                label: labels.gasBoiler.inspection.labels.status,
+                value: formatInspectionStatus(boiler.mandatoryInspection.status),
+              },
+              {
+                label: labels.gasBoiler.inspection.labels.daysToDue,
+                value: formatInspectionDays(boiler.mandatoryInspection.daysUntilDue),
+              },
+            ]}
+          />
           <div className="hm-panel p-6 md:col-span-2">
             <h2 className="text-xl font-semibold text-[color:var(--text-strong)]">
               {labels.gasBoiler.maintenanceHistoryTitle}
@@ -141,6 +187,25 @@ export default async function GasBoilerPage({ params }: GasBoilerPageProps) {
                         </dt>
                         <dd className="text-right font-semibold text-[color:var(--text-strong)]">
                           {formatValue(event.paymentMethod)}
+                        </dd>
+                      </div>
+                      <div className="flex items-center justify-between gap-4">
+                        <dt className="text-[color:var(--text-subtle)]">
+                          {labels.gasBoiler.eventLabels.documentUrl}
+                        </dt>
+                        <dd className="text-right font-semibold text-[color:var(--text-strong)]">
+                          {event.documentUrl ? (
+                            <a
+                              href={event.documentUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="underline decoration-[var(--surface-border-strong)] underline-offset-2 hover:opacity-80"
+                            >
+                              {labels.common.open}
+                            </a>
+                          ) : (
+                            labels.common.emptyValue
+                          )}
                         </dd>
                       </div>
                       <div className="flex items-center justify-between gap-4">

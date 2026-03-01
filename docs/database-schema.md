@@ -11,8 +11,8 @@ El esquema vive en `prisma/schema.prisma` y se versiona junto a las migraciones.
 - `BillCostLine` desglose por categoría.
 - `GasProvider` compañías de gas.
 - `GasSupplyPoint` puntos de suministro de gas.
-- `GasBoiler` ficha de caldera por vivienda (equipo y mantenimiento).
-- `GasBoilerMaintenanceEvent` eventos del historial de mantenimiento de la caldera.
+- `GasBoiler` ficha de caldera por vivienda (equipo, mantenimiento e inspección obligatoria).
+- `GasBoilerMaintenanceEvent` eventos del historial de mantenimiento/inspección de la caldera (incluye metadatos de certificado y medidas técnicas).
 - `GasBill` facturas de gas (importe, fechas, consumo, lecturas, peajes, PDF).
 - `GasCostCategory` categorías de coste de gas.
 - `GasBillCostLine` desglose de costes de gas.

@@ -205,10 +205,17 @@ model GasBoiler {
   id                         Int      @id @default(autoincrement())
   homeId                     Int      @unique
   equipmentType              String?
+  brand                      String?
   modelName                  String?
+  applianceTypeCode          String?
+  fuelType                   String?
+  nominalPowerKw             Decimal?
+  combustionEfficiencyPercent Decimal?
   officialServiceCompany     String?
   commissioningDate          DateTime?
   lastAnnualReviewDate       DateTime?
+  lastMandatoryInspectionDate DateTime?
+  mandatoryInspectionIntervalYears Int  @default(5)
   maintenancePlan            String?
   maintenanceContractNumber  String?
   maintenanceContractStart   DateTime?
@@ -223,10 +230,32 @@ model GasBoilerMaintenanceEvent {
   eventDate     DateTime?
   periodLabel   String?
   title         String
+  sourceDocumentType String?
+  sourceLanguage String?
+  extractionConfidence Decimal?
   provider      String?
   amount        Decimal?
   currency      String?
   paymentMethod String?
+  inspectionResult String?
+  defectsFound  Boolean?
+  inspectorName String?
+  inspectorLicense String?
+  analyzerSerialNumber String?
+  coCorrectedPpm Decimal?
+  coAmbientPpm  Decimal?
+  co2Percent    Decimal?
+  documentIssuingEntity String?
+  documentIssuePlace String?
+  documentIssueDate DateTime?
+  documentCups  String?
+  documentContractNumber String?
+  documentCommercialCompany String?
+  documentCommercialCompanyCif String?
+  documentUrl  String?
+  installationAddress String?
+  holderName    String?
+  holderNif     String?
   notes         String?
   coverageNotes String?
   expiresOn     DateTime?
