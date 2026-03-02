@@ -568,6 +568,7 @@ model VehicleMaintenance {
   planItemId  Int?
   title       String
   description String?
+  invoiceUrl  String?
   serviceDate DateTime
   odometerKm  Int?
   cost        Decimal?

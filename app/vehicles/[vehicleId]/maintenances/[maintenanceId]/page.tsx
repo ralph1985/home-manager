@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
 import { formatCurrency, formatDate } from "@/components/billing/billingFormatters";
 import ContractPanel from "@/components/billing/ContractPanel";
@@ -73,6 +74,22 @@ export default async function MaintenanceDetailPage({ params }: MaintenanceDetai
                 maintenance.cost != null
                   ? formatCurrency(maintenance.cost)
                   : labels.common.emptyValue,
+            },
+            {
+              label: labels.maintenanceDetail.labels.invoiceUrl,
+              value: maintenance.invoiceUrl ? (
+                <Link
+                  className="text-sm font-semibold text-[color:var(--text-strong)] underline-offset-4 hover:underline"
+                  href={maintenance.invoiceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={maintenance.invoiceUrl}
+                >
+                  {labels.common.open}
+                </Link>
+              ) : (
+                labels.common.emptyValue
+              ),
             },
           ]}
         />

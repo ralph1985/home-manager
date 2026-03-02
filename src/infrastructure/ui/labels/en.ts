@@ -872,6 +872,7 @@ export const labels = {
       workshop: "Workshop",
       odometer: "Odometer",
       cost: "Cost",
+      invoiceUrl: "Invoice",
     },
     sections: {
       jobs: "Jobs",
