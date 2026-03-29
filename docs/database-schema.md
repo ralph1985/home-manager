@@ -1,4 +1,4 @@
-# Database Schema (SQLite + Prisma)
+# Database Schema (PostgreSQL + Prisma)
 
 El esquema vive en `prisma/schema.prisma` y se versiona junto a las migraciones.
 
@@ -24,9 +24,10 @@ El esquema vive en `prisma/schema.prisma` y se versiona junto a las migraciones.
 - `VehiclePurchase` compra final asociada a un vehículo (datos de oferta, detalles económicos y resumen).
 - `VehiclePurchaseOption` opciones/equipamiento incluidos en la compra del vehículo.
 
-## Base local
+## Conexión
 
-`data/dev.db` (no se versiona).
+La app usa `DATABASE_URL` para conectar a PostgreSQL (por defecto `schema=public`).
+El arranque en Docker aplica esquema con `prisma db push` (no `migrate deploy`) porque el histórico de migraciones existente viene del ciclo previo con SQLite.
 
 ## Prisma Studio
 
@@ -38,17 +39,17 @@ npm run studio
 
 ## Copia de seguridad
 
-Script seguro con SQLite (compatible con la DB en uso):
+Script de backup con `pg_dump`:
 
 ```bash
 npm run backup:db
 ```
 
-Las copias se guardan en `data/backups/`.
+Las copias se guardan en `data/backups/` en formato `.dump`.
 
 ## Snapshot (antes/después de cambios)
 
-Para comparar el estado completo de la BD antes y después de cambios, genera dos dumps SQL:
+Para comparar el estado completo de la BD antes y después de cambios, genera dos dumps SQL con `pg_dump`:
 
 ```bash
 npm run snapshot:db -- before-change

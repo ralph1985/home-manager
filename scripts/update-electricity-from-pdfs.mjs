@@ -4,11 +4,12 @@ import path from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { PrismaClient, Prisma } from "@prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 const prisma = new PrismaClient({
-  adapter: new PrismaBetterSqlite3({
-    url: process.env.DATABASE_URL || "file:./data/dev.db",
+  adapter: new PrismaPg({
+    connectionString:
+      process.env.DATABASE_URL || "postgresql://home_manager:home_manager@127.0.0.1:5432/home_manager?schema=public",
   }),
 });
 

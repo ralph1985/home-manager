@@ -1,25 +1,25 @@
 #!/bin/sh
 set -eu
 
-if ! command -v sqlite3 >/dev/null 2>&1; then
-  echo "sqlite3 is required for backup. Please install it and try again." >&2
+if ! command -v pg_dump >/dev/null 2>&1; then
+  echo "pg_dump is required for backup. Please install PostgreSQL client tools and try again." >&2
   exit 1
 fi
 
 ROOT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-DB_PATH="${DB_PATH:-$ROOT_DIR/data/dev.db}"
 BACKUP_DIR="${BACKUP_DIR:-$ROOT_DIR/data/backups}"
+DATABASE_URL="${DATABASE_URL:-postgresql://home_manager:home_manager@127.0.0.1:5432/home_manager?schema=public}"
 
-if [ ! -f "$DB_PATH" ]; then
-  echo "Database not found at $DB_PATH" >&2
+if [ -z "$DATABASE_URL" ]; then
+  echo "DATABASE_URL is required for backup." >&2
   exit 1
 fi
 
 mkdir -p "$BACKUP_DIR"
 TIMESTAMP=$(date +%Y%m%d-%H%M%S)
-BACKUP_FILE="$BACKUP_DIR/dev-$TIMESTAMP.db"
+BACKUP_FILE="$BACKUP_DIR/postgres-$TIMESTAMP.dump"
 
-sqlite3 "$DB_PATH" ".backup '$BACKUP_FILE'"
+pg_dump "$DATABASE_URL" --format=custom --file="$BACKUP_FILE"
 
 echo "Backup created: $BACKUP_FILE"
 

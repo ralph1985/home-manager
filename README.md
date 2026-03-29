@@ -16,6 +16,9 @@ Esta app usa Server Components/SSR por defecto en App Router. Se optó por esta 
 ## Desarrollo
 
 ```bash
+cp .env.example .env
+npm install
+npx prisma generate
 npm run dev
 ```
 
@@ -25,4 +28,17 @@ npm run dev
 npm run lint
 npm run typecheck
 npm run format
+npm run backup:db
+npm run snapshot:db -- before-change
+```
+
+## Base de datos
+
+`home-manager` usa Prisma sobre PostgreSQL. La conexión se define con `DATABASE_URL`.
+
+## Docker
+
+```bash
+cp .env.example .env
+docker compose up --build -d
 ```

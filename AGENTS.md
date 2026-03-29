@@ -80,12 +80,11 @@ Si manejas secretos, usa variables de entorno o archivos locales fuera de git (e
 
 ## Data & Persistence
 
-Base de datos local: SQLite. Trata la DB como un detalle de infraestructura:
+Base de datos: PostgreSQL. Trata la DB como un detalle de infraestructura:
 
 - Mantén los repositorios en `src/infrastructure/` y las interfaces en `src/interfaces/`.
-- Evita acoplar el dominio a SQLite; expón puertos (interfaces) desde `src/usecases/`.
-- Documenta el fichero de base de datos (e.g., `data/home-manager.sqlite`) y cómo crear migraciones cuando se definan.
-- Prisma 7 con SQLite requiere adapter (`@prisma/adapter-better-sqlite3`).
+- Evita acoplar el dominio a PostgreSQL; expón puertos (interfaces) desde `src/usecases/`.
+- Documenta `DATABASE_URL` y cómo crear/aplicar migraciones cuando se definan.
 - Modelos separados por servicio: electricidad (`ElectricityBill`) y agua (`WaterBill`) con desglose por líneas (`*BillCostLine`).
 - Copia de seguridad: ejecutar `npm run backup:db` de forma periódica (genera archivos en `data/backups/`).
 - Antes de cualquier cambio en la base de datos o en el schema, ejecutar `npm run backup:db`.

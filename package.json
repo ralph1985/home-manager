@@ -32,13 +32,13 @@
     "pdf:electricity:ocr:force": "node scripts/update-electricity-from-pdfs.mjs --ocr --invalidate-signatures"
   },
   "dependencies": {
-    "@prisma/adapter-better-sqlite3": "7.2.0",
+    "@prisma/adapter-pg": "7.2.0",
     "@prisma/client": "7.2.0",
-    "better-sqlite3": "12.5.0",
     "highcharts": "12.4.0",
     "highcharts-react-official": "3.2.3",
     "next": "16.1.0",
     "pdfjs-dist": "5.4.449",
+    "pg": "8.16.3",
     "prisma": "7.2.0",
     "react": "19.2.3",
     "react-dom": "19.2.3"
