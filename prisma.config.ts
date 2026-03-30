@@ -9,6 +9,8 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"] || "postgresql://home_manager:home_manager@127.0.0.1:5432/home_manager?schema=public",
+    url:
+      process.env["DATABASE_URL"] ||
+      "postgresql://home_manager:home_manager@127.0.0.1:5432/home_manager?schema=public",
   },
 });

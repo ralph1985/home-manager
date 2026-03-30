@@ -9,7 +9,8 @@ import { PrismaPg } from "@prisma/adapter-pg";
 const prisma = new PrismaClient({
   adapter: new PrismaPg({
     connectionString:
-      process.env.DATABASE_URL || "postgresql://home_manager:home_manager@127.0.0.1:5432/home_manager?schema=public",
+      process.env.DATABASE_URL ||
+      "postgresql://home_manager:home_manager@127.0.0.1:5432/home_manager?schema=public",
   }),
 });
 
